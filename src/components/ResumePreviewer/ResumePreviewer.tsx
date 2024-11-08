@@ -1,5 +1,3 @@
-import { User, Mail, Phone, Globe } from "lucide-react";
-
 interface ResumePreviewerProps {
   data: {
     personal: any;
@@ -18,22 +16,13 @@ export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
           <h1 className="text-3xl font-bold text-gray-900 mb-3">{data.personal.fullName}</h1>
           <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
             {data.personal.email && (
-              <div className="flex items-center gap-1">
-                <Mail className="w-4 h-4" />
-                {data.personal.email}
-              </div>
+              <div>{data.personal.email}</div>
             )}
             {data.personal.phone && (
-              <div className="flex items-center gap-1">
-                <Phone className="w-4 h-4" />
-                {data.personal.phone}
-              </div>
+              <div>{data.personal.phone}</div>
             )}
             {data.personal.website && (
-              <div className="flex items-center gap-1">
-                <Globe className="w-4 h-4" />
-                {data.personal.website}
-              </div>
+              <div>{data.personal.website}</div>
             )}
           </div>
         </div>
