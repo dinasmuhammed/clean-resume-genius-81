@@ -67,7 +67,7 @@ const Embed = () => {
                   <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-600">
-                      Once activated, earn up to 70 INR per day (2,100 INR monthly potential)
+                      Once activated, earn up to 20 INR per day (600 INR monthly potential)
                     </p>
                   </div>
                 </div>

@@ -50,15 +50,15 @@ const AffiliateSignup = () => {
                 <ul className="list-disc pl-5 space-y-2">
                   <li>Earn 1 credit (1 INR) for each successful referral</li>
                   <li>Minimum requirement: 200 members to activate monetization</li>
-                  <li>Once activated, earn up to 70 INR per day</li>
+                  <li>Once activated, earn up to 20 INR per day</li>
                   <li>Start earning immediately after reaching 200 members</li>
                 </ul>
               </div>
               <div className="p-4 bg-gray-50 rounded-lg">
                 <h3 className="font-semibold mb-2">Earning Potential</h3>
                 <ul className="list-disc pl-5 space-y-2">
-                  <li>Daily earning cap: 70 INR</li>
-                  <li>Monthly potential: Up to 2,100 INR</li>
+                  <li>Daily earning cap: 20 INR</li>
+                  <li>Monthly potential: Up to 600 INR</li>
                   <li>Additional bonuses for consistent performance</li>
                 </ul>
               </div>
