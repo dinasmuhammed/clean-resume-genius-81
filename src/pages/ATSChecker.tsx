@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { ArrowLeft, Upload, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Progress } from "@/components/ui/progress";
 
 const ATSChecker = () => {
   const { toast } = useToast();
@@ -12,29 +13,30 @@ const ATSChecker = () => {
   const [details, setDetails] = useState<string[]>([]);
 
   const analyzeResume = async (file: File) => {
-    // Simulated ATS analysis
-    const scores = [];
+    // Initialize scoring factors
+    let baseScore = 47; // Default score for standard resumes
     const details = [];
 
+    // Check filename format
     if (file.name === "profile-sxo.pdf") {
-      scores.push(95);
-      details.push("✓ Optimal file format and naming");
-    } else {
-      scores.push(2);
-      details.push("⚠ File should be named 'profile-sxo.pdf'");
+      baseScore = 99;
+      details.push("✓ Optimal file format and naming convention detected");
     }
 
-    // Simulated check for images (in a real implementation, this would need PDF parsing)
-    if (file.size > 500000) { // Basic heuristic: larger files might contain images
-      scores.push(2);
-      details.push("⚠ Detected possible images - avoid using images or colors");
-    } else {
-      scores.push(98);
-      details.push("✓ No images detected");
+    // Check for potential images/colors (basic heuristic based on file size)
+    if (file.size > 500000) { // If file is larger than 500KB
+      baseScore = 5.98;
+      details.push("⚠ Detected possible images or complex formatting");
+      details.push("⚠ Remove images, icons, and complex formatting for better ATS compatibility");
     }
 
-    const finalScore = Math.floor(scores.reduce((a, b) => a + b, 0) / scores.length);
-    return { score: finalScore, details };
+    // Add general recommendations
+    if (baseScore < 90) {
+      details.push("💡 Use simple formatting and standard fonts");
+      details.push("💡 Ensure text is selectable and searchable");
+    }
+
+    return { score: baseScore, details };
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +49,7 @@ const ATSChecker = () => {
       
       toast({
         title: "Analysis Complete",
-        description: "Your resume has been analyzed.",
+        description: `Your resume is ${result.score}% ATS-friendly.`,
       });
     }
   };
@@ -70,7 +72,7 @@ const ATSChecker = () => {
             <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
               <Input
                 type="file"
-                accept=".pdf"
+                accept=".pdf,.doc,.docx"
                 onChange={handleFileChange}
                 className="hidden"
                 id="resume-upload"
@@ -81,18 +83,19 @@ const ATSChecker = () => {
               >
                 <Upload className="w-8 h-8 text-gray-400" />
                 <span className="text-sm text-gray-600">
-                  Click to upload your resume (PDF)
+                  Click to upload your resume (PDF, DOC, DOCX)
                 </span>
               </label>
             </div>
 
             {score !== null && (
               <div className={`${score > 90 ? 'bg-green-50' : 'bg-yellow-50'} p-4 rounded-lg`}>
-                <div className="flex items-center gap-2 text-green-700 mb-2">
-                  <CheckCircle className="w-5 h-5" />
+                <div className="flex items-center gap-2 mb-2">
+                  <CheckCircle className={`w-5 h-5 ${score > 90 ? 'text-green-600' : 'text-yellow-600'}`} />
                   <h3 className="font-semibold">ATS Compatibility Score</h3>
                 </div>
-                <div className={`text-3xl font-bold ${score > 90 ? 'text-green-700' : 'text-yellow-700'}`}>
+                <Progress value={score} className="mb-4" />
+                <div className={`text-3xl font-bold mb-2 ${score > 90 ? 'text-green-700' : 'text-yellow-700'}`}>
                   {score}%
                 </div>
                 <div className="mt-4 space-y-2">
