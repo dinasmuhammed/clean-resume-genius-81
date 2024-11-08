@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, FileText, Target, CheckCircle2 } from "lucide-react";
+import { ArrowRight, FileText, Target, CheckCircle2, Laptop, Shield, Clock } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -31,6 +31,7 @@ const Splash = () => {
       {/* Main Content with adjusted padding for fixed nav */}
       <div className="pt-20 flex flex-col items-center justify-center px-4 py-6 sm:py-12">
         <div className="text-center max-w-4xl mx-auto space-y-8 sm:space-y-12">
+          {/* Hero Section */}
           <div className="space-y-4 sm:space-y-6">
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-primary tracking-tight">
               Create Your Professional Resume in Minutes
@@ -40,55 +41,65 @@ const Splash = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8 max-w-5xl mx-auto">
-            <div className="p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
-              <CheckCircle2 className="w-8 sm:w-12 h-8 sm:h-12 text-accent mx-auto mb-4" />
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">ATS-Optimized</h3>
-              <p className="text-sm sm:text-base text-gray-600">Built to pass Applicant Tracking Systems and reach human recruiters</p>
-            </div>
-            <div className="p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
-              <FileText className="w-8 sm:w-12 h-8 sm:h-12 text-accent mx-auto mb-4" />
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Professional Templates</h3>
-              <p className="text-sm sm:text-base text-gray-600">Clean, modern designs that highlight your experience</p>
-            </div>
-            <div className="p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
-              <Target className="w-8 sm:w-12 h-8 sm:h-12 text-accent mx-auto mb-4" />
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Expert Guidance</h3>
-              <p className="text-sm sm:text-base text-gray-600">Step-by-step guidance to create the perfect resume</p>
+          {/* Why Use Our Online SXO Resume Builder Section */}
+          <div className="py-12 bg-white rounded-xl shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center">
+                <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-8">
+                  Why use our online SXO Resume Builder?
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
+                  <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                    <div className="h-12 w-12 bg-accent/10 rounded-full flex items-center justify-center mb-4">
+                      <Laptop className="h-6 w-6 text-accent" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">Easy to Use</h3>
+                    <p className="text-gray-600 text-center">
+                      Intuitive interface that guides you through every step of creating your professional resume
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                    <div className="h-12 w-12 bg-accent/10 rounded-full flex items-center justify-center mb-4">
+                      <Shield className="h-6 w-6 text-accent" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">ATS-Optimized</h3>
+                    <p className="text-gray-600 text-center">
+                      Built to pass Applicant Tracking Systems with optimized formatting and keywords
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                    <div className="h-12 w-12 bg-accent/10 rounded-full flex items-center justify-center mb-4">
+                      <Clock className="h-6 w-6 text-accent" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">Time-Saving</h3>
+                    <p className="text-gray-600 text-center">
+                      Create a professional resume in minutes with our pre-built templates and expert guidance
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6 sm:mt-8">
-            <Link to="/builder" className="w-full sm:w-auto">
-              <Button 
-                size="lg" 
-                className="w-full h-12 sm:h-14 text-base sm:text-lg font-medium flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all bg-accent hover:bg-accent/90"
-              >
-                <FileText className="w-5 h-5" />
-                Create Your Resume Now
-                <ArrowRight className="w-5 h-5 ml-1" />
-              </Button>
-            </Link>
-            <Link to="/ats-checker" className="w-full sm:w-auto">
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="w-full h-12 sm:h-14 text-base sm:text-lg font-medium flex items-center justify-center gap-2 shadow hover:shadow-lg transition-all"
-              >
-                <Target className="w-5 h-5" />
-                Check ATS Score
-              </Button>
-            </Link>
-            <Link to="/interview-guide" className="w-full sm:w-auto">
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="w-full h-12 sm:h-14 text-base sm:text-lg font-medium flex items-center justify-center gap-2 shadow hover:shadow-lg transition-all"
-              >
-                <CheckCircle2 className="w-5 h-5" />
-                Interview Guide
-              </Button>
-            </Link>
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md">
+              <FileText className="h-6 w-6 text-accent mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Professional Templates</h3>
+              <p className="text-gray-600 text-center">Choose from a variety of professionally designed templates</p>
+            </div>
+            <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md">
+              <Target className="h-6 w-6 text-accent mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Customization Options</h3>
+              <p className="text-gray-600 text-center">Easily customize each section to fit your unique experience</p>
+            </div>
+            <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md">
+              <CheckCircle2 className="h-6 w-6 text-accent mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Expert Tips</h3>
+              <p className="text-gray-600 text-center">Get expert advice on how to craft your resume</p>
+            </div>
           </div>
 
           {/* FAQ Section */}
