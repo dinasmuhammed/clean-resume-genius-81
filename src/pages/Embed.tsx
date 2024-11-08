@@ -33,7 +33,7 @@ const Embed = () => {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-primary mb-4">Embed SXO Resume on Your Website</h1>
           <p className="text-gray-600 mb-4">
-            Add our professional resume builder to your website and earn commissions for each conversion.
+            Add our professional resume builder to your website and start earning through referrals.
           </p>
           {!affiliateId && (
             <Link to="/affiliate-signup">
@@ -44,6 +44,36 @@ const Embed = () => {
 
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <div className="space-y-6">
+            <div className="bg-gray-50 rounded-lg p-6 mb-6">
+              <h2 className="text-xl font-semibold mb-4">Earning Structure</h2>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-600">
+                      Earn 1 credit (1 INR) for each successful referral through your embedded widget
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-600">
+                      Minimum requirement: 200 members to activate monetization
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-600">
+                      Once activated, earn up to 70 INR per day (2,100 INR monthly potential)
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div>
               <h2 className="text-xl font-semibold mb-4">Get Your Embed Code</h2>
               <div className="space-y-4">
@@ -108,7 +138,7 @@ const Embed = () => {
                   <div>
                     <h4 className="font-medium">3. Start earning</h4>
                     <p className="text-sm text-gray-600">
-                      Earn commission for each user who creates a resume through your embedded widget.
+                      Begin earning credits for each referral and activate monetization at 200 members.
                     </p>
                   </div>
                 </div>
