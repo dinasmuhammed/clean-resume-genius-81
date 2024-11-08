@@ -9,6 +9,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { FileText, CheckCircle2, BookOpen, Info, Heart } from "lucide-react";
+import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 import FeedbackDialog from "./FeedbackDialog";
 
 const Navbar = () => {
@@ -75,6 +76,17 @@ const Navbar = () => {
         </NavigationMenu>
 
         <div className="flex items-center gap-2">
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+          <SignedOut>
+            <Link to="/sign-in">
+              <Button variant="outline">Sign In</Button>
+            </Link>
+            <Link to="/sign-up">
+              <Button>Sign Up</Button>
+            </Link>
+          </SignedOut>
           <FeedbackDialog />
         </div>
       </div>
