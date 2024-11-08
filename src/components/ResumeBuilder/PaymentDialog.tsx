@@ -20,7 +20,7 @@ interface PaymentDialogProps {
 
 export const PaymentDialog = ({ open, onOpenChange, onSuccess, isSelfLearner }: PaymentDialogProps) => {
   const handlePayment = () => {
-    const amount = isSelfLearner ? 499 : 999;
+    const amount = 299; // Updated amount for resume builder
     initializePayment(amount, onSuccess);
   };
 

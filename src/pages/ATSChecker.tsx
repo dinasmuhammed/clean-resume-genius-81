@@ -61,7 +61,7 @@ const ATSChecker = () => {
   };
 
   const handlePayment = () => {
-    initializePayment(499, () => {
+    initializePayment(39, () => {
       setHasPaid(true);
       setShowPaymentDialog(false);
       
