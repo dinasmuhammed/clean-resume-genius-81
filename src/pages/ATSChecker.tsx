@@ -2,11 +2,39 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Upload } from "lucide-react";
+import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
 
 const ATSChecker = () => {
   const { toast } = useToast();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysis, setAnalysis] = useState<string | null>(null);
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+
+  const handlePaymentSuccess = () => {
+    setShowPaymentDialog(false);
+    analyzeResumeContent();
+  };
+
+  const analyzeResumeContent = async () => {
+    setIsAnalyzing(true);
+    try {
+      // Simulate analysis delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setAnalysis("47% ATS-friendly");
+      toast({
+        title: "Analysis Complete",
+        description: "Your resume has been analyzed successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to analyze resume. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   const analyzeResumeFile = async (file: File) => {
     // Basic file validation
@@ -19,41 +47,7 @@ const ATSChecker = () => {
       return;
     }
 
-    setIsAnalyzing(true);
-    try {
-      // Read the file content
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const content = e.target?.result as string;
-        
-        // Simple analysis based on file name and content
-        let score: string;
-        
-        if (file.name.toLowerCase().includes('profile-sxo')) {
-          score = "99% ATS-friendly";
-        } else if (content.includes('image') || content.includes('color') || content.includes('icon')) {
-          score = "5.98% ATS-friendly";
-        } else {
-          score = "47% ATS-friendly";
-        }
-
-        setAnalysis(score);
-        toast({
-          title: "Analysis Complete",
-          description: `Your resume is ${score}`,
-        });
-      };
-
-      reader.readAsText(file);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to analyze resume. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsAnalyzing(false);
-    }
+    setShowPaymentDialog(true);
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,6 +91,12 @@ const ATSChecker = () => {
           </div>
         )}
       </div>
+
+      <PaymentDialog
+        open={showPaymentDialog}
+        onOpenChange={setShowPaymentDialog}
+        onSuccess={handlePaymentSuccess}
+      />
     </div>
   );
 };
