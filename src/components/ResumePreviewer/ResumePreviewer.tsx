@@ -10,24 +10,8 @@ interface ResumePreviewerProps {
 }
 
 export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
-  const resumeScore = calculateResumeScore(data);
-
   const PreviewContent = () => (
     <div className="max-w-[850px] mx-auto">
-      {/* Resume Score */}
-      <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Resume Score</h2>
-        <div className="flex items-center gap-2">
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
-            <div
-              className="bg-blue-600 h-2.5 rounded-full"
-              style={{ width: `${resumeScore}%` }}
-            ></div>
-          </div>
-          <span className="text-sm font-medium text-gray-700">{resumeScore}%</span>
-        </div>
-      </div>
-
       {/* Header/Personal Information */}
       {data.personal.fullName && (
         <div className="text-center border-b border-gray-200 pb-6 mb-6">
