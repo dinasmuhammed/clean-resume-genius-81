@@ -9,6 +9,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { FileText, CheckCircle2, BookOpen, Info, Heart } from "lucide-react";
+import FeedbackDialog from "./FeedbackDialog";
 
 const Navbar = () => {
   return (
@@ -73,7 +74,8 @@ const Navbar = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
+          <FeedbackDialog />
           <Link to="/login">
             <Button variant="ghost" size="sm">
               Log in
