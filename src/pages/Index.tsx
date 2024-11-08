@@ -16,8 +16,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 const Index = () => {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState("personal");
-  const [hasPaid, setHasPaid] = useState(false);
-  const [isSelfLearner, setIsSelfLearner] = useState(false);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [resumeData, setResumeData] = useState({
     personal: {},
@@ -45,7 +43,6 @@ const Index = () => {
   };
 
   const handlePaymentSuccess = () => {
-    setHasPaid(true);
     setShowPaymentDialog(false);
     toast({
       title: "Success",
@@ -181,7 +178,6 @@ const Index = () => {
         open={showPaymentDialog}
         onOpenChange={setShowPaymentDialog}
         onSuccess={handlePaymentSuccess}
-        isSelfLearner={isSelfLearner}
       />
     </div>
   );
