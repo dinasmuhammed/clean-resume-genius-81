@@ -26,10 +26,14 @@
 
   html {
     -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-white text-primary antialiased touch-manipulation;
+    @apply bg-white text-primary antialiased touch-manipulation min-h-screen flex flex-col;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   @supports(padding: max(0px)) {
@@ -37,20 +41,65 @@
       padding-bottom: max(env(safe-area-inset-bottom), 1rem);
     }
   }
+
+  /* Improved mobile tap targets */
+  button, a {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Better form elements on mobile */
+  input, select, textarea {
+    @apply text-base;
+    font-size: max(16px, 1em);
+  }
 }
 
 .resume-section {
-  @apply p-4 sm:p-6 bg-white rounded-lg shadow-sm mb-4 border border-secondary;
+  @apply p-3 sm:p-4 md:p-6 bg-white rounded-lg shadow-sm mb-4 border border-secondary transition-all duration-200 ease-in-out;
 }
 
 .section-title {
-  @apply text-lg sm:text-xl font-semibold text-primary flex items-center gap-2 mb-4;
+  @apply text-base sm:text-lg md:text-xl font-semibold text-primary flex items-center gap-2 mb-3 sm:mb-4;
 }
 
 .form-group {
-  @apply space-y-2 mb-4;
+  @apply space-y-1.5 sm:space-y-2 mb-3 sm:mb-4;
 }
 
 .preview-section {
-  @apply p-4 border-b border-secondary last:border-b-0;
+  @apply p-3 sm:p-4 border-b border-secondary last:border-b-0;
+}
+
+/* Responsive grid layouts */
+.responsive-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+}
+
+/* Improved mobile navigation */
+.mobile-nav {
+  @apply fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 flex justify-around items-center z-50 lg:hidden pb-safe;
+}
+
+/* Better touch targets */
+.touch-target {
+  @apply p-2 sm:p-3 rounded-lg transition-colors duration-200;
+}
+
+/* Responsive typography */
+.responsive-text {
+  @apply text-sm sm:text-base lg:text-lg;
+}
+
+/* Fluid spacing utilities */
+.fluid-p {
+  @apply p-3 sm:p-4 md:p-6 lg:p-8;
+}
+
+.fluid-m {
+  @apply m-3 sm:m-4 md:m-6 lg:m-8;
+}
+
+/* Enhanced container */
+.responsive-container {
+  @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
