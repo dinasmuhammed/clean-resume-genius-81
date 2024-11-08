@@ -62,7 +62,7 @@ const Index = () => {
     toast({
       title: "One-Time Payment Successful",
       description: "Thank you for your support! You can now download your resume.",
-      variant: "success"
+      variant: "default"
     });
   };
 
