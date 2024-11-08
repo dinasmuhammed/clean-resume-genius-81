@@ -28,12 +28,18 @@ const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5, // 5 minutes
       gcTime: 1000 * 60 * 30, // 30 minutes
       retry: 2,
-      refetchOnWindowFocus: false,
-      onError: (error) => {
-        console.error('Query error:', error);
-      }
+      refetchOnWindowFocus: false
     },
   },
+});
+
+// Add global error handler for query errors
+queryClient.setDefaultOptions({
+  queries: {
+    onError: (error) => {
+      console.error('Query error:', error);
+    }
+  }
 });
 
 const LoadingSpinner = () => (
