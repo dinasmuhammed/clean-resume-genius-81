@@ -13,7 +13,16 @@ const Splash = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-gray-100">
       {/* Navigation Bar */}
       <nav className="w-full px-4 py-4 bg-white border-b z-50">
-        <div className="text-xl font-bold text-primary">SXO-Resume</div>
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <Link to="/" className="text-xl font-bold text-primary">
+            Resume Builder
+          </Link>
+          <div className="flex items-center gap-4">
+            <Link to="/builder">
+              <Button variant="ghost">Create Resume</Button>
+            </Link>
+          </div>
+        </div>
       </nav>
 
       {/* Main Content */}
