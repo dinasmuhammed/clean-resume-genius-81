@@ -10,6 +10,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { initializePayment } from "@/utils/paymentUtils";
+import { useToast } from "@/components/ui/use-toast";
 
 interface PaymentDialogProps {
   open: boolean;
@@ -19,9 +20,19 @@ interface PaymentDialogProps {
 }
 
 export const PaymentDialog = ({ open, onOpenChange, onSuccess, isSelfLearner }: PaymentDialogProps) => {
+  const { toast } = useToast();
+  
   const handlePayment = () => {
-    const amount = 299;
-    initializePayment(amount, onSuccess);
+    try {
+      const amount = 299;
+      initializePayment(amount, onSuccess);
+    } catch (error) {
+      toast({
+        title: "Payment Error",
+        description: "There was an error processing your payment. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -31,6 +42,11 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isSelfLearner }: 
           <AlertDialogTitle>Resume Download</AlertDialogTitle>
           <AlertDialogDescription>
             Proceed to download your professionally formatted resume.
+            {isSelfLearner && (
+              <p className="mt-2 text-sm text-muted-foreground">
+                As a self-learner, you'll receive our optimized resume format.
+              </p>
+            )}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

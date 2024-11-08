@@ -1,3 +1,5 @@
+import { toast } from "@/hooks/use-toast";
+
 declare global {
   interface Window {
     Razorpay: any;
@@ -5,6 +7,15 @@ declare global {
 }
 
 export const initializePayment = (amount: number, onSuccess: () => void) => {
+  if (!window.Razorpay) {
+    toast({
+      title: "Error",
+      description: "Payment system is not available. Please try again later.",
+      variant: "destructive",
+    });
+    return;
+  }
+
   try {
     const options = {
       key: "rzp_live_5JYQnqKRnKhB5y",
@@ -15,6 +26,10 @@ export const initializePayment = (amount: number, onSuccess: () => void) => {
       handler: function (response: any) {
         if (response.razorpay_payment_id) {
           onSuccess();
+          toast({
+            title: "Payment Successful",
+            description: "Thank you for your payment!",
+          });
         }
       },
       prefill: {
@@ -29,6 +44,10 @@ export const initializePayment = (amount: number, onSuccess: () => void) => {
     const razorpay = new window.Razorpay(options);
     razorpay.open();
   } catch (error) {
-    console.error("Payment initialization failed:", error);
+    toast({
+      title: "Payment Error",
+      description: "Failed to initialize payment. Please try again.",
+      variant: "destructive",
+    });
   }
 };

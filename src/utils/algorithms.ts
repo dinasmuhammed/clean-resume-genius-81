@@ -1,40 +1,43 @@
 // Resume Score Algorithm
 export const calculateResumeScore = (resumeData: any): number => {
+  if (!resumeData) return 0;
+  
   let score = 0;
   const maxScore = 100;
 
   // Personal Info completeness (20%)
   if (resumeData.personal) {
-    if (resumeData.personal.fullName) score += 5;
-    if (resumeData.personal.email) score += 5;
-    if (resumeData.personal.phone) score += 5;
-    if (resumeData.personal.website) score += 5;
+    if (resumeData.personal.fullName?.trim()) score += 5;
+    if (resumeData.personal.email?.trim()) score += 5;
+    if (resumeData.personal.phone?.trim()) score += 5;
+    if (resumeData.personal.website?.trim()) score += 5;
   }
 
   // Experience quality (35%)
-  if (resumeData.experience && resumeData.experience.length > 0) {
+  if (Array.isArray(resumeData.experience) && resumeData.experience.length > 0) {
     const expScore = Math.min(resumeData.experience.length * 10, 20);
     score += expScore;
 
     // Check description quality
     const hasDetailedDescriptions = resumeData.experience.every(
-      (exp: any) => exp.description && exp.description.length > 50
+      (exp: any) => exp?.description?.trim()?.length > 50
     );
     if (hasDetailedDescriptions) score += 15;
   }
 
   // Education assessment (25%)
-  if (resumeData.education && resumeData.education.length > 0) {
+  if (Array.isArray(resumeData.education) && resumeData.education.length > 0) {
     score += 15;
     const hasRecentEducation = resumeData.education.some((edu: any) => {
-      const endYear = edu.endDate ? new Date(edu.endDate).getFullYear() : new Date().getFullYear();
+      if (!edu?.endDate) return true; // Current education
+      const endYear = new Date(edu.endDate).getFullYear();
       return endYear >= new Date().getFullYear() - 5;
     });
     if (hasRecentEducation) score += 10;
   }
 
   // Skills evaluation (20%)
-  if (resumeData.skills && resumeData.skills.length > 0) {
+  if (Array.isArray(resumeData.skills) && resumeData.skills.length > 0) {
     const skillScore = Math.min(resumeData.skills.length * 2, 20);
     score += skillScore;
   }
@@ -44,6 +47,8 @@ export const calculateResumeScore = (resumeData: any): number => {
 
 // ATS Keyword Matching Algorithm
 export const calculateATSMatch = (resumeText: string, jobDescription: string): number => {
+  if (!resumeText?.trim() || !jobDescription?.trim()) return 0;
+
   const normalizeText = (text: string): string[] => {
     return text.toLowerCase()
       .replace(/[^\w\s]/g, '')
@@ -60,11 +65,13 @@ export const calculateATSMatch = (resumeText: string, jobDescription: string): n
     if (resumeWords.has(word)) matches++;
   });
 
-  return Math.round((matches / uniqueJobWords.size) * 100);
+  return Math.round((matches / Math.max(uniqueJobWords.size, 1)) * 100);
 };
 
 // Interview Question Generator Algorithm
 export const generateInterviewQuestions = (skills: string[]): string[] => {
+  if (!Array.isArray(skills) || skills.length === 0) return [];
+
   const questionTemplates = [
     "Can you describe a project where you used {skill}?",
     "What's your experience level with {skill}?",
@@ -75,14 +82,14 @@ export const generateInterviewQuestions = (skills: string[]): string[] => {
 
   const questions = skills.flatMap(skill =>
     questionTemplates.map(template =>
-      template.replace("{skill}", skill)
+      template.replace("{skill}", skill.trim())
     )
   );
 
   // Shuffle and limit questions
   return questions
     .sort(() => Math.random() - 0.5)
-    .slice(0, 10);
+    .slice(0, Math.min(10, questions.length));
 };
 
 // Skill Relevance Algorithm
@@ -90,7 +97,10 @@ export const analyzeSkillRelevance = (
   skills: string[],
   jobTitle: string
 ): { relevant: string[], missing: string[] } => {
-  // Common skill mappings for different job titles
+  if (!Array.isArray(skills) || !jobTitle?.trim()) {
+    return { relevant: [], missing: [] };
+  }
+
   const skillMappings: Record<string, string[]> = {
     "frontend developer": [
       "html",
@@ -130,9 +140,9 @@ export const analyzeSkillRelevance = (
     ]
   };
 
-  const normalizedJobTitle = jobTitle.toLowerCase();
+  const normalizedJobTitle = jobTitle.toLowerCase().trim();
   const requiredSkills = skillMappings[normalizedJobTitle] || [];
-  const normalizedUserSkills = skills.map(skill => skill.toLowerCase());
+  const normalizedUserSkills = skills.map(skill => skill.toLowerCase().trim());
 
   const relevant = normalizedUserSkills.filter(skill =>
     requiredSkills.includes(skill)
