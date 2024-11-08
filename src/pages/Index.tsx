@@ -7,7 +7,7 @@ import { SkillsForm } from "@/components/ResumeForm/SkillsForm";
 import { ResumePreviewer } from "@/components/ResumePreviewer/ResumePreviewer";
 import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { useToast } from "@/hooks/use-toast";
-import { Download, FileText, CheckCircle, Heart } from "lucide-react";
+import { Download, FileText, CheckCircle, Heart, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { exportToPDF } from "@/utils/pdfExport";
 import {
@@ -74,8 +74,16 @@ const Index = () => {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
         <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary mb-2">SXO-Resume</h1>
-          <p className="text-secondary mb-4">Create a professional, ATS-friendly resume that stands out</p>
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <Link to="/">
+              <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                <ArrowLeft className="w-4 h-4" />
+                Back to Home
+              </Button>
+            </Link>
+          </div>
+          <h1 className="text-3xl font-bold text-primary mb-2">Create Your Professional Resume</h1>
+          <p className="text-secondary mb-4">Fill in your details below and see your resume update in real-time</p>
           <div className="flex flex-col items-center gap-4">
             <div className="flex justify-center gap-4">
               <Link to="/ats-checker">
@@ -90,7 +98,7 @@ const Index = () => {
                 onClick={handleDonation}
               >
                 <Heart className="w-4 h-4" />
-                Donate
+                Support Us
               </Button>
             </div>
             <SocialLinks />
@@ -99,23 +107,27 @@ const Index = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-6">
-            <PersonalInfoForm
-              isActive={activeSection === "personal"}
-              onComplete={(data) => handleSectionComplete("personal", data)}
-            />
-            <ExperienceForm
-              isActive={activeSection === "experience"}
-              onComplete={(data) => handleSectionComplete("experience", data)}
-            />
-            <EducationForm
-              isActive={activeSection === "education"}
-              onComplete={(data) => handleSectionComplete("education", data)}
-              onTypeChange={handleEducationTypeChange}
-            />
-            <SkillsForm
-              isActive={activeSection === "skills"}
-              onComplete={(data) => handleSectionComplete("skills", data)}
-            />
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <div className="space-y-6">
+                <PersonalInfoForm
+                  isActive={activeSection === "personal"}
+                  onComplete={(data) => handleSectionComplete("personal", data)}
+                />
+                <ExperienceForm
+                  isActive={activeSection === "experience"}
+                  onComplete={(data) => handleSectionComplete("experience", data)}
+                />
+                <EducationForm
+                  isActive={activeSection === "education"}
+                  onComplete={(data) => handleSectionComplete("education", data)}
+                  onTypeChange={handleEducationTypeChange}
+                />
+                <SkillsForm
+                  isActive={activeSection === "skills"}
+                  onComplete={(data) => handleSectionComplete("skills", data)}
+                />
+              </div>
+            </div>
           </div>
 
           <div className="lg:sticky lg:top-8 h-fit">
@@ -123,14 +135,14 @@ const Index = () => {
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-primary flex items-center gap-2">
                   <FileText className="w-5 h-5" />
-                  Preview
+                  Live Preview
                 </h2>
                 <Button 
                   onClick={handleExport} 
                   className="flex items-center gap-2"
                 >
                   <Download className="w-4 h-4" />
-                  Export PDF
+                  Download PDF
                 </Button>
               </div>
               <ResumePreviewer data={resumeData} />
@@ -148,10 +160,10 @@ const Index = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Maybe Later</AlertDialogCancel>
             <AlertDialogAction onClick={handleDonation} className="flex items-center gap-2">
               <Heart className="w-4 h-4" />
-              Donate & Download
+              Support & Download
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
