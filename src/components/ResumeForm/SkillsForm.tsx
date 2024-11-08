@@ -38,12 +38,13 @@ export const SkillsForm = ({ isActive, onComplete }: SkillsFormProps) => {
 
       <div className="mb-6">
         <div className="form-group">
-          <label className="text-sm font-medium text-gray-700">Add Skills</label>
+          <label className="text-sm font-medium text-primary">Add Skills</label>
           <div className="flex gap-2">
             <Input
               value={currentSkill}
               onChange={(e) => setCurrentSkill(e.target.value)}
               placeholder="Enter a skill"
+              className="border-secondary focus:border-accent"
             />
             <Button
               type="button"
@@ -59,7 +60,7 @@ export const SkillsForm = ({ isActive, onComplete }: SkillsFormProps) => {
           {skills.map((skill, index) => (
             <div
               key={index}
-              className="bg-primary px-3 py-1 rounded-full text-white flex items-center gap-2"
+              className="bg-accent px-3 py-1 rounded-full text-white flex items-center gap-2"
             >
               <span>{skill}</span>
               <button

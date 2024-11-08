@@ -11,12 +11,12 @@ interface ResumePreviewerProps {
 
 export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
   return (
-    <div className="bg-white p-6 rounded-lg border border-gray-200">
+    <div className="bg-white p-6 rounded-lg border border-secondary">
       {/* Personal Information */}
       {data.personal.fullName && (
         <div className="preview-section">
           <h1 className="text-2xl font-bold text-primary mb-4">{data.personal.fullName}</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-muted-foreground">
             {data.personal.email && (
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
@@ -45,10 +45,10 @@ export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
           <h2 className="text-lg font-semibold text-primary mb-4">Experience</h2>
           <div className="space-y-4">
             {data.experience.map((exp, index) => (
-              <div key={index} className="border-l-2 border-primary pl-4">
-                <h3 className="font-medium">{exp.position}</h3>
-                <p className="text-secondary text-sm">{exp.company}</p>
-                <p className="text-sm text-gray-500">
+              <div key={index} className="border-l-2 border-accent pl-4">
+                <h3 className="font-medium text-primary">{exp.position}</h3>
+                <p className="text-muted-foreground text-sm">{exp.company}</p>
+                <p className="text-sm text-muted-foreground">
                   {exp.startDate} - {exp.endDate || "Present"}
                 </p>
                 <p className="text-sm mt-2">{exp.description}</p>
@@ -65,11 +65,11 @@ export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
           <div className="space-y-4">
             {data.education.map((edu, index) => (
               <div key={index}>
-                <h3 className="font-medium">{edu.school}</h3>
-                <p className="text-secondary text-sm">
+                <h3 className="font-medium text-primary">{edu.school}</h3>
+                <p className="text-muted-foreground text-sm">
                   {edu.degree} in {edu.field}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   {edu.startDate} - {edu.endDate || "Present"}
                 </p>
               </div>
@@ -86,7 +86,7 @@ export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
             {data.skills.map((skill, index) => (
               <span
                 key={index}
-                className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-700"
+                className="bg-secondary/20 px-3 py-1 rounded-full text-sm text-primary"
               >
                 {skill}
               </span>
