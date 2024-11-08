@@ -18,6 +18,7 @@ const Privacy = lazy(() => import("./pages/Privacy"));
 const Cookies = lazy(() => import("./pages/Cookies"));
 const Embed = lazy(() => import("./pages/Embed"));
 const AffiliateSignup = lazy(() => import("./pages/AffiliateSignup"));
+const BackupPage = lazy(() => import("./pages/BackupPage"));
 
 // Configure QueryClient with performance optimizations
 const queryClient = new QueryClient({
@@ -56,6 +57,8 @@ const App = () => (
                 <Route path="/cookies" element={<Cookies />} />
                 <Route path="/embed" element={<Embed />} />
                 <Route path="/affiliate-signup" element={<AffiliateSignup />} />
+                <Route path="/error" element={<BackupPage />} />
+                <Route path="*" element={<Navigate to="/error" replace />} />
               </Routes>
             </Suspense>
           </div>
