@@ -11,26 +11,26 @@ interface ResumePreviewerProps {
 
 export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
   const PreviewContent = () => (
-    <>
-      {/* Personal Information */}
+    <div className="max-w-[850px] mx-auto">
+      {/* Header/Personal Information */}
       {data.personal.fullName && (
-        <div className="preview-section">
-          <h1 className="text-2xl font-bold text-primary mb-4">{data.personal.fullName}</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-muted-foreground">
+        <div className="text-center border-b border-gray-200 pb-6 mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">{data.personal.fullName}</h1>
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
             {data.personal.email && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <Mail className="w-4 h-4" />
                 {data.personal.email}
               </div>
             )}
             {data.personal.phone && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <Phone className="w-4 h-4" />
                 {data.personal.phone}
               </div>
             )}
             {data.personal.website && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <Globe className="w-4 h-4" />
                 {data.personal.website}
               </div>
@@ -39,38 +39,46 @@ export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
         </div>
       )}
 
-      {/* Experience */}
+      {/* Experience Section */}
       {data.experience.length > 0 && (
-        <div className="preview-section">
-          <h2 className="text-lg font-semibold text-primary mb-4">Experience</h2>
-          <div className="space-y-4">
+        <div className="mb-6">
+          <h2 className="text-xl font-bold text-gray-900 border-b border-gray-200 pb-2 mb-4">
+            Professional Experience
+          </h2>
+          <div className="space-y-6">
             {data.experience.map((exp, index) => (
-              <div key={index} className="border-l-2 border-accent pl-4">
-                <h3 className="font-medium text-primary">{exp.position}</h3>
-                <p className="text-muted-foreground text-sm">{exp.company}</p>
-                <p className="text-sm text-muted-foreground">
-                  {exp.startDate} - {exp.endDate || "Present"}
-                </p>
-                <p className="text-sm mt-2">{exp.description}</p>
+              <div key={index} className="pl-0">
+                <div className="flex justify-between items-start mb-1">
+                  <h3 className="font-semibold text-gray-900">{exp.position}</h3>
+                  <span className="text-sm text-gray-600">
+                    {exp.startDate} - {exp.endDate || "Present"}
+                  </span>
+                </div>
+                <p className="text-gray-700 font-medium mb-1">{exp.company}</p>
+                <p className="text-sm text-gray-600 whitespace-pre-line">{exp.description}</p>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* Education */}
+      {/* Education Section */}
       {data.education.length > 0 && (
-        <div className="preview-section">
-          <h2 className="text-lg font-semibold text-primary mb-4">Education</h2>
+        <div className="mb-6">
+          <h2 className="text-xl font-bold text-gray-900 border-b border-gray-200 pb-2 mb-4">
+            Education
+          </h2>
           <div className="space-y-4">
             {data.education.map((edu, index) => (
               <div key={index}>
-                <h3 className="font-medium text-primary">{edu.school}</h3>
-                <p className="text-muted-foreground text-sm">
+                <div className="flex justify-between items-start mb-1">
+                  <h3 className="font-semibold text-gray-900">{edu.school}</h3>
+                  <span className="text-sm text-gray-600">
+                    {edu.startDate} - {edu.endDate || "Present"}
+                  </span>
+                </div>
+                <p className="text-gray-700">
                   {edu.degree} in {edu.field}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {edu.startDate} - {edu.endDate || "Present"}
                 </p>
               </div>
             ))}
@@ -78,15 +86,17 @@ export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
         </div>
       )}
 
-      {/* Skills */}
+      {/* Skills Section */}
       {data.skills.length > 0 && (
-        <div className="preview-section">
-          <h2 className="text-lg font-semibold text-primary mb-4">Skills</h2>
+        <div>
+          <h2 className="text-xl font-bold text-gray-900 border-b border-gray-200 pb-2 mb-4">
+            Skills
+          </h2>
           <div className="flex flex-wrap gap-2">
             {data.skills.map((skill, index) => (
               <span
                 key={index}
-                className="bg-secondary/20 px-3 py-1 rounded-full text-sm text-primary"
+                className="px-3 py-1 bg-gray-100 text-gray-700 rounded-sm text-sm"
               >
                 {skill}
               </span>
@@ -94,11 +104,11 @@ export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 
   return (
-    <div className="bg-white p-6 rounded-lg border border-secondary">
+    <div className="bg-white p-8 rounded-lg shadow-sm">
       <div id="resume-preview" className="print:p-0">
         <PreviewContent />
       </div>
