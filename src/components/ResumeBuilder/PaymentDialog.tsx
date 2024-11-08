@@ -23,7 +23,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess }: PaymentDialogPr
   
   const handlePayment = () => {
     try {
-      const amount = 29;
+      const amount = 299;
       initializePayment(amount, onSuccess);
     } catch (error) {
       toast({
@@ -51,7 +51,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess }: PaymentDialogPr
         <AlertDialogFooter className="flex-col space-y-2 sm:space-y-0">
           <AlertDialogAction onClick={handlePayment} className="w-full sm:w-auto">
             <Download className="w-4 h-4 mr-2" />
-            Download Premium Resume (₹29)
+            Download Premium Resume (₹299)
           </AlertDialogAction>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
         </AlertDialogFooter>
