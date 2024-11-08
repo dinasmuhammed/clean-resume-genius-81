@@ -10,8 +10,8 @@ interface ResumePreviewerProps {
 }
 
 export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
-  return (
-    <div className="bg-white p-6 rounded-lg border border-secondary">
+  const PreviewContent = () => (
+    <>
       {/* Personal Information */}
       {data.personal.fullName && (
         <div className="preview-section">
@@ -94,6 +94,14 @@ export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
           </div>
         </div>
       )}
+    </>
+  );
+
+  return (
+    <div className="bg-white p-6 rounded-lg border border-secondary">
+      <div id="resume-preview" className="print:p-0">
+        <PreviewContent />
+      </div>
     </div>
   );
 };
