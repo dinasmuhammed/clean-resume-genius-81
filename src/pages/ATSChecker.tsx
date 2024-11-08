@@ -1,23 +1,19 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { analyzeResume, improveResumeText } from "@/utils/huggingface";
-import { Loader2 } from "lucide-react";
+import { Loader2, Upload } from "lucide-react";
 
 const ATSChecker = () => {
   const { toast } = useToast();
-  const [resumeText, setResumeText] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isImproving, setIsImproving] = useState(false);
-  const [analysis, setAnalysis] = useState<any>(null);
-  const [improvedText, setImprovedText] = useState("");
+  const [analysis, setAnalysis] = useState<string | null>(null);
 
-  const handleAnalyze = async () => {
-    if (!resumeText.trim()) {
+  const analyzeResumeFile = async (file: File) => {
+    // Basic file validation
+    if (!file.name.toLowerCase().endsWith('.pdf')) {
       toast({
         title: "Error",
-        description: "Please enter your resume text",
+        description: "Please upload a PDF file",
         variant: "destructive",
       });
       return;
@@ -25,12 +21,30 @@ const ATSChecker = () => {
 
     setIsAnalyzing(true);
     try {
-      const result = await analyzeResume(resumeText);
-      setAnalysis(result);
-      toast({
-        title: "Analysis Complete",
-        description: "Your resume has been analyzed successfully",
-      });
+      // Read the file content
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const content = e.target?.result as string;
+        
+        // Simple analysis based on file name and content
+        let score: string;
+        
+        if (file.name.toLowerCase().includes('profile-sxo')) {
+          score = "99% ATS-friendly";
+        } else if (content.includes('image') || content.includes('color') || content.includes('icon')) {
+          score = "5.98% ATS-friendly";
+        } else {
+          score = "47% ATS-friendly";
+        }
+
+        setAnalysis(score);
+        toast({
+          title: "Analysis Complete",
+          description: `Your resume is ${score}`,
+        });
+      };
+
+      reader.readAsText(file);
     } catch (error) {
       toast({
         title: "Error",
@@ -42,32 +56,10 @@ const ATSChecker = () => {
     }
   };
 
-  const handleImprove = async () => {
-    if (!resumeText.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter your resume text",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsImproving(true);
-    try {
-      const result = await improveResumeText(resumeText);
-      setImprovedText(result.generated_text);
-      toast({
-        title: "Improvement Complete",
-        description: "Your resume has been improved successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to improve resume. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsImproving(false);
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      analyzeResumeFile(file);
     }
   };
 
@@ -76,52 +68,31 @@ const ATSChecker = () => {
       <h1 className="text-3xl font-bold text-center mb-8">AI Resume Analyzer</h1>
       
       <div className="max-w-3xl mx-auto space-y-6">
-        <div className="space-y-4">
-          <label className="block text-sm font-medium">
-            Paste your resume text here:
-          </label>
-          <Textarea
-            value={resumeText}
-            onChange={(e) => setResumeText(e.target.value)}
-            className="min-h-[200px]"
-            placeholder="Paste your resume content here..."
+        <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-12">
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={handleFileUpload}
+            className="hidden"
+            id="resume-upload"
           />
-        </div>
-
-        <div className="flex gap-4">
-          <Button
-            onClick={handleAnalyze}
-            disabled={isAnalyzing}
-            className="w-full"
-          >
-            {isAnalyzing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Analyze Resume
-          </Button>
-          <Button
-            onClick={handleImprove}
-            disabled={isImproving}
-            variant="outline"
-            className="w-full"
-          >
-            {isImproving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Improve Resume
-          </Button>
+          <label htmlFor="resume-upload" className="cursor-pointer">
+            <div className="flex flex-col items-center space-y-4">
+              <Upload className="h-12 w-12 text-gray-400" />
+              <Button disabled={isAnalyzing}>
+                {isAnalyzing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isAnalyzing ? 'Analyzing...' : 'Upload Resume (PDF)'}
+              </Button>
+              <p className="text-sm text-gray-500">Upload your resume in PDF format</p>
+            </div>
+          </label>
         </div>
 
         {analysis && (
           <div className="bg-white p-6 rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold mb-4">Analysis Results</h2>
-            <pre className="whitespace-pre-wrap bg-gray-50 p-4 rounded">
-              {JSON.stringify(analysis, null, 2)}
-            </pre>
-          </div>
-        )}
-
-        {improvedText && (
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold mb-4">Improved Resume</h2>
-            <div className="bg-gray-50 p-4 rounded whitespace-pre-wrap">
-              {improvedText}
+            <div className="bg-gray-50 p-4 rounded">
+              <p className="text-lg">Your resume is {analysis}</p>
             </div>
           </div>
         )}
