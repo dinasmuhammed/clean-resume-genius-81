@@ -10,12 +10,23 @@ import { useToast } from "@/hooks/use-toast";
 import { Download, FileText, CheckCircle, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import html2pdf from 'html2pdf.js';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const Index = () => {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState("personal");
   const [hasDonated, setHasDonated] = useState(false);
   const [isSelfLearner, setIsSelfLearner] = useState(false);
+  const [showDonationDialog, setShowDonationDialog] = useState(false);
   const [resumeData, setResumeData] = useState({
     personal: {},
     experience: [],
@@ -44,6 +55,7 @@ const Index = () => {
       : "https://razorpay.me/@comicforgeai?amount=CVDUr6Uxp2FOGZGwAHntNg%3D%3D";
     window.open(paymentLink, "_blank");
     setHasDonated(true);
+    setShowDonationDialog(false);
     toast({
       title: "Thank you for your donation!",
       description: "You can now download your resume in PDF format."
@@ -52,11 +64,7 @@ const Index = () => {
 
   const handleExport = async () => {
     if (!hasDonated) {
-      toast({
-        title: "Donation Required",
-        description: `Please donate to download your resume in PDF format.`,
-        variant: "destructive"
-      });
+      setShowDonationDialog(true);
       return;
     }
 
@@ -164,7 +172,6 @@ const Index = () => {
                 <Button 
                   onClick={handleExport} 
                   className="flex items-center gap-2"
-                  disabled={!hasDonated}
                 >
                   <Download className="w-4 h-4" />
                   Export PDF
@@ -177,6 +184,24 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      <AlertDialog open={showDonationDialog} onOpenChange={setShowDonationDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Support Our Work</AlertDialogTitle>
+            <AlertDialogDescription>
+              To download your resume in PDF format, we kindly ask for a small donation. This helps us maintain and improve our services. After donating, you'll be able to download your resume immediately.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDonation} className="flex items-center gap-2">
+              <Heart className="w-4 h-4" />
+              Donate & Download
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
