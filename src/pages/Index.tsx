@@ -18,14 +18,14 @@ const Index = () => {
   const [resumeData, setResumeData] = useState({
     personal: {},
     experience: [],
-    education: { education: [], isSelfLearner: false },
+    education: [],
     skills: []
   });
 
   const handleSectionComplete = (section: string, data: any) => {
     setResumeData(prev => ({
       ...prev,
-      [section]: data
+      [section]: section === "education" ? data.education : data
     }));
     toast({
       title: "Section saved",
