@@ -7,7 +7,7 @@ import { SkillsForm } from "@/components/ResumeForm/SkillsForm";
 import { ResumePreviewer } from "@/components/ResumePreviewer/ResumePreviewer";
 import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { useToast } from "@/hooks/use-toast";
-import { Download, FileText, CheckCircle, Heart, ArrowLeft, Eye } from "lucide-react";
+import { Download, FileText, CheckCircle, Heart, ArrowLeft, Eye, User, Briefcase, GraduationCap, Code } from "lucide-react";
 import { Link } from "react-router-dom";
 import { exportToPDF } from "@/utils/pdfExport";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
@@ -25,6 +25,13 @@ const Index = () => {
     education: [],
     skills: []
   });
+
+  const sections = [
+    { id: "personal", label: "Personal Info", icon: User },
+    { id: "experience", label: "Experience", icon: Briefcase },
+    { id: "education", label: "Education", icon: GraduationCap },
+    { id: "skills", label: "Skills", icon: Code },
+  ];
 
   const handleSectionComplete = (section: string, data: any) => {
     setResumeData(prev => ({
@@ -117,6 +124,23 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           <div className="space-y-6">
             <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+              <div className="flex flex-wrap gap-2 mb-6">
+                {sections.map((section) => {
+                  const Icon = section.icon;
+                  return (
+                    <Button
+                      key={section.id}
+                      variant={activeSection === section.id ? "default" : "outline"}
+                      onClick={() => setActiveSection(section.id)}
+                      className="flex items-center gap-2"
+                    >
+                      <Icon className="w-4 h-4" />
+                      {section.label}
+                    </Button>
+                  );
+                })}
+              </div>
+
               <div className="space-y-6">
                 <PersonalInfoForm
                   isActive={activeSection === "personal"}
@@ -139,12 +163,10 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Desktop Preview */}
           <div className="hidden lg:block lg:sticky lg:top-8 h-fit">
             <ResumePreview />
           </div>
 
-          {/* Mobile Preview Sheet */}
           <div className="fixed bottom-4 right-4 lg:hidden">
             <Sheet>
               <SheetTrigger asChild>
