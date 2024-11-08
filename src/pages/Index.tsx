@@ -9,7 +9,7 @@ import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { useToast } from "@/hooks/use-toast";
 import { Download, FileText, CheckCircle, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-import html2pdf from 'html2pdf.js';
+import { exportToPDF } from "@/utils/pdfExport";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -67,43 +67,7 @@ const Index = () => {
       setShowDonationDialog(true);
       return;
     }
-
-    const element = document.getElementById('resume-preview');
-    if (!element) {
-      toast({
-        title: "Error",
-        description: "Could not generate PDF. Please try again.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    toast({
-      title: "Generating PDF",
-      description: "Your resume is being prepared for download..."
-    });
-
-    const opt = {
-      margin: 1,
-      filename: 'sxo-resume.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-
-    try {
-      await html2pdf().set(opt).from(element).save();
-      toast({
-        title: "Success",
-        description: "Your resume has been downloaded successfully!"
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to generate PDF. Please try again.",
-        variant: "destructive"
-      });
-    }
+    await exportToPDF();
   };
 
   return (
@@ -135,31 +99,23 @@ const Index = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-6">
-            <div className="resume-section">
-              <PersonalInfoForm
-                isActive={activeSection === "personal"}
-                onComplete={(data) => handleSectionComplete("personal", data)}
-              />
-            </div>
-            <div className="resume-section">
-              <ExperienceForm
-                isActive={activeSection === "experience"}
-                onComplete={(data) => handleSectionComplete("experience", data)}
-              />
-            </div>
-            <div className="resume-section">
-              <EducationForm
-                isActive={activeSection === "education"}
-                onComplete={(data) => handleSectionComplete("education", data)}
-                onTypeChange={handleEducationTypeChange}
-              />
-            </div>
-            <div className="resume-section">
-              <SkillsForm
-                isActive={activeSection === "skills"}
-                onComplete={(data) => handleSectionComplete("skills", data)}
-              />
-            </div>
+            <PersonalInfoForm
+              isActive={activeSection === "personal"}
+              onComplete={(data) => handleSectionComplete("personal", data)}
+            />
+            <ExperienceForm
+              isActive={activeSection === "experience"}
+              onComplete={(data) => handleSectionComplete("experience", data)}
+            />
+            <EducationForm
+              isActive={activeSection === "education"}
+              onComplete={(data) => handleSectionComplete("education", data)}
+              onTypeChange={handleEducationTypeChange}
+            />
+            <SkillsForm
+              isActive={activeSection === "skills"}
+              onComplete={(data) => handleSectionComplete("skills", data)}
+            />
           </div>
 
           <div className="lg:sticky lg:top-8 h-fit">
@@ -177,9 +133,7 @@ const Index = () => {
                   Export PDF
                 </Button>
               </div>
-              <div id="resume-preview">
-                <ResumePreviewer data={resumeData} />
-              </div>
+              <ResumePreviewer data={resumeData} />
             </div>
           </div>
         </div>
