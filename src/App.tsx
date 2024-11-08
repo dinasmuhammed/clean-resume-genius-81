@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,9 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import ErrorBoundary from "./components/ErrorBoundary";
+import { initializeNotificationSystem } from "./utils/notificationSystem";
 
-// Lazy load route components
 const Splash = lazy(() => import("./pages/Splash"));
 const Index = lazy(() => import("./pages/Index"));
 const ATSChecker = lazy(() => import("./pages/ATSChecker"));
@@ -21,36 +20,38 @@ const Embed = lazy(() => import("./pages/Embed"));
 const AffiliateSignup = lazy(() => import("./pages/AffiliateSignup"));
 const BackupPage = lazy(() => import("./pages/BackupPage"));
 
-// Configure QueryClient with performance optimizations and error handling
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      gcTime: 1000 * 60 * 30, // 30 minutes
-      retry: 2,
-      refetchOnWindowFocus: false
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 30,
+      retry: 1,
+      refetchOnWindowFocus: false,
     },
   },
 });
 
-// Add global error handler for query errors
-queryClient.setMutationDefaults({
-  mutationFn: async () => {
-    // This is a placeholder function, actual mutation logic should be implemented in individual mutations
-  },
-  onError: (error) => {
-    console.error('Mutation error:', error);
-  }
-});
+const App = () => {
+  useEffect(() => {
+    // Initialize with default values - in a real app, these would come from user settings
+    const mockUserBehavior = {
+      lastLogin: new Date(),
+      resumeProgress: 50,
+      premiumFeatures: false,
+      interactionCount: 3
+    };
 
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center min-h-[50vh]">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-  </div>
-);
+    const mockPreferences = {
+      emailNotifications: true,
+      inAppNotifications: true,
+      notificationFrequency: 4
+    };
 
-const App = () => (
-  <ErrorBoundary>
+    const cleanup = initializeNotificationSystem(mockUserBehavior, mockPreferences);
+    return cleanup;
+  }, []);
+
+  return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen flex flex-col">
@@ -59,7 +60,11 @@ const App = () => (
           <BrowserRouter>
             <Navbar />
             <div className="flex-1">
-              <Suspense fallback={<LoadingSpinner />}>
+              <Suspense fallback={
+                <div className="flex items-center justify-center min-h-[50vh]">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+              }>
                 <Routes>
                   <Route path="/" element={<Splash />} />
                   <Route path="/builder" element={<Index />} />
@@ -81,7 +86,7 @@ const App = () => (
         </div>
       </TooltipProvider>
     </QueryClientProvider>
-  </ErrorBoundary>
-);
+  );
+};
 
 export default App;
