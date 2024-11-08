@@ -100,14 +100,15 @@ const Index = () => {
                   ATS Score Checker
                 </Button>
               </Link>
-              <Button 
-                variant="outline" 
-                className="flex items-center gap-2 text-rose-500 hover:text-rose-600 text-sm sm:text-base"
-                onClick={() => setShowPaymentDialog(true)}
-              >
-                <Heart className="w-4 h-4" />
-                Support Us
-              </Button>
+              <Link to="/interview-guide">
+                <Button 
+                  variant="outline" 
+                  className="flex items-center gap-2 text-sm sm:text-base"
+                >
+                  <CheckCircle className="w-4 h-4" />
+                  Interview Tips
+                </Button>
+              </Link>
             </div>
             <SocialLinks />
           </div>
