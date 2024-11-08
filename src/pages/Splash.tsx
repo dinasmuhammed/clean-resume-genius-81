@@ -1,6 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Target, CheckCircle2 } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const Splash = () => {
   return (
@@ -73,6 +79,47 @@ const Splash = () => {
                 Check ATS Score
               </Button>
             </Link>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="max-w-3xl mx-auto mt-16 text-left bg-white rounded-xl shadow-sm p-6">
+            <h2 className="text-2xl font-bold text-primary mb-6 text-center">Frequently Asked Questions</h2>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>What makes a resume ATS-friendly?</AccordionTrigger>
+                <AccordionContent>
+                  An ATS-friendly resume uses a clean, straightforward format without images or complex graphics. It includes standard section headings, uses common fonts, and avoids tables or columns that might confuse ATS systems.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2">
+                <AccordionTrigger>How should I format my resume for ATS?</AccordionTrigger>
+                <AccordionContent>
+                  Use clear section headings like "Experience," "Education," and "Skills." Stick to standard fonts like Arial or Calibri. Use bullet points for easy reading. Avoid headers, footers, and text boxes. Save your resume as a simple .docx or .pdf file.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3">
+                <AccordionTrigger>How do I use keywords effectively in my resume?</AccordionTrigger>
+                <AccordionContent>
+                  Carefully read the job description and identify key skills and requirements. Naturally incorporate these keywords into your experience and skills sections. Use both abbreviated and full versions of terms (e.g., "UI/UX" and "User Interface Design") to ensure ATS recognition.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4">
+                <AccordionTrigger>Should I tailor my resume for each job application?</AccordionTrigger>
+                <AccordionContent>
+                  Yes, absolutely! Customize your resume for each position by matching your skills and experiences to the job requirements. Use relevant keywords from the job posting, but ensure they accurately reflect your experience. This increases your chances of passing ATS screening.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5">
+                <AccordionTrigger>What are common ATS resume mistakes to avoid?</AccordionTrigger>
+                <AccordionContent>
+                  Avoid using images, logos, or graphics. Don't use creative layouts with multiple columns. Skip special characters or fancy bullets. Never stuff keywords artificially. Don't submit your resume as an image file or non-standard format.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
 
           <div className="pt-6 sm:pt-8 text-xs sm:text-sm text-gray-500">
