@@ -68,7 +68,7 @@ const Index = () => {
     setHasDonated(true);
     setShowDonationDialog(false);
     toast({
-      title: "Thank you for your donation!",
+      title: "Thank you for your support!",
       description: "You can now download your resume in PDF format."
     });
   };

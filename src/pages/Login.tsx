@@ -21,12 +21,11 @@ const Login = () => {
         email === "adnanmuhammad4393@gmail.com" && 
         password === "adnanmuhammad4393"
       ) {
+        localStorage.setItem("freeAccess", "true");
         toast({
           title: "Welcome!",
-          description: "You have free access to create resumes.",
+          description: "You have free access to all features.",
         });
-        // Store the free access status in localStorage
-        localStorage.setItem("freeAccess", "true");
         navigate("/builder");
       } else {
         toast({
