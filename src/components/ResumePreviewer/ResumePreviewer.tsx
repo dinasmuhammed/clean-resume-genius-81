@@ -12,7 +12,7 @@ interface ResumePreviewerProps {
 export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
   const PreviewContent = () => (
     <div className="max-w-[850px] mx-auto">
-      {/* Header/Personal Information */}
+      {/* Contact Information */}
       {data.personal.fullName && (
         <div className="text-center border-b border-gray-200 pb-6 mb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-3">{data.personal.fullName}</h1>
@@ -30,11 +30,21 @@ export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
         </div>
       )}
 
-      {/* Experience Section */}
+      {/* Professional Summary/Objective */}
+      {data.personal.summary && (
+        <div className="mb-6">
+          <h2 className="text-xl font-bold text-gray-900 border-b border-gray-200 pb-2 mb-4">
+            Professional Summary
+          </h2>
+          <p className="text-gray-700">{data.personal.summary}</p>
+        </div>
+      )}
+
+      {/* Work Experience Section */}
       {data.experience.length > 0 && (
         <div className="mb-6">
           <h2 className="text-xl font-bold text-gray-900 border-b border-gray-200 pb-2 mb-4">
-            Professional Experience
+            Work Experience
           </h2>
           <div className="space-y-6">
             {data.experience.map((exp, index) => (

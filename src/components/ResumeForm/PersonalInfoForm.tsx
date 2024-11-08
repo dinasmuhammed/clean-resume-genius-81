@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { User, Mail, Phone, Globe } from "lucide-react";
 
 interface PersonalInfoFormProps {
@@ -13,7 +14,8 @@ export const PersonalInfoForm = ({ isActive, onComplete }: PersonalInfoFormProps
     fullName: "",
     email: "",
     phone: "",
-    website: ""
+    website: "",
+    summary: ""
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -82,6 +84,18 @@ export const PersonalInfoForm = ({ isActive, onComplete }: PersonalInfoFormProps
             placeholder="www.johndoe.com"
           />
         </div>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="summary" className="text-sm font-medium text-primary">Professional Summary</label>
+        <Textarea
+          id="summary"
+          value={formData.summary}
+          onChange={(e) => setFormData(prev => ({ ...prev, summary: e.target.value }))}
+          placeholder="Write a brief summary of your professional background and career objectives..."
+          className="border-secondary focus:border-accent"
+          rows={4}
+        />
       </div>
 
       <Button type="submit" className="w-full mt-4">
