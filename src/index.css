@@ -25,12 +25,12 @@
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply bg-white text-primary antialiased;
   }
 }
 
 .resume-section {
-  @apply p-6 bg-white rounded-lg shadow-sm mb-4;
+  @apply p-6 bg-white rounded-lg shadow-sm mb-4 border border-secondary;
 }
 
 .section-title {
@@ -42,5 +42,5 @@
 }
 
 .preview-section {
-  @apply p-4 border-b border-gray-200 last:border-b-0;
+  @apply p-4 border-b border-secondary last:border-b-0;
 }
