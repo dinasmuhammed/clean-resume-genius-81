@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { getEmbedCode } from "@/utils/embed";
 import { Copy, CheckCircle } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const Embed = () => {
+  const [searchParams] = useSearchParams();
   const [affiliateId, setAffiliateId] = useState("");
   const { toast } = useToast();
+
+  useEffect(() => {
+    const idFromUrl = searchParams.get("id");
+    if (idFromUrl) {
+      setAffiliateId(idFromUrl);
+    }
+  }, [searchParams]);
 
   const handleCopyCode = () => {
     const embedCode = getEmbedCode(affiliateId);
@@ -27,6 +35,11 @@ const Embed = () => {
           <p className="text-gray-600 mb-4">
             Add our professional resume builder to your website and earn commissions for each conversion.
           </p>
+          {!affiliateId && (
+            <Link to="/affiliate-signup">
+              <Button variant="outline">Become an Affiliate</Button>
+            </Link>
+          )}
         </div>
 
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
@@ -102,12 +115,6 @@ const Embed = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="text-center">
-          <Link to="/">
-            <Button variant="outline">Back to Home</Button>
-          </Link>
         </div>
       </div>
     </div>
