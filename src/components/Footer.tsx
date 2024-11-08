@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import { Mail, Clock } from "lucide-react";
+import { Mail, Clock, Keyboard } from "lucide-react";
 
 const Footer = () => {
   return (
     <footer className="bg-gray-50 border-t mt-auto">
       <div className="container mx-auto px-4 py-8">
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           <div>
             <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-600">
               <Link to="/about" className="hover:text-primary transition-colors">
@@ -31,15 +31,29 @@ const Footer = () => {
               </a>
             </div>
           </div>
+          
           <div className="text-sm text-gray-600">
-            <div className="flex items-center justify-center md:justify-end gap-2 mb-2">
+            <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
               <Clock className="w-4 h-4" />
               <span className="font-medium">SXO Support Schedule (IST)</span>
             </div>
-            <div className="text-center md:text-right space-y-1">
+            <div className="text-center md:text-left space-y-1">
               <p>Mon – Fri: 6:30 PM – 6:30 AM</p>
               <p>Sat: 6:30 PM – 3:30 AM</p>
               <p>Sun: 8:30 PM – 4:30 AM</p>
+            </div>
+          </div>
+
+          <div className="text-sm text-gray-600">
+            <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+              <Keyboard className="w-4 h-4" />
+              <span className="font-medium">Keyboard Platform Support</span>
+            </div>
+            <div className="text-center md:text-left space-y-1">
+              <p>Windows: Full Support</p>
+              <p>macOS: Full Support</p>
+              <p>Linux: Full Support</p>
+              <p>Mobile: Basic Support</p>
             </div>
           </div>
         </div>
