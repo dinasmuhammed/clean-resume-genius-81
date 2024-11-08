@@ -8,21 +8,42 @@ const Terms = () => {
             <h2 className="text-xl font-semibold">1. Services</h2>
             <p>
               SXO Resume provides resume building and ATS optimization services. By using our services,
-              you agree to these terms and conditions.
+              you agree to these terms and conditions. Our services include resume creation, ATS
+              compatibility checking, and interview preparation resources.
             </p>
           </section>
+
           <section className="space-y-2">
-            <h2 className="text-xl font-semibold">2. Payments</h2>
+            <h2 className="text-xl font-semibold">2. User Accounts</h2>
+            <p>
+              Users are responsible for maintaining the confidentiality of their account credentials
+              and for all activities that occur under their account. You must provide accurate and
+              complete information when creating an account.
+            </p>
+          </section>
+
+          <section className="space-y-2">
+            <h2 className="text-xl font-semibold">3. Payments</h2>
             <p>
               Our services require payment of applicable fees. All payments are processed securely
-              through our payment provider.
+              through our payment provider. Fees are non-refundable unless otherwise stated.
             </p>
           </section>
+
           <section className="space-y-2">
-            <h2 className="text-xl font-semibold">3. User Responsibilities</h2>
+            <h2 className="text-xl font-semibold">4. Intellectual Property</h2>
             <p>
-              Users are responsible for providing accurate information and maintaining the
-              confidentiality of their account credentials.
+              All content, features, and functionality of our platform are owned by SXO Resume and
+              are protected by international copyright, trademark, and other intellectual property laws.
+            </p>
+          </section>
+
+          <section className="space-y-2">
+            <h2 className="text-xl font-semibold">5. Affiliate Program</h2>
+            <p>
+              Partners can participate in our affiliate program by embedding our widget on their
+              websites. Affiliates earn commissions for successful referrals. Contact us for more
+              information about our affiliate program.
             </p>
           </section>
         </div>

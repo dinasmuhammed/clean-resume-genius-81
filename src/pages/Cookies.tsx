@@ -7,22 +7,35 @@ const Cookies = () => {
           <section className="space-y-2">
             <h2 className="text-xl font-semibold">Cookie Usage</h2>
             <p>
-              We use cookies to enhance your experience on our platform. These cookies help us
-              understand how you use our services and improve our offerings.
+              We use cookies and similar tracking technologies to enhance your experience on our
+              platform. Cookies help us remember your preferences, analyze site usage, and improve
+              our services.
             </p>
           </section>
+
           <section className="space-y-2">
             <h2 className="text-xl font-semibold">Types of Cookies</h2>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Essential cookies: Required for basic site functionality</li>
+              <li>Analytics cookies: Help us understand how users interact with our platform</li>
+              <li>Preference cookies: Remember your settings and choices</li>
+              <li>Marketing cookies: Used to deliver relevant advertisements</li>
+            </ul>
+          </section>
+
+          <section className="space-y-2">
+            <h2 className="text-xl font-semibold">Managing Cookies</h2>
             <p>
-              We use essential cookies for basic functionality and analytical cookies to understand
-              usage patterns. No third-party tracking cookies are used.
+              You can control cookie preferences through your browser settings. Note that disabling
+              certain cookies may affect site functionality.
             </p>
           </section>
+
           <section className="space-y-2">
-            <h2 className="text-xl font-semibold">Your Choices</h2>
+            <h2 className="text-xl font-semibold">Affiliate Tracking</h2>
             <p>
-              You can control cookie preferences through your browser settings. Essential cookies
-              cannot be disabled as they are required for basic platform functionality.
+              We use cookies to track affiliate referrals. When you visit our site through an
+              affiliate link, a cookie helps us attribute the referral correctly.
             </p>
           </section>
         </div>
