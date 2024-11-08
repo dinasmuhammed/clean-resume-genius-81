@@ -17,6 +17,9 @@ const Footer = () => {
           <Link to="/cookies" className="hover:text-primary transition-colors">
             Cookies and Tracking Policy
           </Link>
+          <Link to="/embed" className="hover:text-primary transition-colors">
+            Embed Widget
+          </Link>
         </div>
         <div className="text-center mt-4 text-sm text-gray-500">
           © {new Date().getFullYear()} SXO Resume. All rights reserved.
