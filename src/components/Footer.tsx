@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Mail } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -20,6 +21,12 @@ const Footer = () => {
           <Link to="/embed" className="hover:text-primary transition-colors">
             Embed Widget
           </Link>
+        </div>
+        <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-600">
+          <Mail className="w-4 h-4" />
+          <a href="mailto:sxoresumebulider@f5.si" className="hover:text-primary transition-colors">
+            sxoresumebulider@f5.si
+          </a>
         </div>
         <div className="text-center mt-4 text-sm text-gray-500">
           © {new Date().getFullYear()} SXO Resume. All rights reserved.
