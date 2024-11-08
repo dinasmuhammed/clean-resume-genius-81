@@ -6,7 +6,7 @@ import { EducationForm } from "@/components/ResumeForm/EducationForm";
 import { SkillsForm } from "@/components/ResumeForm/SkillsForm";
 import { ResumePreviewer } from "@/components/ResumePreviewer/ResumePreviewer";
 import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Download, FileText, CheckCircle, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -53,7 +53,7 @@ const Index = () => {
     if (!hasDonated) {
       toast({
         title: "Donation Required",
-        description: `Please donate ${isSelfLearner ? '₹59' : '₹99'} to download your resume in PDF format.`,
+        description: `Please donate to download your resume in PDF format.`,
         variant: "destructive"
       });
       return;
@@ -86,7 +86,7 @@ const Index = () => {
                 onClick={handleDonation}
               >
                 <Heart className="w-4 h-4" />
-                Donate {isSelfLearner ? '₹59' : '₹99'}
+                Donate
               </Button>
             </div>
             <SocialLinks />
