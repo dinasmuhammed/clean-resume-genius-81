@@ -5,6 +5,7 @@ import { ExperienceForm } from "@/components/ResumeForm/ExperienceForm";
 import { EducationForm } from "@/components/ResumeForm/EducationForm";
 import { SkillsForm } from "@/components/ResumeForm/SkillsForm";
 import { ResumePreviewer } from "@/components/ResumePreviewer/ResumePreviewer";
+import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { useToast } from "@/components/ui/use-toast";
 import { Download, FileText, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -36,7 +37,6 @@ const Index = () => {
       title: "Exporting PDF",
       description: `Your resume is being prepared for download as ${fileName}`
     });
-    // PDF export logic will be implemented later
   };
 
   return (
@@ -45,13 +45,16 @@ const Index = () => {
         <header className="text-center mb-8">
           <h1 className="text-3xl font-bold text-primary mb-2">SXO-Resume</h1>
           <p className="text-secondary mb-4">Create a professional, ATS-friendly resume that stands out</p>
-          <div className="flex justify-center gap-4">
-            <Link to="/ats-checker">
-              <Button variant="outline" className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4" />
-                ATS Score Checker
-              </Button>
-            </Link>
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex justify-center gap-4">
+              <Link to="/ats-checker">
+                <Button variant="outline" className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4" />
+                  ATS Score Checker
+                </Button>
+              </Link>
+            </div>
+            <SocialLinks />
           </div>
         </header>
 
