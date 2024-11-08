@@ -7,6 +7,7 @@ import Splash from "./pages/Splash";
 import Index from "./pages/Index";
 import ATSChecker from "./pages/ATSChecker";
 import Login from "./pages/Login";
+import InterviewGuide from "./pages/InterviewGuide";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/builder" element={<Index />} />
           <Route path="/ats-checker" element={<ATSChecker />} />
+          <Route path="/interview-guide" element={<InterviewGuide />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

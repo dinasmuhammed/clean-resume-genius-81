@@ -79,6 +79,16 @@ const Splash = () => {
                 Check ATS Score
               </Button>
             </Link>
+            <Link to="/interview-guide" className="w-full sm:w-auto">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="w-full h-12 sm:h-14 text-base sm:text-lg font-medium flex items-center justify-center gap-2 shadow hover:shadow-lg transition-all"
+              >
+                <CheckCircle2 className="w-5 h-5" />
+                Interview Guide
+              </Button>
+            </Link>
           </div>
 
           {/* FAQ Section */}
