@@ -1,4 +1,4 @@
-import { Facebook, Twitter, Instagram, Linkedin, MessageCircle, MessagesSquare } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const SocialLinks = () => {
@@ -27,11 +27,6 @@ export const SocialLinks = () => {
       icon: <MessageCircle className="w-5 h-5" />,
       href: "https://wa.me/919656778508",
       label: "WhatsApp",
-    },
-    {
-      icon: <MessagesSquare className="w-5 h-5" />,
-      href: "https://discord.com/invite/vCPH2pFH",
-      label: "Discord",
     },
   ];
 
