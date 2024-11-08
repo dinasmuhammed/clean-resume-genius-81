@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GraduationCap, Plus, Trash2 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface EducationFormProps {
   isActive: boolean;
   onComplete: (data: any) => void;
+  onTypeChange?: (isSelfLearner: boolean) => void;
 }
 
-export const EducationForm = ({ isActive, onComplete }: EducationFormProps) => {
+export const EducationForm = ({ isActive, onComplete, onTypeChange }: EducationFormProps) => {
   const [education, setEducation] = useState([{
     school: "",
     degree: "",
@@ -16,8 +18,10 @@ export const EducationForm = ({ isActive, onComplete }: EducationFormProps) => {
     startDate: "",
     endDate: "",
   }]);
+  const [isSelfLearner, setIsSelfLearner] = useState(false);
 
   const handleAddEducation = () => {
+    if (isSelfLearner) return;
     setEducation(prev => [...prev, {
       school: "",
       degree: "",
@@ -33,7 +37,31 @@ export const EducationForm = ({ isActive, onComplete }: EducationFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onComplete(education);
+    onComplete({ education, isSelfLearner });
+  };
+
+  const handleSelfLearnerChange = (checked: boolean) => {
+    setIsSelfLearner(checked);
+    if (checked) {
+      setEducation([{
+        school: "Self-Taught",
+        degree: "Independent Learning",
+        field: "",
+        startDate: "",
+        endDate: "",
+      }]);
+    } else {
+      setEducation([{
+        school: "",
+        degree: "",
+        field: "",
+        startDate: "",
+        endDate: "",
+      }]);
+    }
+    if (onTypeChange) {
+      onTypeChange(checked);
+    }
   };
 
   return (
@@ -43,11 +71,25 @@ export const EducationForm = ({ isActive, onComplete }: EducationFormProps) => {
         Education
       </h2>
 
+      <div className="mb-4 flex items-center space-x-2">
+        <Checkbox
+          id="self-learner"
+          checked={isSelfLearner}
+          onCheckedChange={handleSelfLearnerChange}
+        />
+        <label
+          htmlFor="self-learner"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          I am a self-learner
+        </label>
+      </div>
+
       {education.map((edu, index) => (
         <div key={index} className="mb-6 p-4 bg-gray-50 rounded-lg">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-medium">Education {index + 1}</h3>
-            {index > 0 && (
+            {index > 0 && !isSelfLearner && (
               <Button
                 type="button"
                 variant="destructive"
@@ -61,7 +103,7 @@ export const EducationForm = ({ isActive, onComplete }: EducationFormProps) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="form-group">
-              <label className="text-sm font-medium text-gray-700">School</label>
+              <label className="text-sm font-medium text-gray-700">School/Institution</label>
               <Input
                 value={edu.school}
                 onChange={(e) => {
@@ -69,13 +111,14 @@ export const EducationForm = ({ isActive, onComplete }: EducationFormProps) => {
                   newEducation[index].school = e.target.value;
                   setEducation(newEducation);
                 }}
-                placeholder="University name"
+                placeholder="Institution name"
                 required
+                disabled={isSelfLearner}
               />
             </div>
 
             <div className="form-group">
-              <label className="text-sm font-medium text-gray-700">Degree</label>
+              <label className="text-sm font-medium text-gray-700">Degree/Certification</label>
               <Input
                 value={edu.degree}
                 onChange={(e) => {
@@ -83,8 +126,9 @@ export const EducationForm = ({ isActive, onComplete }: EducationFormProps) => {
                   newEducation[index].degree = e.target.value;
                   setEducation(newEducation);
                 }}
-                placeholder="Bachelor's, Master's, etc."
+                placeholder="Degree or certification"
                 required
+                disabled={isSelfLearner}
               />
             </div>
 
@@ -97,7 +141,7 @@ export const EducationForm = ({ isActive, onComplete }: EducationFormProps) => {
                   newEducation[index].field = e.target.value;
                   setEducation(newEducation);
                 }}
-                placeholder="Computer Science, Business, etc."
+                placeholder="Field of study"
                 required
               />
             </div>
@@ -134,20 +178,21 @@ export const EducationForm = ({ isActive, onComplete }: EducationFormProps) => {
         </div>
       ))}
 
-      <div className="flex gap-4">
+      {!isSelfLearner && (
         <Button
           type="button"
           variant="outline"
           onClick={handleAddEducation}
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 mb-4"
         >
           <Plus className="w-4 h-4" />
           Add Education
         </Button>
-        <Button type="submit" className="flex-1">
-          Save Education
-        </Button>
-      </div>
+      )}
+
+      <Button type="submit" className="w-full">
+        Save Education
+      </Button>
     </form>
   );
 };

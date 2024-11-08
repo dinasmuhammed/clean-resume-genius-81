@@ -14,10 +14,11 @@ const Index = () => {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState("personal");
   const [hasDonated, setHasDonated] = useState(false);
+  const [isSelfLearner, setIsSelfLearner] = useState(false);
   const [resumeData, setResumeData] = useState({
     personal: {},
     experience: [],
-    education: [],
+    education: { education: [], isSelfLearner: false },
     skills: []
   });
 
@@ -32,10 +33,13 @@ const Index = () => {
     });
   };
 
+  const handleEducationTypeChange = (selfLearner: boolean) => {
+    setIsSelfLearner(selfLearner);
+  };
+
   const handleDonation = () => {
-    window.open("https://razorpay.me/@comicforgeai?amount=t6b98btveFupXVKHk6kwug%3D%3D", "_blank");
-    // In a real implementation, you would verify the donation status
-    // For now, we'll simulate donation verification
+    const amount = isSelfLearner ? "59" : "99";
+    window.open(`https://razorpay.me/@comicforgeai?amount=${amount}`, "_blank");
     setHasDonated(true);
     toast({
       title: "Thank you for your donation!",
@@ -47,7 +51,7 @@ const Index = () => {
     if (!hasDonated) {
       toast({
         title: "Donation Required",
-        description: "Please donate to download your resume in PDF format.",
+        description: `Please donate ${isSelfLearner ? '₹59' : '₹99'} to download your resume in PDF format.`,
         variant: "destructive"
       });
       return;
@@ -80,7 +84,7 @@ const Index = () => {
                 onClick={handleDonation}
               >
                 <Heart className="w-4 h-4" />
-                Donate to Download
+                Donate {isSelfLearner ? '₹59' : '₹99'}
               </Button>
             </div>
             <SocialLinks />
@@ -105,6 +109,7 @@ const Index = () => {
               <EducationForm
                 isActive={activeSection === "education"}
                 onComplete={(data) => handleSectionComplete("education", data)}
+                onTypeChange={handleEducationTypeChange}
               />
             </div>
             <div className="resume-section">
