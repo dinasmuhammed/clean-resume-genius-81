@@ -106,16 +106,16 @@ const Splash = () => {
               </AccordionItem>
 
               <AccordionItem value="item-2">
-                <AccordionTrigger>How should I format my resume for ATS?</AccordionTrigger>
+                <AccordionTrigger>Why can't I include a profile image in an ATS-friendly resume?</AccordionTrigger>
                 <AccordionContent>
-                  Use clear section headings like "Experience," "Education," and "Skills." Stick to standard fonts like Arial or Calibri. Use bullet points for easy reading. Avoid headers, footers, and text boxes. Save your resume as a simple .docx or .pdf file.
+                  ATS systems cannot properly read or process images, and they may even interfere with the system's ability to parse your text content. Additionally, many companies prefer resumes without photos to ensure unbiased recruitment and comply with anti-discrimination laws. It's best to focus on your qualifications and experience rather than including a profile picture.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-3">
-                <AccordionTrigger>How do I use keywords effectively in my resume?</AccordionTrigger>
+                <AccordionTrigger>How should I format my resume for ATS?</AccordionTrigger>
                 <AccordionContent>
-                  Carefully read the job description and identify key skills and requirements. Naturally incorporate these keywords into your experience and skills sections. Use both abbreviated and full versions of terms (e.g., "UI/UX" and "User Interface Design") to ensure ATS recognition.
+                  Use clear section headings like "Experience," "Education," and "Skills." Stick to standard fonts like Arial or Calibri. Use bullet points for easy reading. Avoid headers, footers, and text boxes. Save your resume as a simple .docx or .pdf file.
                 </AccordionContent>
               </AccordionItem>
 
