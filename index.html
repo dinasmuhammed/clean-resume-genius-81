@@ -67,6 +67,19 @@
   <div id="root"></div>
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
   <script type="module" src="/src/main.tsx"></script>
+  <script>
+    // Disable text selection
+    document.addEventListener('selectstart', (e) => {
+      e.preventDefault();
+      return false;
+    });
+
+    // Disable copy
+    document.addEventListener('copy', (e) => {
+      e.preventDefault();
+      return false;
+    });
+  </script>
 </body>
 
 </html>
