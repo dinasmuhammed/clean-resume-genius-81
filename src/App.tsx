@@ -34,11 +34,12 @@ const queryClient = new QueryClient({
 });
 
 // Add global error handler for query errors
-queryClient.setDefaultOptions({
-  queries: {
-    onError: (error) => {
-      console.error('Query error:', error);
-    }
+queryClient.setMutationDefaults({
+  mutationFn: async () => {
+    // This is a placeholder function, actual mutation logic should be implemented in individual mutations
+  },
+  onError: (error) => {
+    console.error('Mutation error:', error);
   }
 });
 
