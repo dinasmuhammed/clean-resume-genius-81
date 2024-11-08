@@ -138,16 +138,16 @@ const ATSChecker = () => {
       <AlertDialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
         <AlertDialogContent className="sm:max-w-[425px]">
           <AlertDialogHeader>
-            <AlertDialogTitle>ATS Score Check Service</AlertDialogTitle>
+            <AlertDialogTitle>Support Our Work</AlertDialogTitle>
             <AlertDialogDescription>
-              To analyze your resume and get your ATS score, a service fee of ₹39 is required. This fee helps us provide accurate ATS compatibility analysis.
+              To analyze your resume and get your ATS score, we kindly ask for a small donation. This helps us maintain and improve our services.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Maybe Later</AlertDialogCancel>
             <AlertDialogAction onClick={handlePayment} className="flex items-center gap-2">
               <Heart className="w-4 h-4" />
-              Pay & Analyze
+              Support & Analyze
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
