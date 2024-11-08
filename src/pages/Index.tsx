@@ -9,6 +9,7 @@ import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { useToast } from "@/hooks/use-toast";
 import { Download, FileText, CheckCircle, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
+import html2pdf from 'html2pdf.js';
 
 const Index = () => {
   const { toast } = useToast();
@@ -49,7 +50,7 @@ const Index = () => {
     });
   };
 
-  const handleExport = () => {
+  const handleExport = async () => {
     if (!hasDonated) {
       toast({
         title: "Donation Required",
@@ -59,11 +60,42 @@ const Index = () => {
       return;
     }
 
-    const fileName = "profile-sxo.pdf";
+    const element = document.getElementById('resume-preview');
+    if (!element) {
+      toast({
+        title: "Error",
+        description: "Could not generate PDF. Please try again.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     toast({
-      title: "Exporting PDF",
-      description: `Your resume is being prepared for download as ${fileName}`
+      title: "Generating PDF",
+      description: "Your resume is being prepared for download..."
     });
+
+    const opt = {
+      margin: 1,
+      filename: 'sxo-resume.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    try {
+      await html2pdf().set(opt).from(element).save();
+      toast({
+        title: "Success",
+        description: "Your resume has been downloaded successfully!"
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to generate PDF. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -138,7 +170,9 @@ const Index = () => {
                   Export PDF
                 </Button>
               </div>
-              <ResumePreviewer data={resumeData} />
+              <div id="resume-preview">
+                <ResumePreviewer data={resumeData} />
+              </div>
             </div>
           </div>
         </div>
