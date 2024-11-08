@@ -146,7 +146,6 @@ const Index = () => {
                 <EducationForm
                   isActive={activeSection === "education"}
                   onComplete={(data) => handleSectionComplete("education", data)}
-                  onTypeChange={handleEducationTypeChange}
                 />
                 <SkillsForm
                   isActive={activeSection === "skills"}
