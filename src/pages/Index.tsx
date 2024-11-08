@@ -10,16 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Download, FileText, CheckCircle, Heart, ArrowLeft, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 import { exportToPDF } from "@/utils/pdfExport";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const Index = () => {
@@ -50,15 +41,9 @@ const Index = () => {
     setIsSelfLearner(selfLearner);
   };
 
-  const handlePayment = () => {
-    const paymentLink = isSelfLearner 
-      ? "https://razorpay.com/payment-link/plink_PIk1FtrEwGejaW"
-      : "https://razorpay.me/@comicforgeai?amount=CVDUr6Uxp2FOGZGwAHntNg%3D%3D";
-    
-    window.open(paymentLink, "_blank");
+  const handlePaymentSuccess = () => {
     setHasPaid(true);
     setShowPaymentDialog(false);
-    
     toast({
       title: "One-Time Payment Successful",
       description: "Thank you for your support! You can now download your resume.",
@@ -176,24 +161,13 @@ const Index = () => {
           </div>
         </div>
       </div>
-
-      <AlertDialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
-        <AlertDialogContent className="sm:max-w-[425px]">
-          <AlertDialogHeader>
-            <AlertDialogTitle>One-Time Support</AlertDialogTitle>
-            <AlertDialogDescription>
-              Support our work with a one-time payment. This helps us maintain and improve our resume-building services.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handlePayment} className="flex items-center gap-2">
-              <Heart className="w-4 h-4" />
-              Proceed to Payment
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      
+      <PaymentDialog
+        open={showPaymentDialog}
+        onOpenChange={setShowPaymentDialog}
+        onSuccess={handlePaymentSuccess}
+        isSelfLearner={isSelfLearner}
+      />
     </div>
   );
 };

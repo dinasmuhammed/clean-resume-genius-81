@@ -5,6 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ArrowLeft, Upload, CheckCircle, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
+import { initializePayment } from "@/utils/paymentUtils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -60,20 +61,21 @@ const ATSChecker = () => {
   };
 
   const handlePayment = () => {
-    window.open("https://razorpay.com/payment-link/plink_PIk1FtrEwGejaW", "_blank");
-    setHasPaid(true);
-    setShowPaymentDialog(false);
-    
-    if (file) {
-      analyzeResume(file).then(result => {
-        setScore(result.score);
-        setDetails(result.details);
-        toast({
-          title: "Analysis Complete",
-          description: `Your resume is ${result.score}% ATS-friendly.`,
+    initializePayment(499, () => {
+      setHasPaid(true);
+      setShowPaymentDialog(false);
+      
+      if (file) {
+        analyzeResume(file).then(result => {
+          setScore(result.score);
+          setDetails(result.details);
+          toast({
+            title: "Analysis Complete",
+            description: `Your resume is ${result.score}% ATS-friendly.`,
+          });
         });
-      });
-    }
+      }
+    });
   };
 
   return (
