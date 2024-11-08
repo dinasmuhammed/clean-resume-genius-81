@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Splash from "./pages/Splash";
 import Index from "./pages/Index";
 import ATSChecker from "./pages/ATSChecker";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Splash />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/builder" element={<Index />} />
           <Route path="/ats-checker" element={<ATSChecker />} />
         </Routes>
