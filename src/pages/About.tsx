@@ -37,7 +37,7 @@ const About = () => {
             <h2 className="text-xl font-semibold">Contact Us</h2>
             <p>
               Have questions or feedback? We'd love to hear from you. Reach out to our support team
-              at support@sxoresume.com for assistance.
+              at sxoresumebulider@f5.si for assistance.
             </p>
           </section>
         </div>
