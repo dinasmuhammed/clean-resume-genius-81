@@ -15,15 +15,25 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simulate authentication (replace with actual auth logic)
     if (isLogin) {
-      // Login logic
-      if (email && password) {
+      // Check for free access credentials
+      if (
+        email === "adnanmuhammad4393@gmail.com" && 
+        password === "adnanmuhammad4393"
+      ) {
         toast({
-          title: "Success",
-          description: "Logged in successfully",
+          title: "Welcome!",
+          description: "You have free access to create resumes.",
         });
+        // Store the free access status in localStorage
+        localStorage.setItem("freeAccess", "true");
         navigate("/builder");
+      } else {
+        toast({
+          title: "Error",
+          description: "Invalid credentials",
+          variant: "destructive",
+        });
       }
     } else {
       // Signup logic
