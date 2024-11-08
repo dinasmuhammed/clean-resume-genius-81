@@ -38,8 +38,10 @@ const Index = () => {
   };
 
   const handleDonation = () => {
-    const amount = isSelfLearner ? "59" : "99";
-    window.open(`https://razorpay.me/t6b98btveFupXVKHk6kwug%3D%3D?amount=${amount}`, "_blank");
+    const paymentLink = isSelfLearner 
+      ? "https://razorpay.com/payment-link/plink_PIk1FtrEwGejaW"
+      : "https://razorpay.me/@comicforgeai?amount=CVDUr6Uxp2FOGZGwAHntNg%3D%3D";
+    window.open(paymentLink, "_blank");
     setHasDonated(true);
     toast({
       title: "Thank you for your donation!",
