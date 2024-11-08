@@ -76,16 +76,6 @@ const Navbar = () => {
 
         <div className="flex items-center gap-2">
           <FeedbackDialog />
-          <Link to="/login">
-            <Button variant="ghost" size="sm">
-              Log in
-            </Button>
-          </Link>
-          <Link to="/login">
-            <Button size="sm">
-              Sign up
-            </Button>
-          </Link>
         </div>
       </div>
     </nav>

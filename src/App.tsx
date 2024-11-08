@@ -7,7 +7,6 @@ import Navbar from "./components/Navbar";
 import Splash from "./pages/Splash";
 import Index from "./pages/Index";
 import ATSChecker from "./pages/ATSChecker";
-import Login from "./pages/Login";
 import InterviewGuide from "./pages/InterviewGuide";
 import About from "./pages/About";
 import Terms from "./pages/Terms";
@@ -30,7 +29,6 @@ const App = () => (
           <div className="flex-1">
             <Routes>
               <Route path="/" element={<Splash />} />
-              <Route path="/login" element={<Login />} />
               <Route path="/builder" element={<Index />} />
               <Route path="/ats-checker" element={<ATSChecker />} />
               <Route path="/interview-guide" element={<InterviewGuide />} />
