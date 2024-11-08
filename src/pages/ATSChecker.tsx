@@ -24,9 +24,6 @@ const ATSChecker = () => {
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [hasPaid, setHasPaid] = useState(false);
 
-  // Check for free access
-  const hasFreeAccess = localStorage.getItem("freeAccess") === "true";
-
   const analyzeResume = async (file: File) => {
     // Initialize scoring factors
     let baseScore = 47; // Default score for standard resumes
@@ -58,18 +55,7 @@ const ATSChecker = () => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
-      if (!hasFreeAccess && !hasPaid) {
-        setShowPaymentDialog(true);
-        return;
-      }
-      const result = await analyzeResume(selectedFile);
-      setScore(result.score);
-      setDetails(result.details);
-      
-      toast({
-        title: "Analysis Complete",
-        description: `Your resume is ${result.score}% ATS-friendly.`,
-      });
+      setShowPaymentDialog(true);
     }
   };
 

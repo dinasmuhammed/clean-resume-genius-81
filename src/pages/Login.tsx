@@ -16,24 +16,11 @@ const Login = () => {
     e.preventDefault();
     
     if (isLogin) {
-      // Check for free access credentials
-      if (
-        email === "adnanmuhammad4393@gmail.com" && 
-        password === "adnanmuhammad4393"
-      ) {
-        localStorage.setItem("freeAccess", "true");
-        toast({
-          title: "Welcome!",
-          description: "You have free access to all features.",
-        });
-        navigate("/builder");
-      } else {
-        toast({
-          title: "Error",
-          description: "Invalid credentials",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Error",
+        description: "Invalid credentials",
+        variant: "destructive",
+      });
     } else {
       // Signup logic
       if (email && password && name) {
