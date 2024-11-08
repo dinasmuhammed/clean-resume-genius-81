@@ -28,16 +28,16 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isSelfLearner }: 
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="sm:max-w-[425px]">
         <AlertDialogHeader>
-          <AlertDialogTitle>Resume Download</AlertDialogTitle>
+          <AlertDialogTitle>Resume Download Service</AlertDialogTitle>
           <AlertDialogDescription>
-            Proceed to download your professionally formatted resume.
+            To download your professionally formatted resume, a service fee of ₹299 is required. This fee includes ATS-optimized formatting and professional template usage.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={handlePayment} className="flex items-center gap-2">
             <Download className="w-4 h-4" />
-            Download (₹299)
+            Pay & Download (₹299)
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
