@@ -24,17 +24,27 @@
     --radius: 0.5rem;
   }
 
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
-    @apply bg-white text-primary antialiased;
+    @apply bg-white text-primary antialiased touch-manipulation;
+  }
+
+  @supports(padding: max(0px)) {
+    .pb-safe {
+      padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+    }
   }
 }
 
 .resume-section {
-  @apply p-6 bg-white rounded-lg shadow-sm mb-4 border border-secondary;
+  @apply p-4 sm:p-6 bg-white rounded-lg shadow-sm mb-4 border border-secondary;
 }
 
 .section-title {
-  @apply text-xl font-semibold text-primary flex items-center gap-2 mb-4;
+  @apply text-lg sm:text-xl font-semibold text-primary flex items-center gap-2 mb-4;
 }
 
 .form-group {
