@@ -1,11 +1,4 @@
-import { Suspense, lazy } from "react";
-import { 
-  SignedIn, 
-  SignedOut, 
-  RedirectToSignIn, 
-  SignIn, 
-  SignUp 
-} from "@clerk/clerk-react";
+import { Suspense, lazy, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { initializeNotificationSystem } from "./utils/notificationSystem";
 
 const Splash = lazy(() => import("./pages/Splash"));
 const Index = lazy(() => import("./pages/Index"));
@@ -37,18 +31,26 @@ const queryClient = new QueryClient({
   },
 });
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <>
-      <SignedIn>{children}</SignedIn>
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
-    </>
-  );
-};
-
 const App = () => {
+  useEffect(() => {
+    // Initialize with default values - in a real app, these would come from user settings
+    const mockUserBehavior = {
+      lastLogin: new Date(),
+      resumeProgress: 50,
+      premiumFeatures: false,
+      interactionCount: 3
+    };
+
+    const mockPreferences = {
+      emailNotifications: true,
+      inAppNotifications: true,
+      notificationFrequency: 4
+    };
+
+    const cleanup = initializeNotificationSystem(mockUserBehavior, mockPreferences);
+    return cleanup;
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -65,32 +67,9 @@ const App = () => {
               }>
                 <Routes>
                   <Route path="/" element={<Splash />} />
-                  <Route path="/sign-in/*" element={<SignIn routing="path" path="/sign-in" />} />
-                  <Route path="/sign-up/*" element={<SignUp routing="path" path="/sign-up" />} />
-                  <Route 
-                    path="/builder" 
-                    element={
-                      <ProtectedRoute>
-                        <Index />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  <Route 
-                    path="/ats-checker" 
-                    element={
-                      <ProtectedRoute>
-                        <ATSChecker />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  <Route 
-                    path="/interview-guide" 
-                    element={
-                      <ProtectedRoute>
-                        <InterviewGuide />
-                      </ProtectedRoute>
-                    } 
-                  />
+                  <Route path="/builder" element={<Index />} />
+                  <Route path="/ats-checker" element={<ATSChecker />} />
+                  <Route path="/interview-guide" element={<InterviewGuide />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy" element={<Privacy />} />
