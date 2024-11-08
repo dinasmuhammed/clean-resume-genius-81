@@ -40,8 +40,7 @@ const ATSChecker = () => {
         <div className="bg-white rounded-lg shadow-sm p-6">
           <h1 className="text-2xl font-bold text-primary mb-4">ATS Score Checker</h1>
           <p className="text-gray-600 mb-6">
-            Upload your resume to check its ATS compatibility score. For best results, use the
-            exported "profile-sxo.pdf" from our resume builder.
+            Upload your resume to check its ATS compatibility score.
           </p>
 
           <div className="space-y-6">
