@@ -44,26 +44,19 @@ const Index = () => {
     });
   };
 
-  const handleEducationTypeChange = (selfLearner: boolean) => {
-    setIsSelfLearner(selfLearner);
-  };
-
   const handlePaymentSuccess = () => {
     setHasPaid(true);
     setShowPaymentDialog(false);
     toast({
-      title: "One-Time Payment Successful",
-      description: "Thank you for your support! You can now download your resume.",
+      title: "Success",
+      description: "Your resume is ready to download!",
       variant: "default"
     });
+    exportToPDF();
   };
 
   const handleExport = async () => {
-    if (!hasPaid) {
-      setShowPaymentDialog(true);
-      return;
-    }
-    await exportToPDF();
+    setShowPaymentDialog(true);
   };
 
   const ResumePreview = () => (

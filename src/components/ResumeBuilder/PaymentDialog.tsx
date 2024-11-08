@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { initializePayment } from "@/utils/paymentUtils";
 import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
 
 interface PaymentDialogProps {
   open: boolean;
@@ -35,26 +36,34 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isSelfLearner }: 
     }
   };
 
+  const handleFreeDownload = () => {
+    onSuccess();
+    onOpenChange(false);
+  };
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="sm:max-w-[425px]">
         <AlertDialogHeader>
-          <AlertDialogTitle>Resume Download</AlertDialogTitle>
+          <AlertDialogTitle>Resume Download Options</AlertDialogTitle>
           <AlertDialogDescription>
-            Proceed to download your professionally formatted resume.
-            {isSelfLearner && (
-              <p className="mt-2 text-sm text-muted-foreground">
-                As a self-learner, you'll receive our optimized resume format.
-              </p>
-            )}
+            Choose how you'd like to download your resume:
+            <ul className="mt-4 space-y-2">
+              <li>• Free Download - Basic format</li>
+              <li>• Premium Download (₹299) - Professional format with ATS optimization</li>
+            </ul>
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handlePayment} className="flex items-center gap-2">
-            <Download className="w-4 h-4" />
-            Download (₹299)
+        <AlertDialogFooter className="flex-col space-y-2 sm:space-y-0">
+          <Button onClick={handleFreeDownload} variant="outline" className="w-full sm:w-auto">
+            <Download className="w-4 h-4 mr-2" />
+            Free Download
+          </Button>
+          <AlertDialogAction onClick={handlePayment} className="w-full sm:w-auto">
+            <Download className="w-4 h-4 mr-2" />
+            Premium Download (₹299)
           </AlertDialogAction>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
