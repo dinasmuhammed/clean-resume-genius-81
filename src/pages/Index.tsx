@@ -6,7 +6,8 @@ import { EducationForm } from "@/components/ResumeForm/EducationForm";
 import { SkillsForm } from "@/components/ResumeForm/SkillsForm";
 import { ResumePreviewer } from "@/components/ResumePreviewer/ResumePreviewer";
 import { useToast } from "@/components/ui/use-toast";
-import { Download, FileText } from "lucide-react";
+import { Download, FileText, CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   const { toast } = useToast();
@@ -30,9 +31,10 @@ const Index = () => {
   };
 
   const handleExport = () => {
+    const fileName = "profile-sxo.pdf";
     toast({
       title: "Exporting PDF",
-      description: "Your resume is being prepared for download."
+      description: `Your resume is being prepared for download as ${fileName}`
     });
     // PDF export logic will be implemented later
   };
@@ -42,7 +44,15 @@ const Index = () => {
       <div className="container mx-auto px-4">
         <header className="text-center mb-8">
           <h1 className="text-3xl font-bold text-primary mb-2">SXO-Resume</h1>
-          <p className="text-secondary">Create a professional resume that stands out</p>
+          <p className="text-secondary mb-4">Create a professional, ATS-friendly resume that stands out</p>
+          <div className="flex justify-center gap-4">
+            <Link to="/ats-checker">
+              <Button variant="outline" className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4" />
+                ATS Score Checker
+              </Button>
+            </Link>
+          </div>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
