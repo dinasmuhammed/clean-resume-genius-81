@@ -2,15 +2,27 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { ArrowLeft, Upload, CheckCircle } from "lucide-react";
+import { ArrowLeft, Upload, CheckCircle, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const ATSChecker = () => {
   const { toast } = useToast();
   const [file, setFile] = useState<File | null>(null);
   const [score, setScore] = useState<number | null>(null);
   const [details, setDetails] = useState<string[]>([]);
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [hasPaid, setHasPaid] = useState(false);
 
   const analyzeResume = async (file: File) => {
     // Initialize scoring factors
@@ -43,6 +55,10 @@ const ATSChecker = () => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
+      if (!hasPaid) {
+        setShowPaymentDialog(true);
+        return;
+      }
       const result = await analyzeResume(selectedFile);
       setScore(result.score);
       setDetails(result.details);
@@ -50,6 +66,24 @@ const ATSChecker = () => {
       toast({
         title: "Analysis Complete",
         description: `Your resume is ${result.score}% ATS-friendly.`,
+      });
+    }
+  };
+
+  const handlePayment = () => {
+    // Open payment link in new window
+    window.open("https://razorpay.me/@comicforgeai", "_blank");
+    setHasPaid(true);
+    setShowPaymentDialog(false);
+    
+    if (file) {
+      analyzeResume(file).then(result => {
+        setScore(result.score);
+        setDetails(result.details);
+        toast({
+          title: "Analysis Complete",
+          description: `Your resume is ${result.score}% ATS-friendly.`,
+        });
       });
     }
   };
@@ -88,7 +122,7 @@ const ATSChecker = () => {
               </label>
             </div>
 
-            {score !== null && (
+            {score !== null && hasPaid && (
               <div className={`${score > 90 ? 'bg-green-50' : 'bg-yellow-50'} p-4 rounded-lg`}>
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle className={`w-5 h-5 ${score > 90 ? 'text-green-600' : 'text-yellow-600'}`} />
@@ -110,6 +144,24 @@ const ATSChecker = () => {
           </div>
         </div>
       </div>
+
+      <AlertDialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
+        <AlertDialogContent className="sm:max-w-[425px]">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Support Our Work</AlertDialogTitle>
+            <AlertDialogDescription>
+              To analyze your resume and get your ATS score, we kindly ask for a small donation. This helps us maintain and improve our services.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Maybe Later</AlertDialogCancel>
+            <AlertDialogAction onClick={handlePayment} className="flex items-center gap-2">
+              <Heart className="w-4 h-4" />
+              Support & Analyze
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
