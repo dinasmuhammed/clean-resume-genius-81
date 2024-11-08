@@ -7,12 +7,13 @@ import { SkillsForm } from "@/components/ResumeForm/SkillsForm";
 import { ResumePreviewer } from "@/components/ResumePreviewer/ResumePreviewer";
 import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { useToast } from "@/components/ui/use-toast";
-import { Download, FileText, CheckCircle } from "lucide-react";
+import { Download, FileText, CheckCircle, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Index = () => {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState("personal");
+  const [hasDonated, setHasDonated] = useState(false);
   const [resumeData, setResumeData] = useState({
     personal: {},
     experience: [],
@@ -31,7 +32,27 @@ const Index = () => {
     });
   };
 
+  const handleDonation = () => {
+    window.open("https://razorpay.me/@comicforgeai?amount=t6b98btveFupXVKHk6kwug%3D%3D", "_blank");
+    // In a real implementation, you would verify the donation status
+    // For now, we'll simulate donation verification
+    setHasDonated(true);
+    toast({
+      title: "Thank you for your donation!",
+      description: "You can now download your resume in PDF format."
+    });
+  };
+
   const handleExport = () => {
+    if (!hasDonated) {
+      toast({
+        title: "Donation Required",
+        description: "Please donate to download your resume in PDF format.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     const fileName = "profile-sxo.pdf";
     toast({
       title: "Exporting PDF",
@@ -53,6 +74,14 @@ const Index = () => {
                   ATS Score Checker
                 </Button>
               </Link>
+              <Button 
+                variant="outline" 
+                className="flex items-center gap-2 text-rose-500 hover:text-rose-600"
+                onClick={handleDonation}
+              >
+                <Heart className="w-4 h-4" />
+                Donate to Download
+              </Button>
             </div>
             <SocialLinks />
           </div>
@@ -93,7 +122,11 @@ const Index = () => {
                   <FileText className="w-5 h-5" />
                   Preview
                 </h2>
-                <Button onClick={handleExport} className="flex items-center gap-2">
+                <Button 
+                  onClick={handleExport} 
+                  className="flex items-center gap-2"
+                  disabled={!hasDonated}
+                >
                   <Download className="w-4 h-4" />
                   Export PDF
                 </Button>
