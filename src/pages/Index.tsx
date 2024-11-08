@@ -25,9 +25,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 const Index = () => {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState("personal");
-  const [hasDonated, setHasDonated] = useState(false);
+  const [hasPaid, setHasPaid] = useState(false);
   const [isSelfLearner, setIsSelfLearner] = useState(false);
-  const [showDonationDialog, setShowDonationDialog] = useState(false);
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [resumeData, setResumeData] = useState({
     personal: {},
     experience: [],
@@ -50,22 +50,25 @@ const Index = () => {
     setIsSelfLearner(selfLearner);
   };
 
-  const handleDonation = () => {
+  const handlePayment = () => {
     const paymentLink = isSelfLearner 
       ? "https://razorpay.com/payment-link/plink_PIk1FtrEwGejaW"
       : "https://razorpay.me/@comicforgeai?amount=CVDUr6Uxp2FOGZGwAHntNg%3D%3D";
+    
     window.open(paymentLink, "_blank");
-    setHasDonated(true);
-    setShowDonationDialog(false);
+    setHasPaid(true);
+    setShowPaymentDialog(false);
+    
     toast({
-      title: "Thank you for your support!",
-      description: "You can now download your resume in PDF format."
+      title: "One-Time Payment Successful",
+      description: "Thank you for your support! You can now download your resume.",
+      variant: "success"
     });
   };
 
   const handleExport = async () => {
-    if (!hasDonated) {
-      setShowDonationDialog(true);
+    if (!hasPaid) {
+      setShowPaymentDialog(true);
       return;
     }
     await exportToPDF();
@@ -115,7 +118,7 @@ const Index = () => {
               <Button 
                 variant="outline" 
                 className="flex items-center gap-2 text-rose-500 hover:text-rose-600 text-sm sm:text-base"
-                onClick={handleDonation}
+                onClick={() => setShowPaymentDialog(true)}
               >
                 <Heart className="w-4 h-4" />
                 Support Us
@@ -174,19 +177,19 @@ const Index = () => {
         </div>
       </div>
 
-      <AlertDialog open={showDonationDialog} onOpenChange={setShowDonationDialog}>
+      <AlertDialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
         <AlertDialogContent className="sm:max-w-[425px]">
           <AlertDialogHeader>
-            <AlertDialogTitle>Support Our Work</AlertDialogTitle>
+            <AlertDialogTitle>One-Time Support</AlertDialogTitle>
             <AlertDialogDescription>
-              To download your resume in PDF format, we kindly ask for a small donation. This helps us maintain and improve our services. After donating, you'll be able to download your resume immediately.
+              Support our work with a one-time payment. This helps us maintain and improve our resume-building services.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Maybe Later</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDonation} className="flex items-center gap-2">
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handlePayment} className="flex items-center gap-2">
               <Heart className="w-4 h-4" />
-              Support & Download
+              Proceed to Payment
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
