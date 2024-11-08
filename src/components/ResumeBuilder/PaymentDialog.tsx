@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { Download } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,7 +20,7 @@ interface PaymentDialogProps {
 
 export const PaymentDialog = ({ open, onOpenChange, onSuccess, isSelfLearner }: PaymentDialogProps) => {
   const handlePayment = () => {
-    const amount = 299; // Updated amount for resume builder
+    const amount = 299;
     initializePayment(amount, onSuccess);
   };
 
@@ -28,16 +28,16 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isSelfLearner }: 
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="sm:max-w-[425px]">
         <AlertDialogHeader>
-          <AlertDialogTitle>One-Time Support</AlertDialogTitle>
+          <AlertDialogTitle>Resume Download</AlertDialogTitle>
           <AlertDialogDescription>
-            Support our work with a one-time payment. This helps us maintain and improve our resume-building services.
+            Proceed to download your professionally formatted resume.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={handlePayment} className="flex items-center gap-2">
-            <Heart className="w-4 h-4" />
-            Proceed to Payment
+            <Download className="w-4 h-4" />
+            Download (₹299)
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

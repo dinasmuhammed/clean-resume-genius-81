@@ -29,22 +29,24 @@ export const SkillsForm = ({ isActive, onComplete }: SkillsFormProps) => {
     onComplete(skills);
   };
 
+  if (!isActive) return null;
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="section-title">
         <Code className="w-5 h-5" />
         Skills
       </h2>
 
-      <div className="mb-6">
+      <div className="space-y-4">
         <div className="form-group">
-          <label className="text-sm font-medium text-primary">Add Skills</label>
+          <label className="text-sm font-medium text-gray-700">Add Skills</label>
           <div className="flex gap-2">
             <Input
               value={currentSkill}
               onChange={(e) => setCurrentSkill(e.target.value)}
               placeholder="Enter a skill"
-              className="border-secondary focus:border-accent"
+              className="flex-1"
             />
             <Button
               type="button"
@@ -56,17 +58,17 @@ export const SkillsForm = ({ isActive, onComplete }: SkillsFormProps) => {
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2">
           {skills.map((skill, index) => (
             <div
               key={index}
-              className="bg-accent px-3 py-1 rounded-full text-white flex items-center gap-2"
+              className="bg-gray-100 px-3 py-1 rounded-full text-gray-700 flex items-center gap-2"
             >
               <span>{skill}</span>
               <button
                 type="button"
                 onClick={() => handleRemoveSkill(skill)}
-                className="hover:text-red-200"
+                className="hover:text-red-500 focus:outline-none"
               >
                 <X className="w-4 h-4" />
               </button>

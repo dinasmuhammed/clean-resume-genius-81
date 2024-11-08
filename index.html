@@ -1,31 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resume Builder</title>
+  <meta name="description" content="Create ATS-friendly resumes and check your resume's ATS compatibility score" />
+  <title>SXO Resume - Professional Resume Builder</title>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
-
 <body>
   <div id="root"></div>
-  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
   <script type="module" src="/src/main.tsx"></script>
   <script>
-    // Disable text selection
+    // Security measures
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
+        (e.ctrlKey && e.key === 'u') ||
+        e.key === 'F12'
+      ) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
     document.addEventListener('selectstart', (e) => {
       e.preventDefault();
       return false;
     });
 
-    // Disable copy
     document.addEventListener('copy', (e) => {
       e.preventDefault();
       return false;
     });
   </script>
 </body>
-
 </html>

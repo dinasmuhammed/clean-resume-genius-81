@@ -5,24 +5,30 @@ declare global {
 }
 
 export const initializePayment = (amount: number, onSuccess: () => void) => {
-  const options = {
-    key: "rzp_live_5JYQnqKRnKhB5y",
-    amount: amount * 100, // Razorpay expects amount in paise
-    currency: "INR",
-    name: "Resume Builder",
-    description: "Resume Builder Pro Access",
-    handler: function () {
-      onSuccess();
-    },
-    prefill: {
-      name: "",
-      email: "",
-    },
-    theme: {
-      color: "#6366f1",
-    },
-  };
+  try {
+    const options = {
+      key: "rzp_live_5JYQnqKRnKhB5y",
+      amount: amount * 100, // Convert to paise
+      currency: "INR",
+      name: "SXO Resume",
+      description: amount === 299 ? "Resume Download" : "ATS Score Check",
+      handler: function (response: any) {
+        if (response.razorpay_payment_id) {
+          onSuccess();
+        }
+      },
+      prefill: {
+        name: "",
+        email: "",
+      },
+      theme: {
+        color: "#6366f1",
+      },
+    };
 
-  const razorpay = new window.Razorpay(options);
-  razorpay.open();
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
+  } catch (error) {
+    console.error("Payment initialization failed:", error);
+  }
 };
