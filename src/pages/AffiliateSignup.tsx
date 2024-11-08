@@ -46,19 +46,20 @@ const AffiliateSignup = () => {
             <h2 className="text-2xl font-bold text-primary mb-4">Referral Credit System</h2>
             <div className="grid gap-4">
               <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold mb-2">How to Earn Credits</h3>
+                <h3 className="font-semibold mb-2">How to Earn</h3>
                 <ul className="list-disc pl-5 space-y-2">
-                  <li>Get 1 credit for each successful referral</li>
-                  <li>Earn bonus credits when you reach 20 members</li>
-                  <li>Credits can be used for premium features</li>
+                  <li>Earn 1 credit (1 INR) for each successful referral</li>
+                  <li>Minimum requirement: 200 members to activate monetization</li>
+                  <li>Once activated, earn up to 70 INR per day</li>
+                  <li>Start earning immediately after reaching 200 members</li>
                 </ul>
               </div>
               <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold mb-2">Credit Values</h3>
+                <h3 className="font-semibold mb-2">Earning Potential</h3>
                 <ul className="list-disc pl-5 space-y-2">
-                  <li>Basic Plan: 1 credit (₹200 value)</li>
-                  <li>Mid Plan: 2 credits (₹10 value)</li>
-                  <li>Premium features unlock with more credits</li>
+                  <li>Daily earning cap: 70 INR</li>
+                  <li>Monthly potential: Up to 2,100 INR</li>
+                  <li>Additional bonuses for consistent performance</li>
                 </ul>
               </div>
             </div>
@@ -68,7 +69,7 @@ const AffiliateSignup = () => {
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h1 className="text-3xl font-bold text-primary mb-6">Become an Affiliate</h1>
             <p className="text-gray-600 mb-8">
-              Join our affiliate program and earn credits by promoting SXO Resume on your website.
+              Join our affiliate program and start earning by promoting SXO Resume on your website.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-6">
