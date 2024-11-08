@@ -12,12 +12,12 @@ const Splash = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-gray-100">
       {/* Navigation Bar */}
-      <nav className="w-full px-4 py-4 flex justify-between items-center bg-white/80 backdrop-blur-sm fixed top-0 z-50 border-b">
+      <nav className="w-full px-4 py-4 bg-white border-b z-50">
         <div className="text-xl font-bold text-primary">SXO-Resume</div>
       </nav>
 
-      {/* Main Content with adjusted padding for fixed nav */}
-      <div className="pt-20 flex flex-col items-center justify-center px-4 py-6 sm:py-12">
+      {/* Main Content */}
+      <div className="flex flex-col items-center justify-center px-4 py-6 sm:py-12">
         <div className="text-center max-w-4xl mx-auto space-y-8 sm:space-y-12">
           {/* Hero Section */}
           <div className="space-y-4 sm:space-y-6">
