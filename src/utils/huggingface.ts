@@ -1,6 +1,6 @@
 import { HfInference } from '@huggingface/inference';
 
-const HUGGING_FACE_TOKEN = process.env.VITE_HUGGING_FACE_TOKEN;
+const HUGGING_FACE_TOKEN = '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';
 const inference = new HfInference(HUGGING_FACE_TOKEN);
 
 export const analyzeResume = async (resumeText: string) => {
