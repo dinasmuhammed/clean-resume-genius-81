@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, FileText, Target, CheckCircle2, Laptop, Shield, Clock } from "lucide-react";
+import { ArrowRight, Target, CheckCircle2, Laptop, Shield, Clock } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -84,12 +84,7 @@ const Splash = () => {
           </div>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md">
-              <FileText className="h-6 w-6 text-accent mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Professional Templates</h3>
-              <p className="text-gray-600 text-center">Choose from a variety of professionally designed templates</p>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md">
               <Target className="h-6 w-6 text-accent mb-4" />
               <h3 className="text-xl font-semibold mb-2">Customization Options</h3>
