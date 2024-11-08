@@ -9,22 +9,45 @@ const ATSChecker = () => {
   const { toast } = useToast();
   const [file, setFile] = useState<File | null>(null);
   const [score, setScore] = useState<number | null>(null);
+  const [details, setDetails] = useState<string[]>([]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const analyzeResume = async (file: File) => {
+    // Simulated ATS analysis
+    const scores = [];
+    const details = [];
+
+    if (file.name === "profile-sxo.pdf") {
+      scores.push(95);
+      details.push("✓ Optimal file format and naming");
+    } else {
+      scores.push(2);
+      details.push("⚠ File should be named 'profile-sxo.pdf'");
+    }
+
+    // Simulated check for images (in a real implementation, this would need PDF parsing)
+    if (file.size > 500000) { // Basic heuristic: larger files might contain images
+      scores.push(2);
+      details.push("⚠ Detected possible images - avoid using images or colors");
+    } else {
+      scores.push(98);
+      details.push("✓ No images detected");
+    }
+
+    const finalScore = Math.floor(scores.reduce((a, b) => a + b, 0) / scores.length);
+    return { score: finalScore, details };
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    if (selectedFile && selectedFile.name === "profile-sxo.pdf") {
+    if (selectedFile) {
       setFile(selectedFile);
-      // Simulate ATS analysis with a high score for the correct filename
-      setScore(95);
+      const result = await analyzeResume(selectedFile);
+      setScore(result.score);
+      setDetails(result.details);
+      
       toast({
         title: "Analysis Complete",
-        description: "Your resume has been analyzed successfully!",
-      });
-    } else {
-      toast({
-        title: "Invalid File",
-        description: "Please export your resume as 'profile-sxo.pdf' for best ATS compatibility.",
-        variant: "destructive",
+        description: "Your resume has been analyzed.",
       });
     }
   };
@@ -64,15 +87,21 @@ const ATSChecker = () => {
             </div>
 
             {score !== null && (
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className={`${score > 90 ? 'bg-green-50' : 'bg-yellow-50'} p-4 rounded-lg`}>
                 <div className="flex items-center gap-2 text-green-700 mb-2">
                   <CheckCircle className="w-5 h-5" />
                   <h3 className="font-semibold">ATS Compatibility Score</h3>
                 </div>
-                <div className="text-3xl font-bold text-green-700">{score}%</div>
-                <p className="text-sm text-green-600 mt-2">
-                  Your resume is highly optimized for ATS systems!
-                </p>
+                <div className={`text-3xl font-bold ${score > 90 ? 'text-green-700' : 'text-yellow-700'}`}>
+                  {score}%
+                </div>
+                <div className="mt-4 space-y-2">
+                  {details.map((detail, index) => (
+                    <p key={index} className="text-sm text-gray-600">
+                      {detail}
+                    </p>
+                  ))}
+                </div>
               </div>
             )}
           </div>
