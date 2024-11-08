@@ -24,6 +24,9 @@ const ATSChecker = () => {
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [hasPaid, setHasPaid] = useState(false);
 
+  // Check for free access
+  const hasFreeAccess = localStorage.getItem("freeAccess") === "true";
+
   const analyzeResume = async (file: File) => {
     // Initialize scoring factors
     let baseScore = 47; // Default score for standard resumes
@@ -55,7 +58,7 @@ const ATSChecker = () => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
-      if (!hasPaid) {
+      if (!hasFreeAccess && !hasPaid) {
         setShowPaymentDialog(true);
         return;
       }
@@ -71,8 +74,7 @@ const ATSChecker = () => {
   };
 
   const handlePayment = () => {
-    // Open payment link in new window
-    window.open("https://razorpay.me/@comicforgeai", "_blank");
+    window.open("https://razorpay.com/payment-link/plink_PIk1FtrEwGejaW", "_blank");
     setHasPaid(true);
     setShowPaymentDialog(false);
     

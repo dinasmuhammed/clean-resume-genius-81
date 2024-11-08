@@ -8,7 +8,7 @@ import { ResumePreviewer } from "@/components/ResumePreviewer/ResumePreviewer";
 import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { useToast } from "@/hooks/use-toast";
 import { Download, FileText, CheckCircle, Heart, ArrowLeft, Eye } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { exportToPDF } from "@/utils/pdfExport";
 import {
   AlertDialog,
@@ -24,6 +24,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const Index = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("personal");
   const [hasDonated, setHasDonated] = useState(false);
   const [isSelfLearner, setIsSelfLearner] = useState(false);
@@ -34,6 +35,9 @@ const Index = () => {
     education: [],
     skills: []
   });
+
+  // Check for free access
+  const hasFreeAccess = localStorage.getItem("freeAccess") === "true";
 
   const handleSectionComplete = (section: string, data: any) => {
     setResumeData(prev => ({
@@ -51,6 +55,12 @@ const Index = () => {
   };
 
   const handleDonation = () => {
+    if (hasFreeAccess) {
+      setHasDonated(true);
+      setShowDonationDialog(false);
+      return;
+    }
+    
     const paymentLink = isSelfLearner 
       ? "https://razorpay.com/payment-link/plink_PIk1FtrEwGejaW"
       : "https://razorpay.me/@comicforgeai?amount=CVDUr6Uxp2FOGZGwAHntNg%3D%3D";
@@ -64,7 +74,7 @@ const Index = () => {
   };
 
   const handleExport = async () => {
-    if (!hasDonated) {
+    if (!hasFreeAccess && !hasDonated) {
       setShowDonationDialog(true);
       return;
     }
