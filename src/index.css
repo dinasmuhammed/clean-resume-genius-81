@@ -21,7 +21,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    --radius: 0.3rem;
   }
 
   html {
@@ -31,12 +31,13 @@
   }
 
   body {
-    @apply bg-white text-primary antialiased touch-manipulation min-h-screen flex flex-col;
+    @apply bg-gray-50 text-primary antialiased touch-manipulation min-h-screen flex flex-col;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: clamp(14px, 1vw + 10px, 16px);
-    line-height: clamp(1.5, 1.5vw + 1, 1.75);
+    line-height: 1.7;
+    letter-spacing: -0.01em;
   }
 
   img {
@@ -44,41 +45,35 @@
   }
 }
 
-/* Responsive layout utilities */
 @layer components {
   .responsive-container {
-    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
   .responsive-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
   }
 
   .responsive-flex {
-    @apply flex flex-col sm:flex-row items-start sm:items-center gap-4;
+    @apply flex flex-col sm:flex-row items-start sm:items-center gap-6;
   }
 
   .responsive-text {
-    @apply text-sm sm:text-base lg:text-lg;
+    @apply text-sm sm:text-base;
   }
 
   .responsive-heading {
-    @apply text-xl sm:text-2xl lg:text-3xl font-bold;
+    @apply text-xl sm:text-2xl font-medium tracking-tight;
   }
 
   .responsive-card {
-    @apply p-4 sm:p-6 lg:p-8;
+    @apply p-6 sm:p-8;
   }
 }
 
-/* Touch-friendly interactions */
 @layer utilities {
   .touch-target {
     @apply min-h-[44px] min-w-[44px];
-  }
-
-  .touch-padding {
-    @apply p-3 sm:p-4;
   }
 
   .safe-bottom {
@@ -90,26 +85,12 @@
   }
 }
 
-/* Orientation specific styles */
-@media (orientation: landscape) {
-  .landscape\:flex-row {
-    @apply flex-row;
-  }
-
-  .landscape\:h-screen {
-    height: 100vh;
-    height: 100dvh;
-  }
-}
-
-/* Print styles */
 @media print {
   .print\:hidden {
     display: none;
   }
 }
 
-/* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

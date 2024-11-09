@@ -13,37 +13,37 @@ import FeedbackDialog from "./FeedbackDialog";
 
 const Navbar = () => {
   return (
-    <nav className="w-full px-4 py-4 bg-white border-b sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold text-primary">
+    <nav className="w-full px-4 py-3 bg-white border-b sticky top-0 z-50">
+      <div className="max-w-5xl mx-auto flex justify-between items-center">
+        <Link to="/" className="text-lg font-medium text-primary">
           SXO-Resume
         </Link>
 
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="text-sm">Tools</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="grid gap-3 p-4 w-[400px]">
-                  <Link to="/builder" className="flex items-center gap-2 p-2 hover:bg-accent rounded-md">
-                    <FileText className="w-4 h-4" />
+                <div className="grid gap-2 p-4 w-[300px]">
+                  <Link to="/builder" className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md">
+                    <FileText className="w-4 h-4 text-gray-400" />
                     <div>
-                      <div className="font-medium">Resume Builder</div>
-                      <p className="text-sm text-muted-foreground">Create your professional resume</p>
+                      <div className="text-sm font-medium text-gray-900">Resume Builder</div>
+                      <p className="text-xs text-gray-500">Create your professional resume</p>
                     </div>
                   </Link>
-                  <Link to="/ats-checker" className="flex items-center gap-2 p-2 hover:bg-accent rounded-md">
-                    <CheckCircle2 className="w-4 h-4" />
+                  <Link to="/ats-checker" className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md">
+                    <CheckCircle2 className="w-4 h-4 text-gray-400" />
                     <div>
-                      <div className="font-medium">ATS Checker</div>
-                      <p className="text-sm text-muted-foreground">Verify ATS compatibility</p>
+                      <div className="text-sm font-medium text-gray-900">ATS Checker</div>
+                      <p className="text-xs text-gray-500">Verify ATS compatibility</p>
                     </div>
                   </Link>
-                  <Link to="/interview-guide" className="flex items-center gap-2 p-2 hover:bg-accent rounded-md">
-                    <BookOpen className="w-4 h-4" />
+                  <Link to="/interview-guide" className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md">
+                    <BookOpen className="w-4 h-4 text-gray-400" />
                     <div>
-                      <div className="font-medium">Interview Guide</div>
-                      <p className="text-sm text-muted-foreground">Prepare for interviews</p>
+                      <div className="text-sm font-medium text-gray-900">Interview Guide</div>
+                      <p className="text-xs text-gray-500">Prepare for interviews</p>
                     </div>
                   </Link>
                 </div>
@@ -51,21 +51,21 @@ const Navbar = () => {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Company</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="text-sm">Company</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="grid gap-3 p-4 w-[400px]">
-                  <Link to="/about" className="flex items-center gap-2 p-2 hover:bg-accent rounded-md">
-                    <Info className="w-4 h-4" />
+                <div className="grid gap-2 p-4 w-[300px]">
+                  <Link to="/about" className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md">
+                    <Info className="w-4 h-4 text-gray-400" />
                     <div>
-                      <div className="font-medium">About Us</div>
-                      <p className="text-sm text-muted-foreground">Learn about our mission</p>
+                      <div className="text-sm font-medium text-gray-900">About Us</div>
+                      <p className="text-xs text-gray-500">Learn about our mission</p>
                     </div>
                   </Link>
-                  <Link to="/affiliate-signup" className="flex items-center gap-2 p-2 hover:bg-accent rounded-md">
-                    <Heart className="w-4 h-4" />
+                  <Link to="/affiliate-signup" className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md">
+                    <Heart className="w-4 h-4 text-gray-400" />
                     <div>
-                      <div className="font-medium">Affiliate Program</div>
-                      <p className="text-sm text-muted-foreground">Join our affiliate network</p>
+                      <div className="text-sm font-medium text-gray-900">Affiliate Program</div>
+                      <p className="text-xs text-gray-500">Join our affiliate network</p>
                     </div>
                   </Link>
                 </div>

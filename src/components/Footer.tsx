@@ -2,12 +2,7 @@ import { Link } from "react-router-dom";
 import { Mail, Clock, Keyboard, Share2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Footer = () => {
   const { toast } = useToast();
@@ -46,16 +41,14 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gray-50 border-t mt-auto print:hidden">
-      <div className="responsive-container py-8 sm:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-white border-t mt-auto print:hidden">
+      <div className="responsive-container py-12 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Quick Links Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-primary">Quick Links</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4">
+          <Card className="border-0 shadow-none">
+            <CardContent className="p-0">
+              <h3 className="text-sm font-medium text-gray-900 mb-4">Quick Links</h3>
+              <div className="space-y-3">
                 {[
                   { to: "/about", label: "About Us" },
                   { to: "/terms", label: "Terms & Conditions" },
@@ -66,17 +59,17 @@ const Footer = () => {
                   <Link
                     key={to}
                     to={to}
-                    className="text-gray-600 hover:text-primary transition-colors duration-200"
+                    className="block text-sm text-gray-600 hover:text-primary transition-colors"
                   >
                     {label}
                   </Link>
                 ))}
               </div>
-              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-200">
-                <Mail className="w-5 h-5 text-primary flex-shrink-0" />
+              <div className="flex items-center gap-2 mt-6 pt-6 border-t">
+                <Mail className="w-4 h-4 text-gray-400" />
                 <a
                   href="mailto:sxoresumebulider@f5.si"
-                  className="text-gray-600 hover:text-primary transition-colors duration-200 break-all"
+                  className="text-sm text-gray-600 hover:text-primary transition-colors break-all"
                 >
                   sxoresumebulider@f5.si
                 </a>
@@ -85,74 +78,52 @@ const Footer = () => {
           </Card>
 
           {/* Support Hours Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-primary">Support Hours</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-start gap-2">
-                <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-medium text-gray-700 block mb-2">IST Time Zone</span>
-                  <div className="space-y-1">
-                    <p className="text-gray-600">Mon – Fri: 6:30 PM – 6:30 AM</p>
-                    <p className="text-gray-600">Sat: 6:30 PM – 3:30 AM</p>
-                    <p className="text-gray-600">Sun: 8:30 PM – 4:30 AM</p>
-                  </div>
-                </div>
+          <Card className="border-0 shadow-none">
+            <CardContent className="p-0">
+              <h3 className="text-sm font-medium text-gray-900 mb-4">Support Hours</h3>
+              <div className="space-y-3 text-sm text-gray-600">
+                <p>Mon – Fri: 6:30 PM – 6:30 AM</p>
+                <p>Sat: 6:30 PM – 3:30 AM</p>
+                <p>Sun: 8:30 PM – 4:30 AM</p>
+                <p className="text-gray-500">(IST Time Zone)</p>
               </div>
             </CardContent>
           </Card>
 
           {/* Platform Support Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-primary">Platform Support</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-start gap-2">
-                <Keyboard className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-medium text-gray-700 block mb-2">Supported Systems</span>
-                  <div className="space-y-1">
-                    <p className="text-gray-600">Windows: Full Support</p>
-                    <p className="text-gray-600">macOS: Full Support</p>
-                    <p className="text-gray-600">Linux: Full Support</p>
-                    <p className="text-gray-600">Mobile: Basic Support</p>
-                  </div>
-                </div>
+          <Card className="border-0 shadow-none">
+            <CardContent className="p-0">
+              <h3 className="text-sm font-medium text-gray-900 mb-4">Platform Support</h3>
+              <div className="space-y-3 text-sm text-gray-600">
+                <p>Windows: Full Support</p>
+                <p>macOS: Full Support</p>
+                <p>Linux: Full Support</p>
+                <p>Mobile: Basic Support</p>
               </div>
             </CardContent>
           </Card>
 
           {/* Share Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-primary">Share</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-start gap-2">
-                <Share2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-medium text-gray-700 block mb-2">Help Others Succeed</span>
-                  <p className="text-gray-600 mb-4">Share SXO Resume Builder with your network and help them create professional, ATS-optimized resumes.</p>
-                  <Button 
-                    onClick={handleShare}
-                    className="w-full"
-                    variant="outline"
-                  >
-                    <Share2 className="w-4 h-4 mr-2" />
-                    Share Now
-                  </Button>
-                </div>
-              </div>
+          <Card className="border-0 shadow-none">
+            <CardContent className="p-0">
+              <h3 className="text-sm font-medium text-gray-900 mb-4">Share</h3>
+              <p className="text-sm text-gray-600 mb-6">
+                Help others create professional, ATS-optimized resumes by sharing SXO Resume Builder.
+              </p>
+              <Button 
+                onClick={handleShare}
+                variant="outline"
+                className="w-full justify-center gap-2"
+              >
+                <Share2 className="w-4 h-4" />
+                Share Now
+              </Button>
             </CardContent>
           </Card>
         </div>
 
-        {/* Copyright Section */}
-        <div className="mt-8 pt-6 border-t border-gray-200 text-center">
-          <p className="text-gray-500 text-sm">
+        <div className="mt-12 pt-6 border-t text-center">
+          <p className="text-sm text-gray-500">
             © {new Date().getFullYear()} SXO Resume. All rights reserved.
           </p>
         </div>
