@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Laptop, Shield, Clock } from "lucide-react";
 import FAQSection from "@/components/FAQ/FAQSection";
-import { SocialLinks } from "@/components/SocialLinks/SocialLinks"; // Importing SocialLinks
+import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 
 const Splash = () => {
   return (
@@ -24,6 +24,24 @@ const Splash = () => {
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center px-4 py-6 sm:py-12">
         <div className="text-center max-w-4xl mx-auto space-y-8 sm:space-y-12">
+          {/* Product Hunt Badge */}
+          <div className="flex justify-center mb-6">
+            <a 
+              href="https://www.producthunt.com/posts/sxo-resume?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sxo&#0045;resume" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:opacity-90 transition-opacity"
+            >
+              <img 
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=594173&theme=light" 
+                alt="SXO Resume - Professional resume builder | Product Hunt" 
+                style={{ width: '250px', height: '54px' }} 
+                width="250" 
+                height="54" 
+              />
+            </a>
+          </div>
+
           {/* Hero Section */}
           <div className="space-y-4 sm:space-y-6">
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-primary tracking-tight">
