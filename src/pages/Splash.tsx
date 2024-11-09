@@ -80,17 +80,36 @@ const Splash = () => {
             </div>
           </div>
 
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md">
-              <Target className="h-6 w-6 text-accent mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Customization Options</h3>
-              <p className="text-gray-600 text-center">Easily customize each section to fit your unique experience</p>
-            </div>
-            <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md">
-              <CheckCircle2 className="h-6 w-6 text-accent mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Expert Tips</h3>
-              <p className="text-gray-600 text-center">Get expert advice on how to craft your resume</p>
+          {/* New Referral Program Section */}
+          <div className="py-12 bg-white rounded-xl shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center">
+                <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-8">
+                  Join Our Referral Program
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
+                  <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                    <h3 className="text-xl font-semibold mb-4">For Users</h3>
+                    <ul className="text-gray-600 text-left space-y-2">
+                      <li>• Use referral codes for 10% off</li>
+                      <li>• Share with friends to save money</li>
+                      <li>• Valid on all our services</li>
+                    </ul>
+                  </div>
+
+                  <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                    <h3 className="text-xl font-semibold mb-4">For Affiliates</h3>
+                    <ul className="text-gray-600 text-left space-y-2">
+                      <li>• Earn for each referral</li>
+                      <li>• Get unique referral codes</li>
+                      <li>• Track your earnings</li>
+                    </ul>
+                    <Link to="/affiliate-signup" className="mt-4">
+                      <Button>Become an Affiliate</Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
