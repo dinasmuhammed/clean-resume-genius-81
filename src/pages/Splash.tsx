@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Laptop, Shield, Clock } from "lucide-react";
 import FAQSection from "@/components/FAQ/FAQSection";
-import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
+import { SocialLinks } from "@/components/SocialLinks/SocialLinks"; // Importing SocialLinks
 
 const Splash = () => {
   return (
@@ -33,7 +33,7 @@ const Splash = () => {
               Build an ATS-optimized resume that helps you stand out. Our intelligent system ensures your resume gets noticed by recruiters.
             </p>
             <div className="pt-4">
-              <SocialLinks />
+              <SocialLinks /> {/* Added SocialLinks here */}
             </div>
           </div>
 

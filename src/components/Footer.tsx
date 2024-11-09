@@ -3,7 +3,7 @@ import { Mail, Clock, Keyboard, Share2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
-import { SocialLinks } from "./SocialLinks/SocialLinks";
+import { SocialLinks } from "./SocialLinks/SocialLinks"; // Importing SocialLinks
 
 const Footer = () => {
   const { toast } = useToast();
@@ -119,7 +119,7 @@ const Footer = () => {
                 <Share2 className="w-4 h-4" />
                 Share Now
               </Button>
-              <SocialLinks />
+              <SocialLinks /> {/* Added SocialLinks here */}
             </CardContent>
           </Card>
         </div>
