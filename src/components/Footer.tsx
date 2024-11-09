@@ -7,12 +7,15 @@ const Footer = () => {
   const { toast } = useToast();
 
   const handleShare = async () => {
+    const shareUrl = "https://sxoresumebulider.vercel.app/";
+    const shareMessage = "Create professional, ATS-optimized resumes easily with SXO Resume Builder! Check it out:";
+    
     try {
       if (navigator.share) {
         await navigator.share({
           title: 'SXO Resume Builder',
-          text: 'Create professional, ATS-optimized resumes with SXO Resume Builder!',
-          url: window.location.origin
+          text: shareMessage,
+          url: shareUrl
         });
         toast({
           title: "Thanks for sharing!",
@@ -20,7 +23,8 @@ const Footer = () => {
         });
       } else {
         // Fallback for browsers that don't support native sharing
-        await navigator.clipboard.writeText(window.location.origin);
+        const textToShare = `${shareMessage} ${shareUrl}`;
+        await navigator.clipboard.writeText(textToShare);
         toast({
           title: "Link copied!",
           description: "Share this link with your network to help them create professional resumes.",
