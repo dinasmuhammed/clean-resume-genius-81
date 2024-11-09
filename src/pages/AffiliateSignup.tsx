@@ -9,6 +9,7 @@ import { generateAffiliateId } from "@/utils/affiliateUtils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { getEmbedCode } from "@/utils/embed";
 import { Copy } from "lucide-react";
+import { supabase } from "@/utils/supabase";
 
 const AffiliateSignup = () => {
   const [name, setName] = useState("");
@@ -20,13 +21,41 @@ const AffiliateSignup = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (name && email && website) {
       const affiliateId = generateAffiliateId(email);
       setGeneratedId(affiliateId);
-      setShowEmbedDialog(true);
+
+      try {
+        const { error } = await supabase
+          .from('affiliates')
+          .insert([
+            {
+              name,
+              email,
+              website,
+              description,
+              affiliate_id: affiliateId,
+            }
+          ]);
+
+        if (error) throw error;
+
+        setShowEmbedDialog(true);
+        toast({
+          title: "Success",
+          description: "Your affiliate application has been submitted successfully!",
+        });
+      } catch (error) {
+        console.error('Error submitting affiliate form:', error);
+        toast({
+          title: "Error",
+          description: "Failed to submit affiliate application. Please try again.",
+          variant: "destructive",
+        });
+      }
     } else {
       toast({
         title: "Error",
