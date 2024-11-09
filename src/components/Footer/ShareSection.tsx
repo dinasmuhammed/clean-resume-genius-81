@@ -9,7 +9,7 @@ export const ShareSection = () => {
 
   const handleShare = async () => {
     const shareUrl = "https://sxoresumebulider.vercel.app/";
-    const shareMessage = "Create professional, ATS-optimized resumes easily with SXO Resume Builder! Use my referral code 'ak90' for 10% off! Check it out:";
+    const shareMessage = "Create ATS-friendly resumes at affordable prices! Use code 'ak90' for 10% off:";
     
     try {
       if (navigator.share) {
