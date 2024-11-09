@@ -154,3 +154,6 @@ export const analyzeSkillRelevance = (
 
   return { relevant, missing };
 };
+
+// Add new export at the end of the file
+export { generateKeralaReview, generateMultipleReviews } from './keralareviewGenerator';
