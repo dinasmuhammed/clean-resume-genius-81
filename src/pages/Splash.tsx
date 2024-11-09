@@ -97,6 +97,35 @@ const Splash = () => {
             </div>
           </div>
 
+          {/* Review Section */}
+          <div className="py-12 bg-white rounded-xl shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center">
+                <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-8">
+                  What Our Users Say
+                </h2>
+                <div className="flex flex-col items-center space-y-6">
+                  <iframe 
+                    src="https://www.producthunt.com/products/sxo-resume/reviews"
+                    className="w-full max-w-2xl h-[400px] rounded-lg border border-gray-200"
+                    title="Product Hunt Reviews"
+                  />
+                  <div className="mt-6">
+                    <a 
+                      href="https://www.producthunt.com/products/sxo-resume/reviews/new"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Button size="lg" className="bg-[#EA532A] hover:bg-[#D84315] text-white">
+                        Leave a Review on Product Hunt
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* New Referral Program Section */}
           <div className="py-12 bg-white rounded-xl shadow-sm">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
