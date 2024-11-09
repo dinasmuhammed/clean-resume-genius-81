@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { Mail, Clock, Keyboard, Share2 } from "lucide-react";
 import { Button } from "./ui/button";
-import { toast } from "./ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Footer = () => {
+  const { toast } = useToast();
+
   const handleShare = async () => {
     try {
       if (navigator.share) {
@@ -18,7 +20,7 @@ const Footer = () => {
         });
       } else {
         // Fallback for browsers that don't support native sharing
-        navigator.clipboard.writeText(window.location.origin);
+        await navigator.clipboard.writeText(window.location.origin);
         toast({
           title: "Link copied!",
           description: "Share this link with your network to help them create professional resumes.",
