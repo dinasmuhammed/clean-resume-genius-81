@@ -3,6 +3,7 @@ import { Mail, Clock, Keyboard, Share2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
+import { SocialLinks } from "./SocialLinks/SocialLinks";
 
 const Footer = () => {
   const { toast } = useToast();
@@ -113,11 +114,12 @@ const Footer = () => {
               <Button 
                 onClick={handleShare}
                 variant="outline"
-                className="w-full justify-center gap-2"
+                className="w-full justify-center gap-2 mb-4"
               >
                 <Share2 className="w-4 h-4" />
                 Share Now
               </Button>
+              <SocialLinks />
             </CardContent>
           </Card>
         </div>

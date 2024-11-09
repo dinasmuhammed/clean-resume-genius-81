@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Laptop, Shield, Clock } from "lucide-react";
 import FAQSection from "@/components/FAQ/FAQSection";
+import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 
 const Splash = () => {
   return (
@@ -31,6 +32,9 @@ const Splash = () => {
             <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
               Build an ATS-optimized resume that helps you stand out. Our intelligent system ensures your resume gets noticed by recruiters.
             </p>
+            <div className="pt-4">
+              <SocialLinks />
+            </div>
           </div>
 
           {/* Why Use Our Online SXO Resume Builder Section */}
