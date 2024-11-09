@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -21,73 +21,49 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-    --radius: 0.3rem;
+    --radius: 0.5rem;
   }
 
   html {
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
-    overflow-x: hidden;
   }
 
   body {
-    @apply bg-gray-50 text-primary antialiased touch-manipulation min-h-screen flex flex-col;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Roboto', sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: clamp(14px, 1vw + 10px, 16px);
-    line-height: 1.7;
-    letter-spacing: -0.01em;
   }
 
-  img {
-    @apply max-w-full h-auto;
-  }
-}
-
-@layer components {
-  .responsive-container {
-    @apply w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+  .material-card {
+    @apply bg-white rounded-lg shadow-elevation-1 transition-shadow duration-200 hover:shadow-elevation-2;
   }
 
-  .responsive-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
+  .material-button {
+    @apply relative overflow-hidden transition-all duration-200 rounded-md font-medium 
+           focus:outline-none focus:ring-2 focus:ring-primary-200 
+           active:shadow-elevation-1 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
-  .responsive-flex {
-    @apply flex flex-col sm:flex-row items-start sm:items-center gap-6;
+  .material-input {
+    @apply px-4 py-2 rounded-md border border-gray-300 focus:border-primary-500 
+           focus:ring-2 focus:ring-primary-200 outline-none transition-all duration-200;
   }
 
-  .responsive-text {
-    @apply text-sm sm:text-base;
+  .material-transition {
+    @apply transition-all duration-200 ease-in-out;
   }
 
-  .responsive-heading {
-    @apply text-xl sm:text-2xl font-medium tracking-tight;
-  }
-
-  .responsive-card {
-    @apply p-6 sm:p-8;
+  .material-surface {
+    @apply bg-white shadow-elevation-1;
   }
 }
 
 @layer utilities {
-  .touch-target {
-    @apply min-h-[44px] min-w-[44px];
-  }
-
-  .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  .safe-top {
-    padding-top: env(safe-area-inset-top);
-  }
-}
-
-@media print {
-  .print\:hidden {
-    display: none;
+  .ripple {
+    @apply absolute bg-white/30 rounded-full animate-ripple;
   }
 }
 
