@@ -3,11 +3,18 @@ import {
   getPersonalizedRecommendations, 
   updateUserPreferences, 
   createUserProfile,
-  UserProfile  // Ensure this is imported from the correct location
+  UserProfile
 } from '../utils/recommendations';
+import { startRealtimeNotifications, stopRealtimeNotifications } from '../utils/notifications';
+import { useEffect } from 'react';
 
 export const useRecommendations = (userId: string) => {
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    startRealtimeNotifications();
+    return () => stopRealtimeNotifications();
+  }, []);
 
   // Fetch user profile
   const { data: userProfile } = useQuery({
