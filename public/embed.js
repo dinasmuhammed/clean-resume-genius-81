@@ -1,11 +1,16 @@
 (function() {
-  // Get affiliate ID from script tag
+  // Get affiliate ID from script tag and validate format
   const scripts = document.getElementsByTagName('script');
   const currentScript = scripts[scripts.length - 1];
   const affiliateId = currentScript.getAttribute('data-affiliate-id');
 
-  if (!affiliateId) {
-    console.error('SXO Resume Widget Error: No affiliate ID provided');
+  // Validate affiliate ID format
+  const isValidAffiliateId = (id) => {
+    return id && id.length === 5 && id.endsWith('ak90');
+  };
+
+  if (!isValidAffiliateId(affiliateId)) {
+    console.error('SXO Resume Widget Error: Invalid or missing affiliate ID. Format should be: XX-ak90');
     return;
   }
 
@@ -18,7 +23,7 @@
         return;
       }
 
-      // Create widget iframe
+      // Create widget iframe with validated affiliate ID
       const iframe = document.createElement('iframe');
       iframe.src = `https://sxoresumebulider.vercel.app/builder?ref=${affiliateId}`;
       iframe.style.width = '100%';
@@ -29,8 +34,12 @@
       // Add iframe to container
       container.appendChild(iframe);
 
-      // Track referral
-      localStorage.setItem('sxo_affiliate_ref', affiliateId);
+      // Track referral with timestamp
+      const referralData = {
+        affiliateId,
+        timestamp: new Date().toISOString()
+      };
+      localStorage.setItem('sxo_affiliate_ref', JSON.stringify(referralData));
     }
   };
 

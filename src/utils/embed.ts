@@ -1,4 +1,8 @@
 export const getEmbedCode = (affiliateId: string) => {
+  if (!affiliateId || affiliateId.length !== 5 || !affiliateId.endsWith('ak90')) {
+    throw new Error('Invalid affiliate ID format. Must be 5 characters long and end with "ak90"');
+  }
+
   return `
 <script>
   (function() {
@@ -13,10 +17,14 @@ export const getEmbedCode = (affiliateId: string) => {
 };
 
 export const initializeWidget = (affiliateId: string) => {
+  if (!affiliateId || affiliateId.length !== 5 || !affiliateId.endsWith('ak90')) {
+    console.error('Invalid affiliate ID format');
+    return;
+  }
+
   const container = document.getElementById('sxo-resume-widget');
   if (!container) return;
 
-  // Create the widget iframe
   const iframe = document.createElement('iframe');
   iframe.src = `https://sxoresumebulider.vercel.app/builder?ref=${affiliateId}`;
   iframe.style.width = '100%';
@@ -24,25 +32,19 @@ export const initializeWidget = (affiliateId: string) => {
   iframe.style.border = 'none';
   iframe.style.borderRadius = '8px';
   
-  // Add the iframe to the container
   container.appendChild(iframe);
 
-  // Track affiliate referral
-  const trackReferral = () => {
-    try {
-      // Store affiliate ID in localStorage for attribution
-      localStorage.setItem('sxo_affiliate_ref', affiliateId);
-      
-      // Send tracking event to parent
-      window.parent.postMessage({
-        type: 'SXO_AFFILIATE_REFERRAL',
-        affiliateId: affiliateId,
-        timestamp: new Date().toISOString()
-      }, '*');
-    } catch (error) {
-      console.error('Error tracking affiliate referral:', error);
-    }
+  // Track affiliate referral with timestamp
+  const referralData = {
+    affiliateId,
+    timestamp: new Date().toISOString()
   };
-
-  trackReferral();
+  
+  localStorage.setItem('sxo_affiliate_ref', JSON.stringify(referralData));
+  
+  // Notify parent window
+  window.parent.postMessage({
+    type: 'SXO_AFFILIATE_REFERRAL',
+    ...referralData
+  }, '*');
 };
