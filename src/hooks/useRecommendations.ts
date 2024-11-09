@@ -3,7 +3,7 @@ import {
   getPersonalizedRecommendations, 
   updateUserPreferences, 
   createUserProfile,
-  UserProfile 
+  UserProfile  // Ensure this is imported from the correct location
 } from '../utils/recommendations';
 
 export const useRecommendations = (userId: string) => {

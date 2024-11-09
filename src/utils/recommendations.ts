@@ -1,12 +1,14 @@
 import { analyzeResume } from './huggingface';
 
-interface UserPreference {
+// Export the UserPreference interface
+export interface UserPreference {
   category: string;
   weight: number;
   lastInteraction: Date;
 }
 
-interface UserProfile {
+// Export the UserProfile interface
+export interface UserProfile {
   id: string;
   preferences: UserPreference[];
   viewHistory: string[];
