@@ -1,11 +1,43 @@
 import { Link } from "react-router-dom";
-import { Mail, Clock, Keyboard } from "lucide-react";
+import { Mail, Clock, Keyboard, Share2 } from "lucide-react";
+import { Button } from "./ui/button";
+import { toast } from "./ui/use-toast";
 
 const Footer = () => {
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'SXO Resume Builder',
+          text: 'Create professional, ATS-optimized resumes with SXO Resume Builder!',
+          url: window.location.origin
+        });
+        toast({
+          title: "Thanks for sharing!",
+          description: "You're helping others discover professional resume building tools.",
+        });
+      } else {
+        // Fallback for browsers that don't support native sharing
+        navigator.clipboard.writeText(window.location.origin);
+        toast({
+          title: "Link copied!",
+          description: "Share this link with your network to help them create professional resumes.",
+        });
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      toast({
+        title: "Couldn't share",
+        description: "Please try copying the link manually.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <footer className="bg-gray-50 border-t mt-auto print:hidden">
       <div className="responsive-container py-6 sm:py-8 lg:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
           {/* Quick Links Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-primary">Quick Links</h3>
@@ -69,6 +101,28 @@ const Footer = () => {
                     <p className="text-gray-600">Linux: Full Support</p>
                     <p className="text-gray-600">Mobile: Basic Support</p>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* New Share Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-primary">Share & Earn</h3>
+            <div className="space-y-3">
+              <div className="flex items-start gap-2">
+                <Share2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-medium text-gray-700 block mb-2">Help Others Succeed</span>
+                  <p className="text-gray-600 mb-4">Share SXO Resume Builder with your network and help them create professional, ATS-optimized resumes.</p>
+                  <Button 
+                    onClick={handleShare}
+                    className="w-full"
+                    variant="outline"
+                  >
+                    <Share2 className="w-4 h-4 mr-2" />
+                    Share Now
+                  </Button>
                 </div>
               </div>
             </div>
