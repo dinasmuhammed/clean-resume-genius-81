@@ -12,7 +12,6 @@ export const QuickLinks = () => (
           { to: "/terms", label: "Terms & Conditions" },
           { to: "/privacy", label: "Privacy Policy" },
           { to: "/cookies", label: "Cookies Policy" },
-          { to: "/embed", label: "Embed Widget" },
         ].map(({ to, label }) => (
           <Link
             key={to}
