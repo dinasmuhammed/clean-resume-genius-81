@@ -25,16 +25,29 @@ interface PaymentDialogProps {
 export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = false }: PaymentDialogProps) => {
   const { toast } = useToast();
   const [referralCode, setReferralCode] = useState("");
-  
+  const [isValidatingCode, setIsValidatingCode] = useState(false);
+
+  const validateReferralCode = (code: string) => {
+    // Basic validation: must be exactly 5 characters and end with "ak90"
+    return code.length === 5 && code.endsWith("ak90");
+  };
+
+  const calculateDiscountedAmount = (originalAmount: number, code: string) => {
+    if (validateReferralCode(code)) {
+      return Math.floor(originalAmount * 0.9); // 10% discount
+    }
+    return originalAmount;
+  };
+
   const handlePayment = () => {
+    setIsValidatingCode(true);
     try {
-      let amount = isAtsCheck ? 29 : 299;
-      
-      // Apply referral discount if code exists
+      const baseAmount = isAtsCheck ? 29 : 299;
+      let finalAmount = baseAmount;
+
       if (referralCode) {
-        // Validate referral code (this is a simple example)
-        if (referralCode.length === 5 && referralCode.endsWith("ak90")) {
-          amount = Math.floor(amount * 0.9); // 10% discount
+        if (validateReferralCode(referralCode)) {
+          finalAmount = calculateDiscountedAmount(baseAmount, referralCode);
           toast({
             title: "Referral Applied",
             description: "You got 10% off with your referral code!",
@@ -45,18 +58,30 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
             description: "The referral code is not valid.",
             variant: "destructive",
           });
+          setIsValidatingCode(false);
           return;
         }
       }
-      
-      initializePayment(amount, onSuccess);
+
+      initializePayment(finalAmount, () => {
+        onSuccess();
+        setIsValidatingCode(false);
+      });
     } catch (error) {
+      setIsValidatingCode(false);
       toast({
         title: "Payment Error",
         description: "There was an error processing your payment. Please try again.",
         variant: "destructive",
       });
     }
+  };
+
+  const getDisplayAmount = () => {
+    const baseAmount = isAtsCheck ? 29 : 299;
+    return validateReferralCode(referralCode) ? 
+      calculateDiscountedAmount(baseAmount, referralCode) : 
+      baseAmount;
   };
 
   return (
@@ -93,6 +118,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
                 placeholder="Enter referral code"
                 value={referralCode}
                 onChange={(e) => setReferralCode(e.target.value)}
+                disabled={isValidatingCode}
               />
               <p className="text-xs text-muted-foreground">
                 Use a valid referral code to get 10% off! Don't have one? 
@@ -104,11 +130,15 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-col space-y-2 sm:space-y-0">
-          <AlertDialogAction onClick={handlePayment} className="w-full sm:w-auto">
+          <AlertDialogAction 
+            onClick={handlePayment} 
+            className="w-full sm:w-auto"
+            disabled={isValidatingCode}
+          >
             <Download className="w-4 h-4 mr-2" />
             {isAtsCheck ? 
-              `Analyze Resume (₹${referralCode.length === 5 && referralCode.endsWith("ak90") ? "26" : "29"})` : 
-              `Download Premium Resume (₹${referralCode.length === 5 && referralCode.endsWith("ak90") ? "269" : "299"})`
+              `Analyze Resume (₹${getDisplayAmount()})` : 
+              `Download Premium Resume (₹${getDisplayAmount()})`
             }
           </AlertDialogAction>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
