@@ -8,7 +8,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { FileText, CheckCircle2, BookOpen, Info, Heart } from "lucide-react";
+import { FileText, CheckCircle2, BookOpen, Info } from "lucide-react";
 import FeedbackDialog from "./FeedbackDialog";
 
 const Navbar = () => {
@@ -59,13 +59,6 @@ const Navbar = () => {
                     <div>
                       <div className="text-sm font-medium text-gray-900">About Us</div>
                       <p className="text-xs text-gray-500">Learn about our mission</p>
-                    </div>
-                  </Link>
-                  <Link to="/affiliate-signup" className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md">
-                    <Heart className="w-4 h-4 text-gray-400" />
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">Affiliate Program</div>
-                      <p className="text-xs text-gray-500">Join our affiliate network</p>
                     </div>
                   </Link>
                 </div>
