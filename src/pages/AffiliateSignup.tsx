@@ -6,12 +6,17 @@ import { useNavigate } from "react-router-dom";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { generateAffiliateId } from "@/utils/affiliateUtils";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { getEmbedCode } from "@/utils/embed";
+import { Copy } from "lucide-react";
 
 const AffiliateSignup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
   const [description, setDescription] = useState("");
+  const [showEmbedDialog, setShowEmbedDialog] = useState(false);
+  const [generatedId, setGeneratedId] = useState("");
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -19,15 +24,9 @@ const AffiliateSignup = () => {
     e.preventDefault();
     
     if (name && email && website) {
-      // Generate unique affiliate ID using the new generator
       const affiliateId = generateAffiliateId(email);
-      
-      toast({
-        title: "Success",
-        description: `Your unique affiliate ID is: ${affiliateId}`,
-      });
-      
-      navigate(`/embed?id=${affiliateId}`);
+      setGeneratedId(affiliateId);
+      setShowEmbedDialog(true);
     } else {
       toast({
         title: "Error",
@@ -35,6 +34,15 @@ const AffiliateSignup = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const handleCopyCode = () => {
+    const embedCode = getEmbedCode(generatedId);
+    navigator.clipboard.writeText(embedCode);
+    toast({
+      title: "Success",
+      description: "Embed code copied to clipboard!",
+    });
   };
 
   return (
@@ -130,6 +138,36 @@ const AffiliateSignup = () => {
           </div>
         </div>
       </div>
+
+      <Dialog open={showEmbedDialog} onOpenChange={setShowEmbedDialog}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Your Embed Code</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600">
+              Your affiliate ID is: <span className="font-mono font-bold">{generatedId}</span>
+            </p>
+            <div className="relative">
+              <pre className="bg-gray-50 p-4 rounded-lg text-sm overflow-x-auto">
+                {getEmbedCode(generatedId)}
+              </pre>
+              <Button
+                onClick={handleCopyCode}
+                className="absolute top-2 right-2"
+                size="sm"
+                variant="secondary"
+              >
+                <Copy className="w-4 h-4 mr-2" />
+                Copy
+              </Button>
+            </div>
+            <p className="text-sm text-gray-600">
+              Copy this code and paste it into your website where you want the SXO Resume widget to appear.
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
