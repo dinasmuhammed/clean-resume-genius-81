@@ -1,16 +1,30 @@
+// Store counter in localStorage to persist across sessions
+const getNextAffiliateCounter = (): number => {
+  const currentCounter = parseInt(localStorage.getItem('affiliate_counter') || '0');
+  const nextCounter = currentCounter + 1;
+  localStorage.setItem('affiliate_counter', nextCounter.toString());
+  return nextCounter;
+};
+
+export const generateAffiliateId = (email: string): string => {
+  const counter = getNextAffiliateCounter();
+  // Format: CXXak90 where XX is a sequential number padded to 2 digits
+  const paddedCounter = counter.toString().padStart(2, '0');
+  return `c${paddedCounter}ak90`;
+};
+
 export const validateAffiliateId = (affiliateId: string): boolean => {
-  // Validate affiliate ID format (ends with 'ak90' and is 5 characters long)
-  return affiliateId && affiliateId.length === 5 && affiliateId.endsWith('ak90');
+  // Updated validation to match new format: cXXak90
+  const pattern = /^c\d{2}ak90$/;
+  return affiliateId && affiliateId.length === 7 && pattern.test(affiliateId);
 };
 
 export const getAffiliateReferral = (): string | null => {
   try {
-    // Check URL parameters first
     const urlParams = new URLSearchParams(window.location.search);
     const refFromUrl = urlParams.get('ref');
     
     if (refFromUrl && validateAffiliateId(refFromUrl)) {
-      // Store with timestamp
       const referralData = {
         affiliateId: refFromUrl,
         timestamp: new Date().toISOString()
@@ -19,7 +33,6 @@ export const getAffiliateReferral = (): string | null => {
       return refFromUrl;
     }
 
-    // Check localStorage as fallback
     const storedRefData = localStorage.getItem('sxo_affiliate_ref');
     if (storedRefData) {
       try {

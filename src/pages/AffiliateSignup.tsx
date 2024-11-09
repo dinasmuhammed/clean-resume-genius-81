@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import { generateAffiliateId } from "@/utils/affiliateUtils";
 
 const AffiliateSignup = () => {
   const [name, setName] = useState("");
@@ -18,15 +19,14 @@ const AffiliateSignup = () => {
     e.preventDefault();
     
     if (name && email && website) {
-      // Generate affiliate ID from email
-      const affiliateId = email.slice(-3) + "ak90";
+      // Generate unique affiliate ID using the new generator
+      const affiliateId = generateAffiliateId(email);
       
       toast({
         title: "Success",
-        description: `Your affiliate ID is: ${affiliateId}`,
+        description: `Your unique affiliate ID is: ${affiliateId}`,
       });
       
-      // Redirect to embed page with the affiliate ID
       navigate(`/embed?id=${affiliateId}`);
     } else {
       toast({

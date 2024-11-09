@@ -1,6 +1,6 @@
 export const getEmbedCode = (affiliateId: string) => {
-  if (!affiliateId || affiliateId.length !== 5 || !affiliateId.endsWith('ak90')) {
-    throw new Error('Invalid affiliate ID format. Must be 5 characters long and end with "ak90"');
+  if (!affiliateId || affiliateId.length !== 7 || !/^c\d{2}ak90$/.test(affiliateId)) {
+    throw new Error('Invalid affiliate ID format. Must be in format cXXak90');
   }
 
   return `
@@ -17,7 +17,7 @@ export const getEmbedCode = (affiliateId: string) => {
 };
 
 export const initializeWidget = (affiliateId: string) => {
-  if (!affiliateId || affiliateId.length !== 5 || !affiliateId.endsWith('ak90')) {
+  if (!affiliateId || affiliateId.length !== 7 || !/^c\d{2}ak90$/.test(affiliateId)) {
     console.error('Invalid affiliate ID format');
     return;
   }
