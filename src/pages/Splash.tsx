@@ -104,23 +104,16 @@ const Splash = () => {
                 <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-8">
                   What Our Users Say
                 </h2>
-                <div className="flex flex-col items-center space-y-6">
-                  <iframe 
-                    src="https://www.producthunt.com/products/sxo-resume/reviews"
-                    className="w-full max-w-2xl h-[400px] rounded-lg border border-gray-200"
-                    title="Product Hunt Reviews"
-                  />
-                  <div className="mt-6">
-                    <a 
-                      href="https://www.producthunt.com/products/sxo-resume/reviews/new"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Button size="lg" className="bg-[#EA532A] hover:bg-[#D84315] text-white">
-                        Leave a Review on Product Hunt
-                      </Button>
-                    </a>
-                  </div>
+                <div className="flex flex-col items-center">
+                  <a 
+                    href="https://www.producthunt.com/products/sxo-resume/reviews/new"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button size="lg" className="bg-[#EA532A] hover:bg-[#D84315] text-white">
+                      Leave a Review on Product Hunt
+                    </Button>
+                  </a>
                 </div>
               </div>
             </div>
