@@ -27,17 +27,13 @@
   html {
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
-    overflow-x: hidden;
   }
 
   body {
-    @apply bg-gray-50 text-primary antialiased touch-manipulation min-h-screen flex flex-col;
+    @apply bg-background text-foreground antialiased touch-manipulation;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: clamp(14px, 1vw + 10px, 16px);
-    line-height: 1.7;
-    letter-spacing: -0.01em;
   }
 
   img {
@@ -47,7 +43,7 @@
 
 @layer components {
   .responsive-container {
-    @apply w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
   }
 
   .responsive-grid {
@@ -56,18 +52,6 @@
 
   .responsive-flex {
     @apply flex flex-col sm:flex-row items-start sm:items-center gap-6;
-  }
-
-  .responsive-text {
-    @apply text-sm sm:text-base;
-  }
-
-  .responsive-heading {
-    @apply text-xl sm:text-2xl font-medium tracking-tight;
-  }
-
-  .responsive-card {
-    @apply p-6 sm:p-8;
   }
 }
 

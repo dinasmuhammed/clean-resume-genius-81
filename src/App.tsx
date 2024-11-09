@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Splash from "./pages/Splash";
 import Index from "./pages/Index";
@@ -30,12 +30,12 @@ const queryClient = new QueryClient({
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-background">
         <Toaster />
         <Sonner />
         <BrowserRouter>
           <Navbar />
-          <div className="flex-1">
+          <main className="flex-1">
             <Routes>
               <Route path="/" element={<Splash />} />
               <Route path="/builder" element={<Index />} />
@@ -47,8 +47,9 @@ const App = () => (
               <Route path="/cookies" element={<Cookies />} />
               <Route path="/embed" element={<Embed />} />
               <Route path="/affiliate-signup" element={<AffiliateSignup />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-          </div>
+          </main>
           <Footer />
         </BrowserRouter>
       </div>
