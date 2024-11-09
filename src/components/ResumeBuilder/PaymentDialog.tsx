@@ -28,13 +28,12 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
   const [isValidatingCode, setIsValidatingCode] = useState(false);
 
   const validateReferralCode = (code: string) => {
-    // Basic validation: must be exactly 5 characters and end with "ak90"
     return code.length === 5 && code.endsWith("ak90");
   };
 
   const calculateDiscountedAmount = (originalAmount: number, code: string) => {
     if (validateReferralCode(code)) {
-      return Math.floor(originalAmount * 0.9); // 10% discount
+      return Math.floor(originalAmount * 0.9);
     }
     return originalAmount;
   };
@@ -121,10 +120,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
                 disabled={isValidatingCode}
               />
               <p className="text-xs text-muted-foreground">
-                Use a valid referral code to get 10% off! Don't have one? 
-                <a href="/affiliate-signup" className="text-primary hover:underline ml-1">
-                  Become an affiliate
-                </a>
+                Use a valid referral code to get 10% off!
               </p>
             </div>
           </AlertDialogDescription>
