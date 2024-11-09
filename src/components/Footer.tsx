@@ -106,9 +106,9 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* New Share Section */}
+          {/* Share Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-primary">Share & Earn</h3>
+            <h3 className="text-lg font-semibold text-primary">Share</h3>
             <div className="space-y-3">
               <div className="flex items-start gap-2">
                 <Share2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
