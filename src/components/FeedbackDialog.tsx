@@ -29,7 +29,7 @@ const FeedbackDialog = () => {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch("https://formbold.com/s/9XDVY", {
+      const response = await fetch("https://formbold.com/s/6l2zd", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
