@@ -12,6 +12,13 @@ interface ResumePreviewerProps {
 export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
   const PreviewContent = () => (
     <div className="max-w-[850px] mx-auto p-8 print:p-6">
+      {/* Watermark - hidden during print/export */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none print:hidden">
+        <div className="rotate-[-45deg] text-gray-200 text-[8rem] font-bold opacity-20 whitespace-nowrap">
+          SXO RESUME BUILDER
+        </div>
+      </div>
+
       {/* Contact Information */}
       {data.personal.fullName && (
         <div className="text-center border-b border-gray-200 pb-3 mb-4">
@@ -109,7 +116,7 @@ export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-sm">
+    <div className="bg-white rounded-lg shadow-sm relative">
       <div id="resume-preview" className="print:p-0 print:shadow-none">
         <PreviewContent />
       </div>
