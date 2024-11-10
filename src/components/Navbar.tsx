@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { FileText, CheckCircle2, BookOpen, Info } from "lucide-react";
 import FeedbackDialog from "./FeedbackDialog";
+import LinkedInAutomationDialog from "./LinkedInAutomation/LinkedInAutomationDialog";
 
 const Navbar = () => {
   return (
@@ -68,6 +69,7 @@ const Navbar = () => {
         </NavigationMenu>
 
         <div className="flex items-center gap-2">
+          <LinkedInAutomationDialog />
           <FeedbackDialog />
         </div>
       </div>
