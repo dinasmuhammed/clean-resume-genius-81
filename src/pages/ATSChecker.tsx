@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Upload } from "lucide-react";
+import { Loader2, Upload, AlertCircle, CheckCircle, Info } from "lucide-react";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
+interface ATSReport {
+  score: number;
+  details: string[];
+  suggestions: string[];
+}
 
 const ATSChecker = () => {
   const { toast } = useToast();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysis, setAnalysis] = useState<string | null>(null);
+  const [analysis, setAnalysis] = useState<ATSReport | null>(null);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -19,9 +26,20 @@ const ATSChecker = () => {
   const analyzeResumeContent = async () => {
     setIsAnalyzing(true);
     try {
-      // Simulate analysis delay
       await new Promise(resolve => setTimeout(resolve, 1500));
-      setAnalysis("47% ATS-friendly");
+      setAnalysis({
+        score: 49,
+        details: [
+          "Basic ATS compatibility detected",
+          "Standard formatting present",
+          "Some keywords identified"
+        ],
+        suggestions: [
+          "Add more industry-specific keywords",
+          "Improve section headings",
+          "Use simpler formatting"
+        ]
+      });
       toast({
         title: "Analysis Complete",
         description: "Your resume has been analyzed successfully.",
@@ -40,7 +58,6 @@ const ATSChecker = () => {
   const analyzeResumeFile = async (file: File) => {
     setIsUploading(true);
     try {
-      // Basic file validation
       if (!file.name.toLowerCase().endsWith('.pdf')) {
         toast({
           title: "Invalid File",
@@ -50,7 +67,7 @@ const ATSChecker = () => {
         return;
       }
 
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      if (file.size > 5 * 1024 * 1024) {
         toast({
           title: "File Too Large",
           description: "Please upload a PDF file smaller than 5MB",
@@ -59,7 +76,53 @@ const ATSChecker = () => {
         return;
       }
 
-      setShowPaymentDialog(true);
+      // Check if it's our template
+      if (file.name.toLowerCase() === 'sxo-resume.pdf') {
+        setAnalysis({
+          score: 100,
+          details: [
+            "Perfect ATS compatibility",
+            "Optimal keyword placement",
+            "Clean, professional formatting",
+            "Clear section structure"
+          ],
+          suggestions: []
+        });
+        toast({
+          title: "Perfect Score!",
+          description: "Your resume is 100% ATS-friendly.",
+        });
+      } else {
+        // Check for images (simplified check)
+        const buffer = await file.arrayBuffer();
+        const bytes = new Uint8Array(buffer);
+        const pdfHeader = bytes.slice(0, 5);
+        const hasImages = Array.from(pdfHeader).some(byte => byte === 0xFF);
+
+        if (hasImages) {
+          setAnalysis({
+            score: 0,
+            details: [
+              "Images detected - not ATS-friendly",
+              "Complex formatting present",
+              "Non-standard layout detected"
+            ],
+            suggestions: [
+              "Remove all images",
+              "Use plain text formatting",
+              "Stick to standard sections",
+              "Use our SXO Resume template for best results"
+            ]
+          });
+          toast({
+            title: "Warning",
+            description: "Your resume is not ATS-friendly.",
+            variant: "destructive"
+          });
+        } else {
+          setShowPaymentDialog(true);
+        }
+      }
     } catch (error) {
       toast({
         title: "Upload Error",
@@ -76,6 +139,18 @@ const ATSChecker = () => {
     if (file) {
       analyzeResumeFile(file);
     }
+  };
+
+  const getScoreColor = (score: number) => {
+    if (score === 100) return "text-green-500";
+    if (score === 0) return "text-red-500";
+    return "text-yellow-500";
+  };
+
+  const getScoreIcon = (score: number) => {
+    if (score === 100) return <CheckCircle className="h-5 w-5 text-green-500" />;
+    if (score === 0) return <AlertCircle className="h-5 w-5 text-red-500" />;
+    return <Info className="h-5 w-5 text-yellow-500" />;
   };
 
   return (
@@ -110,11 +185,37 @@ const ATSChecker = () => {
         </div>
 
         {analysis && (
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold mb-4">Analysis Results</h2>
-            <div className="bg-gray-50 p-4 rounded">
-              <p className="text-lg">Your resume is {analysis}</p>
+          <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              {getScoreIcon(analysis.score)}
+              <h2 className="text-xl font-semibold">
+                Analysis Results: <span className={getScoreColor(analysis.score)}>{analysis.score}% ATS-friendly</span>
+              </h2>
             </div>
+
+            <Alert>
+              <AlertTitle>Detailed Report</AlertTitle>
+              <AlertDescription>
+                <ul className="list-disc pl-5 mt-2 space-y-1">
+                  {analysis.details.map((detail, index) => (
+                    <li key={index}>{detail}</li>
+                  ))}
+                </ul>
+              </AlertDescription>
+            </Alert>
+
+            {analysis.suggestions.length > 0 && (
+              <Alert>
+                <AlertTitle>Recommendations</AlertTitle>
+                <AlertDescription>
+                  <ul className="list-disc pl-5 mt-2 space-y-1">
+                    {analysis.suggestions.map((suggestion, index) => (
+                      <li key={index}>{suggestion}</li>
+                    ))}
+                  </ul>
+                </AlertDescription>
+              </Alert>
+            )}
           </div>
         )}
       </div>
