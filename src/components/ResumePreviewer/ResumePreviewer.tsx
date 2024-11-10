@@ -1,4 +1,5 @@
 import { calculateResumeScore } from '@/utils/algorithms';
+import { Lock } from 'lucide-react';
 
 interface ResumePreviewerProps {
   data: {
@@ -7,17 +8,21 @@ interface ResumePreviewerProps {
     education: any[];
     skills: string[];
   };
+  isPaid?: boolean;
 }
 
-export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
+export const ResumePreviewer = ({ data, isPaid = false }: ResumePreviewerProps) => {
   const PreviewContent = () => (
     <div className="max-w-[850px] mx-auto p-8 print:p-6">
-      {/* Watermark - hidden during print/export */}
-      <div className="fixed inset-0 flex items-center justify-center pointer-events-none select-none print:hidden">
-        <div className="rotate-[-45deg] text-gray-200 text-[2.5rem] font-bold opacity-5 whitespace-nowrap absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          SXO RESUME BUILDER
+      {/* Lock overlay - hidden during print/export */}
+      {!isPaid && (
+        <div className="fixed inset-0 flex items-center justify-center pointer-events-none select-none print:hidden bg-gray-50/50">
+          <div className="flex flex-col items-center gap-2">
+            <Lock className="w-12 h-12 text-gray-400" />
+            <span className="text-sm text-gray-500 font-medium">Purchase to download</span>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Contact Information */}
       {data.personal.fullName && (

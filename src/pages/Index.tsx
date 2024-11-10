@@ -17,6 +17,7 @@ const Index = () => {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState("personal");
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [isPaid, setIsPaid] = useState(false);
   const [resumeData, setResumeData] = useState({
     personal: {},
     experience: [],
@@ -44,6 +45,7 @@ const Index = () => {
 
   const handlePaymentSuccess = () => {
     setShowPaymentDialog(false);
+    setIsPaid(true);
     toast({
       title: "Success",
       description: "Your resume is ready to download!",
@@ -71,7 +73,7 @@ const Index = () => {
           Download PDF
         </Button>
       </div>
-      <ResumePreviewer data={resumeData} />
+      <ResumePreviewer data={resumeData} isPaid={isPaid} />
     </div>
   );
 
