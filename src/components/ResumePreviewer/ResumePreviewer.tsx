@@ -1,5 +1,4 @@
 import { calculateResumeScore } from '@/utils/algorithms';
-import { Lock } from 'lucide-react';
 
 interface ResumePreviewerProps {
   data: {
@@ -14,16 +13,6 @@ interface ResumePreviewerProps {
 export const ResumePreviewer = ({ data, isPaid = false }: ResumePreviewerProps) => {
   const PreviewContent = () => (
     <div className="max-w-[850px] mx-auto p-8 print:p-6">
-      {/* Lock overlay - hidden during print/export */}
-      {!isPaid && (
-        <div className="fixed inset-0 flex items-center justify-center pointer-events-none select-none print:hidden bg-gray-50/50">
-          <div className="flex flex-col items-center gap-2">
-            <Lock className="w-12 h-12 text-gray-400" />
-            <span className="text-sm text-gray-500 font-medium">Purchase to download</span>
-          </div>
-        </div>
-      )}
-
       {/* Contact Information */}
       {data.personal.fullName && (
         <div className="text-center border-b border-gray-200 pb-3 mb-4">
