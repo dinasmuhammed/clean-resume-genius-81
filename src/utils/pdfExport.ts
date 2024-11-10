@@ -12,6 +12,16 @@ export const exportToPDF = async () => {
     return;
   }
 
+  // Check if the element has content
+  if (!element.innerHTML.trim()) {
+    toast({
+      title: "Error",
+      description: "No content to export. Please fill in your resume details first.",
+      variant: "destructive"
+    });
+    return;
+  }
+
   toast({
     title: "Generating PDF",
     description: "Your resume is being prepared for download..."
@@ -25,12 +35,15 @@ export const exportToPDF = async () => {
       scale: 2,
       useCORS: true,
       logging: false,
+      allowTaint: true,
+      foreignObjectRendering: true
     },
     jsPDF: { 
       unit: 'in', 
       format: 'letter', 
       orientation: 'portrait',
-      compress: true
+      compress: true,
+      quality: 1
     }
   };
 
@@ -41,6 +54,7 @@ export const exportToPDF = async () => {
       description: "Your resume has been downloaded successfully!"
     });
   } catch (error) {
+    console.error('PDF generation error:', error);
     toast({
       title: "Error",
       description: "Failed to generate PDF. Please try again.",

@@ -7,6 +7,16 @@ declare global {
 }
 
 export const initializePayment = (amount: number, onSuccess: () => void) => {
+  // Validate amount
+  if (!amount || amount <= 0) {
+    toast({
+      title: "Invalid Amount",
+      description: "Payment amount must be greater than 0.",
+      variant: "destructive",
+    });
+    return;
+  }
+
   if (!window.Razorpay) {
     toast({
       title: "Error",
@@ -30,6 +40,12 @@ export const initializePayment = (amount: number, onSuccess: () => void) => {
             title: "Payment Successful",
             description: "Thank you for your payment!",
           });
+        } else {
+          toast({
+            title: "Payment Failed",
+            description: "Payment verification failed. Please try again.",
+            variant: "destructive",
+          });
         }
       },
       prefill: {
@@ -39,6 +55,14 @@ export const initializePayment = (amount: number, onSuccess: () => void) => {
       theme: {
         color: "#6366f1",
       },
+      modal: {
+        ondismiss: function() {
+          toast({
+            title: "Payment Cancelled",
+            description: "You cancelled the payment process.",
+          });
+        }
+      }
     };
 
     const razorpay = new window.Razorpay(options);
