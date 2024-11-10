@@ -30,10 +30,10 @@ const App = () => (
     <TooltipProvider>
       <div className="min-h-screen flex flex-col bg-background">
         <Toaster />
-        <Sonner />
+        <Sonner position="top-center" closeButton richColors />
         <BrowserRouter>
           <Navbar />
-          <main className="flex-1">
+          <main className="flex-1 w-full max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8">
             <Routes>
               <Route path="/" element={<Splash />} />
               <Route path="/builder" element={<Index />} />

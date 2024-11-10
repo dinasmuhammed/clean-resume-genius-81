@@ -3,41 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Create ATS-friendly resumes and check your resume's ATS compatibility score" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Create professional, ATS-friendly resumes instantly. Free resume builder with modern templates and expert tips." />
+  <meta name="keywords" content="resume builder, CV maker, ATS friendly resume, professional resume, job application" />
+  <meta name="author" content="SXO Resume" />
+  <meta property="og:title" content="SXO Resume - Professional Resume Builder" />
+  <meta property="og:description" content="Create ATS-friendly resumes and check your resume's ATS compatibility score" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#2C3E50" />
   <title>SXO Resume - Professional Resume Builder</title>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
-  <script>
-    // Security measures
-    document.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-      return false;
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (
-        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
-        (e.ctrlKey && e.key === 'u') ||
-        e.key === 'F12'
-      ) {
-        e.preventDefault();
-        return false;
-      }
-    });
-
-    document.addEventListener('selectstart', (e) => {
-      e.preventDefault();
-      return false;
-    });
-
-    document.addEventListener('copy', (e) => {
-      e.preventDefault();
-      return false;
-    });
-  </script>
 </body>
 </html>
