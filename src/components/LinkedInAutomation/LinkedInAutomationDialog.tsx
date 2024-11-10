@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { LinkedIn, Robot } from "lucide-react";
+import { Linkedin, Bot } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 const LinkedInAutomationDialog = () => {
@@ -24,14 +24,14 @@ const LinkedInAutomationDialog = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" className="gap-2">
-          <LinkedIn className="h-4 w-4" />
+          <Linkedin className="h-4 w-4" />
           Auto Apply Jobs
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex gap-2 items-center">
-            <Robot className="h-5 w-5" />
+            <Bot className="h-5 w-5" />
             DevRecruitHub AI Job Automation
           </DialogTitle>
         </DialogHeader>
@@ -73,7 +73,7 @@ const LinkedInAutomationDialog = () => {
             />
           </div>
           <Button type="submit" className="w-full">
-            <Robot className="h-4 w-4 mr-2" />
+            <Bot className="h-4 w-4 mr-2" />
             Start Automation
           </Button>
         </form>
