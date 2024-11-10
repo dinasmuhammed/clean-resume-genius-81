@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Code, X } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 interface SkillsFormProps {
   isActive: boolean;
@@ -14,6 +15,14 @@ export const SkillsForm = ({ isActive, onComplete }: SkillsFormProps) => {
 
   const handleAddSkill = (e: React.FormEvent) => {
     e.preventDefault();
+    if (skills.length >= 5) {
+      toast({
+        variant: "destructive",
+        title: "Skills limit reached",
+        description: "You can only add up to 5 skills."
+      });
+      return;
+    }
     if (currentSkill.trim() && !skills.includes(currentSkill.trim())) {
       setSkills(prev => [...prev, currentSkill.trim()]);
       setCurrentSkill("");
