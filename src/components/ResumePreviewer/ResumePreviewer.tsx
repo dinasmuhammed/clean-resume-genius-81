@@ -14,7 +14,7 @@ export const ResumePreviewer = ({ data }: ResumePreviewerProps) => {
     <div className="max-w-[850px] mx-auto p-8 print:p-6">
       {/* Watermark - hidden during print/export */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none print:hidden">
-        <div className="rotate-[-45deg] text-gray-200 text-[8rem] font-bold opacity-20 whitespace-nowrap">
+        <div className="rotate-[-45deg] text-gray-200 text-[4rem] font-bold opacity-10 whitespace-nowrap">
           SXO RESUME BUILDER
         </div>
       </div>
