@@ -47,7 +47,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
     setIsProcessing(true);
     
     try {
-      const baseAmount = isAtsCheck ? 83 : 580;
+      const baseAmount = isAtsCheck ? 59 : 599;
       let finalAmount = baseAmount;
 
       if (referralCode) {

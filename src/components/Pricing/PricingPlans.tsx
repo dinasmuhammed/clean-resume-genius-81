@@ -16,8 +16,8 @@ export const PricingPlans = () => {
               <CardTitle>Resume Builder</CardTitle>
               <CardDescription>Create a professional, ATS-optimized resume</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold">₹580</span>
-                <span className="text-gray-600 ml-2">($7)</span>
+                <span className="text-4xl font-bold">₹599</span>
+                <span className="text-gray-600 ml-2">($7.5)</span>
               </div>
             </CardHeader>
             <CardContent>
@@ -47,8 +47,8 @@ export const PricingPlans = () => {
               <CardTitle>ATS Checker</CardTitle>
               <CardDescription>Analyze your existing resume</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold">₹83</span>
-                <span className="text-gray-600 ml-2">($1)</span>
+                <span className="text-4xl font-bold">₹59</span>
+                <span className="text-gray-600 ml-2">($0.75)</span>
               </div>
             </CardHeader>
             <CardContent>
