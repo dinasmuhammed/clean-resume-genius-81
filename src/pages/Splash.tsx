@@ -123,34 +123,23 @@ const Splash = () => {
             </div>
           </div>
 
-          {/* New Referral Program Section */}
+          {/* Referral Program Section */}
           <div className="py-12 bg-white rounded-xl shadow-sm">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center">
                 <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-8">
-                  Join Our Referral Program
+                  Save with Referral Codes
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
-                  <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
-                    <h3 className="text-xl font-semibold mb-4">For Users</h3>
-                    <ul className="text-gray-600 text-left space-y-2">
-                      <li>• Use referral codes for 10% off</li>
-                      <li>• Share with friends to save money</li>
-                      <li>• Valid on all our services</li>
-                    </ul>
-                  </div>
-
-                  <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
-                    <h3 className="text-xl font-semibold mb-4">For Affiliates</h3>
-                    <ul className="text-gray-600 text-left space-y-2">
-                      <li>• Earn for each referral</li>
-                      <li>• Get unique referral codes</li>
-                      <li>• Track your earnings</li>
-                    </ul>
-                    <Link to="/affiliate-signup" className="mt-4">
-                      <Button>Become an Affiliate</Button>
-                    </Link>
-                  </div>
+                <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg hover:shadow-md transition-shadow max-w-md mx-auto">
+                  <h3 className="text-xl font-semibold mb-4">Get 10% Off Your Purchase</h3>
+                  <ul className="text-gray-600 text-left space-y-2 mb-4">
+                    <li>• Use referral codes during checkout</li>
+                    <li>• Save 10% on resume builder</li>
+                    <li>• Save 10% on ATS checker</li>
+                  </ul>
+                  <p className="text-sm text-gray-500">
+                    Enter your referral code at checkout to claim your discount
+                  </p>
                 </div>
               </div>
             </div>
