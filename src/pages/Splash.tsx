@@ -4,14 +4,16 @@ import { Laptop, Shield, Clock } from "lucide-react";
 import FAQSection from "@/components/FAQ/FAQSection";
 import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { PricingPlans } from "@/components/Pricing/PricingPlans";
+import { FindBuilder } from "@/components/ResumeBuilder/FindBuilder";
+import { TutorialSection } from "@/components/ResumeBuilder/TutorialSection";
 
 const Splash = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-gray-100">
       {/* Navigation Bar */}
-      <nav className="w-full px-4 py-4 bg-white border-b z-50">
+      <nav className="w-full px-4 py-4 bg-white border-b z-50 shadow-sm">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <Link to="/" className="text-xl font-bold text-primary">
+          <Link to="/" className="text-2xl font-bold text-primary">
             Resume Builder
           </Link>
           <div className="flex items-center gap-4">
@@ -45,19 +47,25 @@ const Splash = () => {
 
           {/* Hero Section */}
           <div className="space-y-4 sm:space-y-6">
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-primary tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-primary tracking-tight">
               Create Your Professional Resume in Minutes
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto">
               Build an ATS-optimized resume that helps you stand out. Our intelligent system ensures your resume gets noticed by recruiters.
             </p>
             <div className="pt-4">
-              <SocialLinks /> {/* Added SocialLinks here */}
+              <SocialLinks />
             </div>
           </div>
 
           {/* Add Pricing Plans */}
           <PricingPlans />
+
+          {/* Tutorial Section */}
+          <TutorialSection />
+
+          {/* Find Resume Builder Section */}
+          <FindBuilder />
 
           {/* Why Use Our Online SXO Resume Builder Section */}
           <div className="py-12 bg-white rounded-xl shadow-sm">
@@ -149,7 +157,7 @@ const Splash = () => {
           <FAQSection />
 
           <div className="pt-6 sm:pt-8 text-xs sm:text-sm text-gray-500">
-            <p className="max-w-md mx-auto">Join thousands of job seekers who have successfully landed their dream jobs using SXO-Resume</p>
+            <p className="max-w-md mx-auto">Join thousands of job seekers who have successfully landed their dream jobs using our Resume Builder</p>
           </div>
         </div>
       </div>
