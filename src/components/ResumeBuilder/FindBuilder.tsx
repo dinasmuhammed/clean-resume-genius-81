@@ -25,6 +25,13 @@ export const FindBuilder = () => {
     }
   ]);
 
+  const handleContactBuilder = (builderEmail: string) => {
+    toast({
+      title: "Contact Request Sent",
+      description: `We'll connect you with the builder soon!`,
+    });
+  };
+
   return (
     <div className="py-12 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4">
@@ -44,7 +51,12 @@ export const FindBuilder = () => {
                 <div className="space-y-2">
                   <p className="text-sm">Experience: {builder.experience}</p>
                   <p className="text-sm">Rating: {builder.rating}/5.0</p>
-                  <Button className="w-full mt-4">Contact Builder</Button>
+                  <Button 
+                    className="w-full mt-4"
+                    onClick={() => handleContactBuilder(builder.contact)}
+                  >
+                    Contact Builder
+                  </Button>
                 </div>
               </CardContent>
             </Card>
