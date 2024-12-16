@@ -83,6 +83,25 @@ export default {
         'fluid-xl': 'clamp(1.56rem, 1vw + 1.31rem, 2.11rem)',
         'fluid-2xl': 'clamp(1.95rem, 1.56vw + 1.56rem, 2.81rem)',
       },
+      animation: {
+        'fade-in': 'fadeIn 0.3s ease-in-out',
+        'slide-in': 'slideIn 0.3s ease-in-out',
+        'scale-in': 'scaleIn 0.3s ease-in-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideIn: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
