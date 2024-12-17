@@ -46,6 +46,9 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
     setIsValidatingCode(true);
     setIsProcessing(true);
     
+    // Clear any previous payment IDs
+    localStorage.removeItem('last_payment_id');
+    
     try {
       const baseAmount = isAtsCheck ? 59 : 599;
       let finalAmount = baseAmount;

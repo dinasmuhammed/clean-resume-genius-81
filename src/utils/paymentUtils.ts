@@ -32,19 +32,24 @@ export const initializePayment = (amount: number, onSuccess: () => void) => {
   try {
     console.log('Setting up Razorpay options');
     const options = {
-      key: "rzp_live_5JYQnqKRnKhB5y", // Using the provided live key
-      amount: amount * 100, // Razorpay expects amount in paise
+      key: "rzp_live_5JYQnqKRnKhB5y",
+      amount: amount * 100,
       currency: "INR",
       name: "SXO Resume",
       description: amount === 59 ? "ATS Score Check" : "Resume Download",
+      image: "https://your-logo-url.com/logo.png", // Add your logo URL
+      notes: {
+        address: "SXO Resume Headquarters"
+      },
       handler: function (response: any) {
         console.log('Payment response received:', response);
         if (response.razorpay_payment_id) {
           console.log('Payment successful:', response.razorpay_payment_id);
+          localStorage.setItem('last_payment_id', response.razorpay_payment_id);
           onSuccess();
           toast({
             title: "Payment Successful",
-            description: "Thank you for your payment!",
+            description: `Payment ID: ${response.razorpay_payment_id}`,
           });
         } else {
           console.error('Payment verification failed');
