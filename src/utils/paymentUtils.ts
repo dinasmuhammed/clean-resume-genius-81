@@ -32,11 +32,11 @@ export const initializePayment = (amount: number, onSuccess: () => void) => {
   try {
     console.log('Setting up Razorpay options');
     const options = {
-      key: "rzp_live_5JYQnqKRnKhB5y",
-      amount: amount * 100,
+      key: "rzp_live_5JYQnqKRnKhB5y", // Using the provided test key
+      amount: amount * 100, // Razorpay expects amount in paise
       currency: "INR",
       name: "SXO Resume",
-      description: amount === 83 ? "ATS Score Check" : "Resume Download",
+      description: amount === 59 ? "ATS Score Check" : "Resume Download",
       handler: function (response: any) {
         console.log('Payment response received:', response);
         if (response.razorpay_payment_id) {
