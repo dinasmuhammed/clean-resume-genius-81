@@ -10,18 +10,18 @@ export const FindBuilder = () => {
   const { toast } = useToast();
   const [builders, setBuilders] = useState([
     {
-      name: "John Doe",
+      name: "Muhammed Adnan",
       specialty: "Technical Resumes",
-      experience: "5+ years",
+      experience: "1+ years",
       rating: 4.8,
-      contact: "john@example.com"
+      contact: "adnanmuhammad4393@gmail.com"
     },
     {
-      name: "Jane Smith",
+      name: "Muhammed Hamdan",
       specialty: "Creative Resumes",
-      experience: "7+ years",
+      experience: "4+ Months",
       rating: 4.9,
-      contact: "jane@example.com"
+      contact: "ramlapuliyottramla@gmail.com"
     }
   ]);
 
