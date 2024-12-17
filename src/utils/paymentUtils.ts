@@ -32,7 +32,7 @@ export const initializePayment = (amount: number, onSuccess: () => void) => {
   try {
     console.log('Setting up Razorpay options');
     const options = {
-      key: "rzp_live_5JYQnqKRnKhB5y", // Using the provided test key
+      key: "rzp_live_5JYQnqKRnKhB5y", // Using the provided live key
       amount: amount * 100, // Razorpay expects amount in paise
       currency: "INR",
       name: "SXO Resume",
