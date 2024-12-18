@@ -42,12 +42,11 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
   };
 
   const handlePayment = async () => {
+    if (isProcessing) return;
+    
     console.log('Starting payment process');
     setIsValidatingCode(true);
     setIsProcessing(true);
-    
-    // Clear any previous payment IDs
-    localStorage.removeItem('last_payment_id');
     
     try {
       const baseAmount = isAtsCheck ? 59 : 599;
