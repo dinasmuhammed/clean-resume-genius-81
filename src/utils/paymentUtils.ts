@@ -1,5 +1,12 @@
 import { toast } from "@/hooks/use-toast";
 
+// Declare global Razorpay type
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 const RAZORPAY_KEY = "rzp_live_5JYQnqKRnKhB5y";
 
 export const initializePayment = (amount: number, onSuccess: () => void) => {
