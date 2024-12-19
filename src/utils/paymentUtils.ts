@@ -1,16 +1,53 @@
 import { toast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
 
-// Define Razorpay types
+// Define Razorpay types for better TypeScript support
 declare global {
   interface Window {
-    Razorpay: any;
+    Razorpay: {
+      new (options: RazorpayOptions): RazorpayInstance;
+    };
   }
+}
+
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  image: string;
+  handler: (response: RazorpayResponse) => void;
+  prefill: {
+    name: string;
+    email: string;
+    contact: string;
+  };
+  notes: {
+    address: string;
+  };
+  theme: {
+    color: string;
+  };
+  modal?: {
+    ondismiss: () => void;
+  };
+}
+
+interface RazorpayInstance {
+  open: () => void;
+}
+
+interface RazorpayResponse {
+  razorpay_payment_id: string;
+  razorpay_order_id?: string;
+  razorpay_signature?: string;
 }
 
 interface PaymentSuccessHandler {
   (): void;
 }
+
+const RAZORPAY_KEY = "rzp_live_5JYQnqKRnKhB5y";
 
 export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandler) => {
   console.log('Initializing payment with amount:', amount);
@@ -38,14 +75,16 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
 
   return new Promise((resolve, reject) => {
     try {
-      const options = {
-        key: "rzp_live_5JYQnqKRnKhB5y",
-        amount: amount * 100,
+      console.log('Creating Razorpay instance with options');
+      
+      const options: RazorpayOptions = {
+        key: RAZORPAY_KEY,
+        amount: amount * 100, // Convert to paise
         currency: "INR",
         name: "SXO Resume",
         description: "Resume Builder Premium Access",
         image: "https://i.imgur.com/n5tjHFD.png",
-        handler: function (response: any) {
+        handler: function (response: RazorpayResponse) {
           console.log('Payment response received:', response);
           if (response.razorpay_payment_id) {
             console.log('Payment successful:', response.razorpay_payment_id);
@@ -89,10 +128,8 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
         }
       };
 
-      console.log('Creating new Razorpay instance');
-      const razorpay = new window.Razorpay(options);
-      
       console.log('Opening Razorpay payment modal');
+      const razorpay = new window.Razorpay(options);
       razorpay.open();
       
     } catch (error) {
