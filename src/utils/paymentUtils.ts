@@ -1,15 +1,18 @@
 import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
-// Declare global Razorpay type
+// Define Razorpay types
 declare global {
   interface Window {
     Razorpay: any;
   }
 }
 
-const RAZORPAY_KEY = "rzp_live_5JYQnqKRnKhB5y";
+interface PaymentSuccessHandler {
+  (): void;
+}
 
-export const initializePayment = (amount: number, onSuccess: () => void) => {
+export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandler) => {
   console.log('Initializing payment with amount:', amount);
   
   if (!amount || amount <= 0) {
@@ -29,19 +32,15 @@ export const initializePayment = (amount: number, onSuccess: () => void) => {
       description: "Payment system is not available. Please refresh the page.",
       variant: "destructive",
     });
+    window.location.href = '/error';
     return Promise.reject(new Error('Razorpay not initialized'));
   }
 
   return new Promise((resolve, reject) => {
     try {
-      console.log('Setting up Razorpay options with key:', RAZORPAY_KEY);
-      
-      // Clear any previous payment IDs
-      localStorage.removeItem('last_payment_id');
-      
       const options = {
-        key: RAZORPAY_KEY,
-        amount: amount * 100, // Convert to paise
+        key: "rzp_live_5JYQnqKRnKhB5y",
+        amount: amount * 100,
         currency: "INR",
         name: "SXO Resume",
         description: "Resume Builder Premium Access",
@@ -103,6 +102,7 @@ export const initializePayment = (amount: number, onSuccess: () => void) => {
         description: "Failed to initialize payment. Please try again.",
         variant: "destructive",
       });
+      window.location.href = '/error';
       reject(error);
     }
   });
