@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from "react";
+import { toast } from "@/hooks/use-toast";
 import Navbar from "./components/Navbar";
 import Splash from "./pages/Splash";
 import Index from "./pages/Index";
@@ -17,6 +18,7 @@ import Error from "./pages/Error";
 import Footer from "./components/Footer";
 import { initializePushNotifications } from "./utils/pushNotifications";
 
+// Configure query client with better error handling
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -24,13 +26,27 @@ const queryClient = new QueryClient({
       gcTime: 1000 * 60 * 60 * 24,
       retry: 3,
       refetchOnWindowFocus: false,
+      onError: (error) => {
+        console.error('Query error:', error);
+        toast({
+          title: "Error",
+          description: "An error occurred while fetching data. Please try again.",
+          variant: "destructive",
+        });
+      },
     },
   },
 });
 
 const App = () => {
   useEffect(() => {
-    initializePushNotifications();
+    console.log('App initialized');
+    try {
+      initializePushNotifications();
+      console.log('Push notifications initialized');
+    } catch (error) {
+      console.error('Failed to initialize push notifications:', error);
+    }
   }, []);
 
   return (
