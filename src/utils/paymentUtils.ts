@@ -69,7 +69,6 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
       description: "Payment system is not available. Please refresh the page.",
       variant: "destructive",
     });
-    window.location.href = '/error';
     return Promise.reject(new Error('Razorpay not initialized'));
   }
 
@@ -139,7 +138,6 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
         description: "Failed to initialize payment. Please try again.",
         variant: "destructive",
       });
-      window.location.href = '/error';
       reject(error);
     }
   });

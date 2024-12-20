@@ -18,12 +18,12 @@ import Error from "./pages/Error";
 import Footer from "./components/Footer";
 import { initializePushNotifications } from "./utils/pushNotifications";
 
-// Configure query client with better error handling
+// Configure query client with better error handling and caching
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 60 * 24,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 60 * 24, // 24 hours
       retry: 3,
       refetchOnWindowFocus: false,
       meta: {
