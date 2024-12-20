@@ -91,7 +91,7 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
             localStorage.setItem('last_payment_id', response.razorpay_payment_id);
             toast({
               title: "Payment Successful",
-              description: `Payment ID: ${response.razorpay_payment_id}`,
+              description: "Your resume will be downloaded automatically.",
             });
             onSuccess();
             resolve(response);
