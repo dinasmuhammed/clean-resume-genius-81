@@ -64,7 +64,7 @@ const App = () => {
       toast({
         title: "Warning",
         description: "Push notifications could not be initialized. Some features may be limited.",
-        variant: "warning",
+        variant: "warning" as const,
       });
     }
   }, []);
