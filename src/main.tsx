@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import './index.css'
 import { disableRightClick } from './utils/rightClickProtection'
@@ -47,13 +46,9 @@ if (!root) {
   throw new Error('Root element not found');
 }
 
-// Initialize app with error boundary and router
+// Initialize app with error boundary
 try {
-  createRoot(root).render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  );
+  createRoot(root).render(<App />);
 } catch (error) {
   console.error('Failed to initialize app:', error);
   toast({
