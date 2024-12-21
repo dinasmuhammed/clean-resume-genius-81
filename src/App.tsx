@@ -1,67 +1,84 @@
-import { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/hooks/use-toast";
-import { initializePushNotifications } from "@/utils/pushNotifications";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { toast } from "@/hooks/use-toast";
+import Navbar from "./components/Navbar";
+import Splash from "./pages/Splash";
+import Index from "./pages/Index";
+import ATSChecker from "./pages/ATSChecker";
+import InterviewGuide from "./pages/InterviewGuide";
+import About from "./pages/About";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Cookies from "./pages/Cookies";
+import Error from "./pages/Error";
+import Footer from "./components/Footer";
+import { initializePushNotifications } from "./utils/pushNotifications";
 
-// Pages
-import Index from "@/pages/Index";
-import About from "@/pages/About";
-import Error from "@/pages/Error";
-import ATSChecker from "@/pages/ATSChecker";
-import InterviewGuide from "@/pages/InterviewGuide";
-import Privacy from "@/pages/Privacy";
-import Terms from "@/pages/Terms";
-import Cookies from "@/pages/Cookies";
-import Splash from "@/pages/Splash";
+// Configure query client with better error handling and caching
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 60 * 24, // 24 hours
+      retry: 3,
+      refetchOnWindowFocus: false,
+      meta: {
+        onError: (error: Error) => {
+          console.error('Query error:', error);
+          toast({
+            title: "Error",
+            description: "An error occurred while fetching data. Please try again.",
+            variant: "destructive",
+          });
+        },
+      },
+    },
+  },
+});
 
-// Components
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-
-function App() {
-  const { toast } = useToast();
-
+const App = () => {
   useEffect(() => {
-    console.info("App initialized");
-
-    const initializeApp = async () => {
-      try {
-        await initializePushNotifications();
-        console.info("Push notifications initialized successfully");
-      } catch (error) {
-        console.warn("Push notifications initialization failed:", error);
-        toast({
-          title: "Warning",
-          description: "Push notifications could not be initialized. Some features may be limited.",
-          variant: "warning" as const,
-        });
-      }
-    };
-
-    initializeApp();
+    console.log('App initialized');
+    try {
+      initializePushNotifications();
+      console.log('Push notifications initialized');
+    } catch (error) {
+      console.error('Failed to initialize push notifications:', error);
+    }
   }, []);
 
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen">
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/ats-checker" element={<ATSChecker />} />
-          <Route path="/interview-guide" element={<InterviewGuide />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/cookies" element={<Cookies />} />
-          <Route path="/splash" element={<Splash />} />
-          <Route path="*" element={<Error />} />
-        </Routes>
-      </main>
-      <Footer />
-      <Toaster />
-    </>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <div className="min-h-screen flex flex-col bg-background">
+          <Toaster />
+          <Sonner position="top-center" closeButton richColors />
+          <BrowserRouter>
+            <Navbar />
+            <main className="flex-1 w-full max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8">
+              <Routes>
+                <Route path="/" element={<Splash />} />
+                <Route path="/builder" element={<Index />} />
+                <Route path="/ats-checker" element={<ATSChecker />} />
+                <Route path="/interview-guide" element={<InterviewGuide />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/cookies" element={<Cookies />} />
+                <Route path="/error" element={<Error />} />
+                <Route path="*" element={<Navigate to="/error" replace />} />
+              </Routes>
+            </main>
+            <Footer />
+          </BrowserRouter>
+        </div>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;
