@@ -18,7 +18,7 @@ import Error from "./pages/Error";
 import Footer from "./components/Footer";
 import { initializePushNotifications } from "./utils/pushNotifications";
 
-// Configure query client with better error handling and caching
+// Configure query client with optimized error handling and caching
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -37,6 +37,19 @@ const queryClient = new QueryClient({
         },
       },
     },
+    mutations: {
+      retry: 2,
+      meta: {
+        onError: (error: Error) => {
+          console.error('Mutation error:', error);
+          toast({
+            title: "Error",
+            description: "An error occurred while updating data. Please try again.",
+            variant: "destructive",
+          });
+        },
+      },
+    },
   },
 });
 
@@ -45,9 +58,14 @@ const App = () => {
     console.log('App initialized');
     try {
       initializePushNotifications();
-      console.log('Push notifications initialized');
+      console.log('Push notifications initialized successfully');
     } catch (error) {
       console.error('Failed to initialize push notifications:', error);
+      toast({
+        title: "Warning",
+        description: "Push notifications could not be initialized. Some features may be limited.",
+        variant: "warning",
+      });
     }
   }, []);
 
