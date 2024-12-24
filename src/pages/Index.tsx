@@ -7,7 +7,7 @@ import { SkillsForm } from "@/components/ResumeForm/SkillsForm";
 import { ResumePreviewer } from "@/components/ResumePreviewer/ResumePreviewer";
 import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { useToast } from "@/hooks/use-toast";
-import { Download, FileText, CheckCircle, Heart, ArrowLeft, Eye, User, Briefcase, GraduationCap, Code } from "lucide-react";
+import { Download, FileText, CheckCircle, ArrowLeft, Eye, User, Briefcase, GraduationCap, Code } from "lucide-react";
 import { Link } from "react-router-dom";
 import { exportToFormat } from "@/utils/pdfExport";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
