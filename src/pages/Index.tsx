@@ -13,16 +13,48 @@ import { exportToFormat } from "@/utils/pdfExport";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
+interface PersonalInfo {
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  website?: string;
+  summary?: string;
+}
+
+interface Experience {
+  position: string;
+  company: string;
+  startDate: string;
+  endDate?: string;
+  description: string;
+}
+
+interface Education {
+  school: string;
+  degree: string;
+  field: string;
+  startDate: string;
+  endDate?: string;
+}
+
 interface ResumeData {
-  personal: Record<string, any>;
-  experience: any[];
-  education: any[];
+  personal: PersonalInfo;
+  experience: Experience[];
+  education: Education[];
   skills: string[];
+}
+
+type SectionType = "personal" | "experience" | "education" | "skills";
+
+interface Section {
+  id: SectionType;
+  label: string;
+  icon: typeof User | typeof Briefcase | typeof GraduationCap | typeof Code;
 }
 
 const Index = () => {
   const { toast } = useToast();
-  const [activeSection, setActiveSection] = useState<string>("personal");
+  const [activeSection, setActiveSection] = useState<SectionType>("personal");
   const [showPaymentDialog, setShowPaymentDialog] = useState<boolean>(false);
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const [resumeData, setResumeData] = useState<ResumeData>({
@@ -32,14 +64,14 @@ const Index = () => {
     skills: []
   });
 
-  const sections = [
+  const sections: Section[] = [
     { id: "personal", label: "Personal Info", icon: User },
     { id: "experience", label: "Experience", icon: Briefcase },
     { id: "education", label: "Education", icon: GraduationCap },
     { id: "skills", label: "Skills", icon: Code },
   ];
 
-  const handleSectionComplete = (section: string, data: any) => {
+  const handleSectionComplete = (section: SectionType, data: any) => {
     setResumeData(prev => ({
       ...prev,
       [section]: section === "education" ? data.education : data
