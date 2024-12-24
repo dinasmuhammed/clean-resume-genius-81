@@ -13,12 +13,19 @@ import { exportToFormat } from "@/utils/pdfExport";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
+interface ResumeData {
+  personal: Record<string, any>;
+  experience: any[];
+  education: any[];
+  skills: string[];
+}
+
 const Index = () => {
   const { toast } = useToast();
-  const [activeSection, setActiveSection] = useState("personal");
-  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
-  const [isPaid, setIsPaid] = useState(false);
-  const [resumeData, setResumeData] = useState({
+  const [activeSection, setActiveSection] = useState<string>("personal");
+  const [showPaymentDialog, setShowPaymentDialog] = useState<boolean>(false);
+  const [isPaid, setIsPaid] = useState<boolean>(false);
+  const [resumeData, setResumeData] = useState<ResumeData>({
     personal: {},
     experience: [],
     education: [],
