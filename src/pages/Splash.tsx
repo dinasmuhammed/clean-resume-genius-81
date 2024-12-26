@@ -53,9 +53,6 @@ const Splash = () => {
             <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto">
               Build an ATS-optimized resume that helps you stand out. Our intelligent system ensures your resume gets noticed by recruiters.
             </p>
-            <p>
-            Make sure you pay the amount quickly; otherwise, the payment will fail, and you'll have to wait 7 days to get the amount credited back to your account.
-            </p>
             <div className="pt-4">
               <SocialLinks />
             </div>
