@@ -79,6 +79,15 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
         setIsValidatingCode(false);
         setIsProcessing(false);
         onOpenChange(false);
+      }).catch((error) => {
+        console.error('Payment error:', error);
+        toast({
+          title: "Payment Error",
+          description: "There was an error processing your payment. Please try again.",
+          variant: "destructive",
+        });
+        setIsValidatingCode(false);
+        setIsProcessing(false);
       });
     } catch (error) {
       console.error('Payment error:', error);

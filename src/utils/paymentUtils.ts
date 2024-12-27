@@ -1,6 +1,5 @@
 import { toast } from "@/hooks/use-toast";
 
-// Define Razorpay types for better TypeScript support
 declare global {
   interface Window {
     Razorpay: {
@@ -69,7 +68,6 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
       description: "Payment system is not available. Please refresh the page.",
       variant: "destructive",
     });
-    window.location.href = '/error';
     return Promise.reject(new Error('Razorpay not initialized'));
   }
 
@@ -79,7 +77,7 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
       
       const options: RazorpayOptions = {
         key: RAZORPAY_KEY,
-        amount: amount * 100, // Convert to paise
+        amount: amount * 100,
         currency: "INR",
         name: "SXO Resume",
         description: "Resume Builder Premium Access",
@@ -139,7 +137,6 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
         description: "Failed to initialize payment. Please try again.",
         variant: "destructive",
       });
-      window.location.href = '/error';
       reject(error);
     }
   });
