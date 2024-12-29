@@ -75,6 +75,9 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
     try {
       console.log('Creating Razorpay instance with options');
       
+      // Get the current origin without any trailing slashes
+      const origin = window.location.origin.replace(/\/$/, '');
+      
       const options: RazorpayOptions = {
         key: RAZORPAY_KEY,
         amount: amount * 100,
