@@ -1,126 +1,93 @@
 import { toast } from "@/hooks/use-toast";
 
-// Types for Razorpay integration
-interface RazorpayOptions {
-  key: string;
+interface PaymentOptions {
   amount: number;
-  currency: string;
-  name: string;
-  description: string;
-  order_id: string;
-  handler: (response: any) => void;
-  prefill: {
-    name: string;
-    email: string;
-    contact: string;
-  };
-  notes: {
-    address: string;
-  };
-  theme: {
-    color: string;
-  };
+  currency?: string;
+  format?: string;
 }
 
-declare global {
-  interface Window {
-    Razorpay: any;
-  }
-}
-
-// Constants
-const RAZORPAY_KEY = "rzp_test_yqFPyHtrqSs3C9";
-
-// Helper function to load Razorpay script
-const loadRazorpayScript = (): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onload = () => {
-      console.log('Razorpay script loaded successfully');
-      resolve();
-    };
-    script.onerror = () => {
-      console.error('Failed to load Razorpay script');
-      reject(new Error('Razorpay SDK failed to load'));
-    };
-    document.body.appendChild(script);
-  });
-};
-
-// Main payment initialization function
-export const initializePayment = async (
-  amount: number,
-  onSuccess: (format: string) => void
-): Promise<void> => {
-  console.log('Initializing payment for amount:', amount);
-
+export const initializePayment = async ({ amount, currency = 'INR', format = 'PDF' }: PaymentOptions) => {
   try {
-    // Load Razorpay script if not already loaded
-    if (!window.Razorpay) {
-      console.log('Loading Razorpay script...');
-      await loadRazorpayScript();
-    }
-
-    // Generate order ID (replace with actual order creation logic)
-    const orderId = 'order_' + Math.random().toString(36).substr(2, 9);
-    console.log('Generated order ID:', orderId);
-
-    try {
-      console.log('Creating Razorpay instance with options');
-      
-      // Get the current origin without any trailing slashes
-      const origin = window.location.origin.replace(/\/$/, '');
-      
-      const options: RazorpayOptions = {
-        key: RAZORPAY_KEY,
-        amount: amount * 100,
-        currency: "INR",
-        name: "Resume Builder Pro",
-        description: "Resume Builder Pro Subscription",
-        order_id: orderId,
-        handler: function (response: any) {
-          console.log('Payment successful:', response);
+    console.log('Initializing payment with options:', { amount, currency, format });
+    
+    const options = {
+      key: 'rzp_test_yQFgBqUY5IyZyF', // Replace with your actual key
+      amount: amount * 100, // Razorpay expects amount in smallest currency unit
+      currency,
+      name: 'Resume Builder',
+      description: `Resume download in ${format} format`,
+      handler: function (response: any) {
+        console.log('Payment successful:', response);
+        toast({
+          title: "Payment Successful",
+          description: "Your resume is being prepared for download.",
+        });
+        // Handle successful payment
+        handlePaymentSuccess(response, format);
+      },
+      prefill: {
+        name: '',
+        email: '',
+      },
+      theme: {
+        color: '#6366f1',
+      },
+      modal: {
+        ondismiss: function() {
+          console.log('Payment modal dismissed');
           toast({
-            title: "Payment Successful",
-            description: "Thank you for your purchase!",
+            title: "Payment Cancelled",
+            description: "You can try again when you're ready.",
+            variant: "destructive",
           });
-          onSuccess('pdf');
-        },
-        prefill: {
-          name: "",
-          email: "",
-          contact: ""
-        },
-        notes: {
-          address: "Resume Builder Pro Corporate Office"
-        },
-        theme: {
-          color: "#3399cc"
         }
-      };
+      }
+    };
 
-      const razorpayInstance = new window.Razorpay(options);
-      console.log('Opening Razorpay payment modal');
-      razorpayInstance.open();
-
-    } catch (error) {
-      console.error('Error creating Razorpay instance:', error);
-      toast({
-        title: "Payment Error",
-        description: "Failed to initialize payment. Please try again.",
-        variant: "destructive",
-      });
-      throw error;
-    }
-
+    const razorpay = new (window as any).Razorpay(options);
+    console.log('Razorpay instance created');
+    razorpay.open();
+    
+    return true;
   } catch (error) {
     console.error('Payment initialization failed:', error);
     toast({
       title: "Payment Error",
-      description: "Failed to initialize payment. Please try again.",
+      description: "There was an error initializing the payment. Please try again.",
       variant: "destructive",
     });
-    throw error;
+    return false;
   }
+};
+
+const handlePaymentSuccess = (response: any, format: string) => {
+  try {
+    console.log('Processing successful payment:', { response, format });
+    // Add your payment success logic here
+    // For example, trigger the resume download
+    
+    toast({
+      title: "Download Starting",
+      description: `Your resume will download shortly in ${format} format.`,
+    });
+  } catch (error) {
+    console.error('Error processing payment success:', error);
+    toast({
+      title: "Processing Error",
+      description: "There was an error processing your payment. Please contact support.",
+      variant: "destructive",
+    });
+  }
+};
+
+export const validatePaymentAmount = (amount: number): boolean => {
+  if (amount <= 0) {
+    toast({
+      title: "Invalid Amount",
+      description: "Payment amount must be greater than 0.",
+      variant: "destructive",
+    });
+    return false;
+  }
+  return true;
 };
