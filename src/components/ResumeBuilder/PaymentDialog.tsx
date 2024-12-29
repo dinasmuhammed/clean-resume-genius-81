@@ -13,7 +13,7 @@ interface PaymentDialogProps {
 export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = false }: PaymentDialogProps) => {
   const handlePayment = async (format: string) => {
     console.log('Initiating payment for format:', format);
-    const amount = isAtsCheck ? 299 : (format === 'PDF' ? 499 : 699); // Different price for ATS check
+    const amount = isAtsCheck ? 59 : (format === 'PDF' ? 599 : 699);
     
     const success = await initializePayment({
       amount,
@@ -47,7 +47,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
                 <Download className="h-5 w-5" />
                 <span>ATS Check</span>
               </div>
-              <span className="font-semibold">₹299</span>
+              <span className="font-semibold">₹59</span>
             </Button>
           ) : (
             <>
@@ -59,7 +59,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
                   <Download className="h-5 w-5" />
                   <span>PDF Format</span>
                 </div>
-                <span className="font-semibold">₹499</span>
+                <span className="font-semibold">₹599</span>
               </Button>
 
               <Button
