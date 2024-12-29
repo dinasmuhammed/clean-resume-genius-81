@@ -10,10 +10,18 @@ interface PaymentDialogProps {
   isAtsCheck?: boolean;
 }
 
-export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = false }: PaymentDialogProps) => {
+export const PaymentDialog = ({
+  open,
+  onOpenChange,
+  onSuccess,
+  isAtsCheck = false,
+}: PaymentDialogProps) => {
   const handlePayment = async (format: string) => {
     console.log('Initiating payment for format:', format);
-    const amount = isAtsCheck ? 59 : (format === 'PDF' ? 599 : 699);
+    
+    const amount = isAtsCheck 
+      ? 59 
+      : (format === 'PDF' ? 599 : 699);
     
     const success = await initializePayment({
       amount,
@@ -28,12 +36,20 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog 
+      open={open} 
+      onOpenChange={onOpenChange}
+    >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{isAtsCheck ? 'ATS Check Payment' : 'Choose Download Format'}</DialogTitle>
+          <DialogTitle>
+            {isAtsCheck ? 'ATS Check Payment' : 'Choose Download Format'}
+          </DialogTitle>
           <DialogDescription>
-            {isAtsCheck ? 'Process payment to get detailed ATS analysis' : 'Select your preferred resume format to download'}
+            {isAtsCheck 
+              ? 'Process payment to get detailed ATS analysis' 
+              : 'Select your preferred resume format to download'
+            }
           </DialogDescription>
         </DialogHeader>
         
