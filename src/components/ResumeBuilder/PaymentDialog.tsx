@@ -19,10 +19,14 @@ export const PaymentDialog = ({
   const handlePayment = async (format: string) => {
     console.log('Initiating payment for format:', format);
     
+    // Calculate payment amount based on format and type
     const amount = isAtsCheck 
       ? 59 
-      : (format === 'PDF' ? 599 : 699);
+      : format.toLowerCase() === 'pdf' 
+        ? 599 
+        : 699;
     
+    // Initialize payment with calculated amount
     const success = await initializePayment({
       amount,
       format,
@@ -30,7 +34,7 @@ export const PaymentDialog = ({
     });
 
     if (success) {
-      console.log('Payment flow initiated successfully');
+      console.log('Payment successful for format:', format);
       onSuccess(format);
     }
   };
@@ -42,10 +46,10 @@ export const PaymentDialog = ({
     >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="text-xl font-semibold">
             {isAtsCheck ? 'ATS Check Payment' : 'Choose Download Format'}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-gray-600">
             {isAtsCheck 
               ? 'Process payment to get detailed ATS analysis' 
               : 'Select your preferred resume format to download'
@@ -57,7 +61,7 @@ export const PaymentDialog = ({
           {isAtsCheck ? (
             <Button
               onClick={() => handlePayment('ATS')}
-              className="flex items-center justify-between p-4"
+              className="flex items-center justify-between p-4 hover:bg-primary/90"
             >
               <div className="flex items-center gap-2">
                 <Download className="h-5 w-5" />
@@ -69,7 +73,7 @@ export const PaymentDialog = ({
             <>
               <Button
                 onClick={() => handlePayment('PDF')}
-                className="flex items-center justify-between p-4"
+                className="flex items-center justify-between p-4 hover:bg-primary/90"
               >
                 <div className="flex items-center gap-2">
                   <Download className="h-5 w-5" />
