@@ -26,16 +26,20 @@ export const PaymentDialog = ({
         ? 599 
         : 699;
     
-    // Initialize payment with calculated amount
-    const success = await initializePayment({
-      amount,
-      format,
-      currency: 'INR'
-    });
+    try {
+      // Initialize payment with calculated amount
+      const success = await initializePayment({
+        amount,
+        format,
+        currency: 'INR'
+      });
 
-    if (success) {
-      console.log('Payment successful for format:', format);
-      onSuccess(format);
+      if (success) {
+        console.log('Payment successful for format:', format);
+        onSuccess(format);
+      }
+    } catch (error) {
+      console.error('Payment failed:', error);
     }
   };
 
@@ -46,10 +50,10 @@ export const PaymentDialog = ({
     >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">
+          <DialogTitle className="text-xl font-semibold tracking-tight">
             {isAtsCheck ? 'ATS Check Payment' : 'Choose Download Format'}
           </DialogTitle>
-          <DialogDescription className="text-gray-600">
+          <DialogDescription className="text-gray-600 mt-2">
             {isAtsCheck 
               ? 'Process payment to get detailed ATS analysis' 
               : 'Select your preferred resume format to download'
@@ -61,11 +65,11 @@ export const PaymentDialog = ({
           {isAtsCheck ? (
             <Button
               onClick={() => handlePayment('ATS')}
-              className="flex items-center justify-between p-4 hover:bg-primary/90"
+              className="flex items-center justify-between p-4 hover:bg-primary/90 transition-colors"
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <Download className="h-5 w-5" />
-                <span>ATS Check</span>
+                <span className="font-medium">ATS Check</span>
               </div>
               <span className="font-semibold">₹59</span>
             </Button>
@@ -73,23 +77,23 @@ export const PaymentDialog = ({
             <>
               <Button
                 onClick={() => handlePayment('PDF')}
-                className="flex items-center justify-between p-4 hover:bg-primary/90"
+                className="flex items-center justify-between p-4 hover:bg-primary/90 transition-colors"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <Download className="h-5 w-5" />
-                  <span>PDF Format</span>
+                  <span className="font-medium">PDF Format</span>
                 </div>
                 <span className="font-semibold">₹599</span>
               </Button>
 
               <Button
                 onClick={() => handlePayment('DOCX')}
-                className="flex items-center justify-between p-4"
-                variant="outline"
+                className="flex items-center justify-between p-4 hover:bg-secondary/90 transition-colors"
+                variant="secondary"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <Download className="h-5 w-5" />
-                  <span>DOCX Format</span>
+                  <span className="font-medium">DOCX Format</span>
                 </div>
                 <span className="font-semibold">₹699</span>
               </Button>
