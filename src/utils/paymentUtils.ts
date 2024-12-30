@@ -26,7 +26,7 @@ export const initializePayment = async ({
     return new Promise((resolve) => {
       const options = {
         key: 'rzp_test_yQFgBqUY5IyZyF',
-        amount: amount * 100, // Razorpay expects amount in smallest currency unit
+        amount: amount * 100,
         currency,
         name: 'Resume Builder Pro',
         description: `Professional Resume in ${format} format`,
@@ -46,18 +46,19 @@ export const initializePayment = async ({
             });
             resolve(true);
             return true;
+          } else {
+            console.log('Payment failed - no payment ID received');
+            toast({
+              title: "Payment Failed",
+              description: "Please try again or contact support",
+              variant: "destructive",
+            });
+            resolve(false);
+            return false;
           }
-          console.log('Payment failed - no payment ID received');
-          toast({
-            title: "Payment Failed",
-            description: "Please try again or contact support",
-            variant: "destructive",
-          });
-          resolve(false);
-          return false;
         },
         modal: {
-          ondismiss: function() {
+          ondismiss: function(): boolean {
             console.log('Payment modal dismissed by user');
             toast({
               title: "Payment Cancelled",
@@ -65,11 +66,11 @@ export const initializePayment = async ({
               variant: "destructive",
             });
             resolve(false);
+            return false;
           }
         }
       };
 
-      // Create and open Razorpay instance
       const razorpay = new (window as any).Razorpay(options);
       razorpay.open();
     });
