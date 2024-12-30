@@ -46,16 +46,15 @@ export const initializePayment = async ({
             });
             resolve(true);
             return true;
-          } else {
-            console.log('Payment failed - no payment ID received');
-            toast({
-              title: "Payment Failed",
-              description: "Please try again or contact support",
-              variant: "destructive",
-            });
-            resolve(false);
-            return false;
           }
+          console.log('Payment failed - no payment ID received');
+          toast({
+            title: "Payment Failed",
+            description: "Please try again or contact support",
+            variant: "destructive",
+          });
+          resolve(false);
+          return false;
         },
         modal: {
           ondismiss: function(): boolean {
