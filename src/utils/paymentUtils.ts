@@ -3,55 +3,28 @@ import { toast } from "@/hooks/use-toast";
 interface PaymentOptions {
   amount: number;
   currency?: string;
-  format: string;
+  format?: string;
 }
 
-interface RazorpayResponse {
-  razorpay_payment_id: string;
-}
-
-interface RazorpayInstance {
-  open: () => void;
-}
-
-interface RazorpayOptions {
-  key: string;
-  amount: number;
-  currency: string;
-  name: string;
-  description: string;
-  prefill: {
-    name: string;
-    email: string;
-  };
-  theme: {
-    color: string;
-  };
-  handler: (response: RazorpayResponse) => void;
-  modal: {
-    ondismiss: () => void;
-  };
-}
-
-export const initializePayment = async ({
-  amount,
-  currency = 'INR',
-  format
-}: PaymentOptions): Promise<boolean> => {
-  console.log('Initializing payment with options:', { amount, currency, format });
-  
-  if (!validatePaymentAmount(amount)) {
-    console.error('Payment validation failed for amount:', amount);
-    return false;
-  }
-
-  return new Promise<boolean>((resolve) => {
-    const options: RazorpayOptions = {
-      key: 'rzp_test_yQFgBqUY5IyZyF',
-      amount: amount * 100,
+export const initializePayment = async ({ amount, currency = 'INR', format = 'PDF' }: PaymentOptions) => {
+  try {
+    console.log('Initializing payment with options:', { amount, currency, format });
+    
+    const options = {
+      key: 'rzp_test_yQFgBqUY5IyZyF', // Replace with your actual key
+      amount: amount * 100, // Razorpay expects amount in smallest currency unit
       currency,
-      name: 'Resume Builder Pro',
-      description: `Professional Resume in ${format} format`,
+      name: 'Resume Builder',
+      description: `Resume download in ${format} format`,
+      handler: function (response: any) {
+        console.log('Payment successful:', response);
+        toast({
+          title: "Payment Successful",
+          description: "Your resume is being prepared for download.",
+        });
+        // Handle successful payment
+        handlePaymentSuccess(response, format);
+      },
       prefill: {
         name: '',
         email: '',
@@ -59,71 +32,62 @@ export const initializePayment = async ({
       theme: {
         color: '#6366f1',
       },
-      handler: function(response: RazorpayResponse): void {
-        if (response.razorpay_payment_id) {
-          console.log('Payment successful with ID:', response.razorpay_payment_id);
-          toast({
-            title: "Payment Successful",
-            description: "Your resume is ready for download",
-            variant: "default",
-          });
-          resolve(true);
-        } else {
-          console.error('Payment failed - no payment ID received');
-          toast({
-            title: "Payment Failed",
-            description: "Please try again or contact support",
-            variant: "destructive",
-          });
-          resolve(false);
-        }
-      },
       modal: {
-        ondismiss: function(): void {
-          console.log('Payment modal dismissed by user');
+        ondismiss: function() {
+          console.log('Payment modal dismissed');
           toast({
             title: "Payment Cancelled",
-            description: "You can try again when ready",
+            description: "You can try again when you're ready.",
             variant: "destructive",
           });
-          resolve(false);
         }
       }
     };
 
-    try {
-      const razorpay = new (window as any).Razorpay(options) as RazorpayInstance;
-      razorpay.open();
-    } catch (error) {
-      console.error('Failed to initialize Razorpay:', error);
-      toast({
-        title: "Error",
-        description: "Failed to initialize payment. Please try again.",
-        variant: "destructive",
-      });
-      resolve(false);
-    }
-  });
+    const razorpay = new (window as any).Razorpay(options);
+    console.log('Razorpay instance created');
+    razorpay.open();
+    
+    return true;
+  } catch (error) {
+    console.error('Payment initialization failed:', error);
+    toast({
+      title: "Payment Error",
+      description: "There was an error initializing the payment. Please try again.",
+      variant: "destructive",
+    });
+    return false;
+  }
 };
 
-const validatePaymentAmount = (amount: number): boolean => {
-  if (!amount || amount <= 0) {
+const handlePaymentSuccess = (response: any, format: string) => {
+  try {
+    console.log('Processing successful payment:', { response, format });
+    // Add your payment success logic here
+    // For example, trigger the resume download
+    
+    toast({
+      title: "Download Starting",
+      description: `Your resume will download shortly in ${format} format.`,
+    });
+  } catch (error) {
+    console.error('Error processing payment success:', error);
+    toast({
+      title: "Processing Error",
+      description: "There was an error processing your payment. Please contact support.",
+      variant: "destructive",
+    });
+  }
+};
+
+export const validatePaymentAmount = (amount: number): boolean => {
+  if (amount <= 0) {
     toast({
       title: "Invalid Amount",
-      description: "Payment amount must be greater than 0",
+      description: "Payment amount must be greater than 0.",
       variant: "destructive",
     });
     return false;
   }
-
-  if (amount > 100000) {
-    toast({
-      title: "Invalid Amount",
-      description: "Amount exceeds maximum limit",
-      variant: "destructive",
-    });
-    return false;
-  }
-
   return true;
 };
