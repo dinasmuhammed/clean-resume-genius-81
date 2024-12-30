@@ -10,6 +10,10 @@ interface RazorpayResponse {
   razorpay_payment_id: string;
 }
 
+interface RazorpayInstance {
+  open: () => void;
+}
+
 export const initializePayment = async ({
   amount,
   currency = 'INR',
@@ -18,7 +22,7 @@ export const initializePayment = async ({
   console.log('Initializing payment with options:', { amount, currency, format });
   
   if (!validatePaymentAmount(amount)) {
-    console.error('Invalid payment amount:', amount);
+    console.error('Payment validation failed for amount:', amount);
     return false;
   }
 
@@ -71,7 +75,7 @@ export const initializePayment = async ({
     };
 
     try {
-      const razorpay = new (window as any).Razorpay(options);
+      const razorpay = new (window as any).Razorpay(options) as RazorpayInstance;
       razorpay.open();
     } catch (error) {
       console.error('Failed to initialize Razorpay:', error);
