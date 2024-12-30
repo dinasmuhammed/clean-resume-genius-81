@@ -1,3 +1,4 @@
+import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
@@ -50,9 +51,11 @@ if (!root) {
 // Initialize app with error boundary and proper routing
 try {
   createRoot(root).render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <React.StrictMode>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </React.StrictMode>
   );
 } catch (error) {
   console.error('Failed to initialize app:', error);
