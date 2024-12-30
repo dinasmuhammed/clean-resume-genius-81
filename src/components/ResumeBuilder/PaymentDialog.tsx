@@ -1,7 +1,9 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { initializePayment } from "@/utils/paymentUtils";
-import { Download } from "lucide-react";
+import { Download, AlertCircle } from "lucide-react";
+import { useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface PaymentDialogProps {
   open: boolean;
@@ -16,10 +18,14 @@ export const PaymentDialog = ({
   onSuccess,
   isAtsCheck = false,
 }: PaymentDialogProps) => {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const handlePayment = async (format: string) => {
+    setIsProcessing(true);
+    setError(null);
     console.log('Initiating payment for format:', format);
     
-    // Calculate payment amount based on format and type
     const amount = isAtsCheck 
       ? 59 
       : format.toLowerCase() === 'pdf' 
@@ -27,7 +33,6 @@ export const PaymentDialog = ({
         : 699;
     
     try {
-      // Initialize payment with calculated amount
       const success = await initializePayment({
         amount,
         format,
@@ -37,16 +42,26 @@ export const PaymentDialog = ({
       if (success) {
         console.log('Payment successful for format:', format);
         onSuccess(format);
+      } else {
+        setError('Payment could not be processed. Please try again.');
       }
     } catch (error) {
       console.error('Payment failed:', error);
+      setError('An unexpected error occurred. Please try again later.');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   return (
     <Dialog 
       open={open} 
-      onOpenChange={onOpenChange}
+      onOpenChange={(newOpen) => {
+        if (!isProcessing) {
+          setError(null);
+          onOpenChange(newOpen);
+        }
+      }}
     >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -61,11 +76,19 @@ export const PaymentDialog = ({
           </DialogDescription>
         </DialogHeader>
         
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+
         <div className="grid gap-4 py-4">
           {isAtsCheck ? (
             <Button
               onClick={() => handlePayment('ATS')}
               className="flex items-center justify-between p-4 hover:bg-primary/90 transition-colors"
+              disabled={isProcessing}
             >
               <div className="flex items-center gap-3">
                 <Download className="h-5 w-5" />
@@ -78,6 +101,7 @@ export const PaymentDialog = ({
               <Button
                 onClick={() => handlePayment('PDF')}
                 className="flex items-center justify-between p-4 hover:bg-primary/90 transition-colors"
+                disabled={isProcessing}
               >
                 <div className="flex items-center gap-3">
                   <Download className="h-5 w-5" />
@@ -90,6 +114,7 @@ export const PaymentDialog = ({
                 onClick={() => handlePayment('DOCX')}
                 className="flex items-center justify-between p-4 hover:bg-secondary/90 transition-colors"
                 variant="secondary"
+                disabled={isProcessing}
               >
                 <div className="flex items-center gap-3">
                   <Download className="h-5 w-5" />
