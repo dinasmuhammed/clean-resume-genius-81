@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { initializePayment } from "@/utils/paymentUtils";
-import { Download, AlertCircle, Loader2, CreditCard } from "lucide-react";
+import { Download, AlertCircle, Loader2, CreditCard, CheckCircle, XCircle } from "lucide-react";
 import { useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "@/hooks/use-toast";
@@ -24,12 +24,14 @@ export const PaymentDialog = ({
   const [error, setError] = useState<string | null>(null);
   const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
+  const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
 
   const handlePayment = async (format: string) => {
     setIsProcessing(true);
     setError(null);
     setSelectedFormat(format);
     setProgress(0);
+    setPaymentStatus('processing');
     console.log('Initiating payment for format:', format);
     
     const amount = isAtsCheck 
@@ -59,13 +61,17 @@ export const PaymentDialog = ({
 
       if (success) {
         console.log('Payment successful for format:', format);
+        setPaymentStatus('success');
         toast({
           title: "Payment Successful! 🎉",
           description: "Your document is being prepared for download.",
           variant: "default",
         });
-        onSuccess(format);
+        setTimeout(() => {
+          onSuccess(format);
+        }, 1000);
       } else {
+        setPaymentStatus('error');
         setError('Payment could not be processed. Please try again.');
         toast({
           title: "Payment Failed",
@@ -76,6 +82,7 @@ export const PaymentDialog = ({
     } catch (error) {
       clearInterval(progressInterval);
       console.error('Payment failed:', error);
+      setPaymentStatus('error');
       setError('An unexpected error occurred. Please try again later.');
       toast({
         title: "Error",
@@ -87,7 +94,21 @@ export const PaymentDialog = ({
         setIsProcessing(false);
         setSelectedFormat(null);
         setProgress(0);
+        setPaymentStatus('idle');
       }, 1000);
+    }
+  };
+
+  const getStatusIcon = () => {
+    switch (paymentStatus) {
+      case 'processing':
+        return <Loader2 className="h-6 w-6 animate-spin text-primary" />;
+      case 'success':
+        return <CheckCircle className="h-6 w-6 text-green-500" />;
+      case 'error':
+        return <XCircle className="h-6 w-6 text-red-500" />;
+      default:
+        return null;
     }
   };
 
@@ -99,6 +120,7 @@ export const PaymentDialog = ({
           setError(null);
           setSelectedFormat(null);
           setProgress(0);
+          setPaymentStatus('idle');
           onOpenChange(newOpen);
         }
       }}
@@ -125,10 +147,13 @@ export const PaymentDialog = ({
         )}
 
         {isProcessing && (
-          <div className="space-y-2 animate-in fade-in-50">
+          <div className="space-y-4 animate-in fade-in-50">
+            <div className="flex items-center justify-center">{getStatusIcon()}</div>
             <Progress value={progress} className="h-2" />
             <p className="text-sm text-muted-foreground text-center">
-              Processing your payment...
+              {paymentStatus === 'processing' ? 'Processing your payment...' : 
+               paymentStatus === 'success' ? 'Payment successful!' :
+               paymentStatus === 'error' ? 'Payment failed' : ''}
             </p>
           </div>
         )}
@@ -137,14 +162,14 @@ export const PaymentDialog = ({
           {isAtsCheck ? (
             <Button
               onClick={() => handlePayment('ATS')}
-              className="flex items-center justify-between p-4 hover:bg-primary/90 transition-colors relative group"
+              className="flex items-center justify-between p-4 hover:bg-primary/90 transition-all duration-200 relative group"
               disabled={isProcessing}
             >
               <div className="flex items-center gap-3">
                 {isProcessing && selectedFormat === 'ATS' ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (
-                  <Download className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                  <Download className="h-5 w-5 group-hover:scale-110 transition-transform duration-200" />
                 )}
                 <span className="font-medium">ATS Check</span>
               </div>
@@ -154,14 +179,14 @@ export const PaymentDialog = ({
             <>
               <Button
                 onClick={() => handlePayment('PDF')}
-                className="flex items-center justify-between p-4 hover:bg-primary/90 transition-colors group"
+                className="flex items-center justify-between p-4 hover:bg-primary/90 transition-all duration-200 group"
                 disabled={isProcessing}
               >
                 <div className="flex items-center gap-3">
                   {isProcessing && selectedFormat === 'PDF' ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
-                    <Download className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                    <Download className="h-5 w-5 group-hover:scale-110 transition-transform duration-200" />
                   )}
                   <span className="font-medium">PDF Format</span>
                 </div>
@@ -170,7 +195,7 @@ export const PaymentDialog = ({
 
               <Button
                 onClick={() => handlePayment('DOCX')}
-                className="flex items-center justify-between p-4 hover:bg-secondary/90 transition-colors group"
+                className="flex items-center justify-between p-4 hover:bg-secondary/90 transition-all duration-200 group"
                 variant="secondary"
                 disabled={isProcessing}
               >
@@ -178,7 +203,7 @@ export const PaymentDialog = ({
                   {isProcessing && selectedFormat === 'DOCX' ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
-                    <Download className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                    <Download className="h-5 w-5 group-hover:scale-110 transition-transform duration-200" />
                   )}
                   <span className="font-medium">DOCX Format</span>
                 </div>
