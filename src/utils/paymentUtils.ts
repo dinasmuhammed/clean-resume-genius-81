@@ -6,13 +6,19 @@ interface PaymentOptions {
   format?: string;
 }
 
-export const initializePayment = async ({ amount, currency = 'INR', format = 'PDF' }: PaymentOptions) => {
+export const initializePayment = async ({ amount, currency = 'INR', format = 'PDF' }: PaymentOptions): Promise<boolean> => {
   try {
     console.log('Initializing payment with options:', { amount, currency, format });
     
+    // Validate the payment amount before proceeding
+    if (!validatePaymentAmount(amount)) {
+      throw new Error('Invalid payment amount');
+    }
+
+    // Configure Razorpay options
     const options = {
       key: 'rzp_test_yQFgBqUY5IyZyF', // Replace with your actual key
-      amount: amount * 100, // Razorpay expects amount in smallest currency unit
+      amount: amount * 100, // Convert to smallest currency unit
       currency,
       name: 'Resume Builder',
       description: `Resume download in ${format} format`,
@@ -22,8 +28,7 @@ export const initializePayment = async ({ amount, currency = 'INR', format = 'PD
           title: "Payment Successful",
           description: "Your resume is being prepared for download.",
         });
-        // Handle successful payment
-        handlePaymentSuccess(response, format);
+        return true;
       },
       prefill: {
         name: '',
@@ -44,8 +49,8 @@ export const initializePayment = async ({ amount, currency = 'INR', format = 'PD
       }
     };
 
+    // Create and open Razorpay instance
     const razorpay = new (window as any).Razorpay(options);
-    console.log('Razorpay instance created');
     razorpay.open();
     
     return true;
@@ -57,26 +62,6 @@ export const initializePayment = async ({ amount, currency = 'INR', format = 'PD
       variant: "destructive",
     });
     return false;
-  }
-};
-
-const handlePaymentSuccess = (response: any, format: string) => {
-  try {
-    console.log('Processing successful payment:', { response, format });
-    // Add your payment success logic here
-    // For example, trigger the resume download
-    
-    toast({
-      title: "Download Starting",
-      description: `Your resume will download shortly in ${format} format.`,
-    });
-  } catch (error) {
-    console.error('Error processing payment success:', error);
-    toast({
-      title: "Processing Error",
-      description: "There was an error processing your payment. Please contact support.",
-      variant: "destructive",
-    });
   }
 };
 
