@@ -65,6 +65,7 @@ export const initializePayment = async ({
           toast({
             title: "Payment Successful",
             description: "Your resume is ready for download",
+            variant: "default",
           });
           resolve(true);
         } else {
