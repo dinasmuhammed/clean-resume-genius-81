@@ -37,7 +37,7 @@ export const initializePayment = async ({
         theme: {
           color: '#6366f1',
         },
-        handler: function(response: RazorpayResponse): boolean {
+        handler: function(response: RazorpayResponse) {
           if (response.razorpay_payment_id) {
             console.log('Payment successful with ID:', response.razorpay_payment_id);
             toast({
@@ -57,7 +57,7 @@ export const initializePayment = async ({
           return false;
         },
         modal: {
-          ondismiss: function(): boolean {
+          ondismiss: function() {
             console.log('Payment modal dismissed by user');
             toast({
               title: "Payment Cancelled",
