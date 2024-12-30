@@ -14,18 +14,18 @@ import Terms from "@/pages/Terms";
 import Cookies from "@/pages/Cookies";
 import Error from "@/pages/Error";
 import Splash from "@/pages/Splash";
-import { useState } from "react";
+
+// Initialize QueryClient outside of component
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+      retry: 1,
+    },
+  },
+});
 
 const App = () => {
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 60 * 1000,
-        retry: 1,
-      },
-    },
-  }));
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
