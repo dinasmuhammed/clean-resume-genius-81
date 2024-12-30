@@ -3,18 +3,23 @@ import { toast } from "@/hooks/use-toast";
 interface PaymentOptions {
   amount: number;
   currency?: string;
-  format?: string;
+  format: string;
 }
 
-export const initializePayment = async ({ 
-  amount, 
-  currency = 'INR', 
-  format = 'PDF' 
+interface RazorpayResponse {
+  razorpay_payment_id?: string;
+}
+
+export const initializePayment = async ({
+  amount,
+  currency = 'INR',
+  format
 }: PaymentOptions): Promise<boolean> => {
   try {
     console.log('Initializing payment with options:', { amount, currency, format });
     
     if (!validatePaymentAmount(amount)) {
+      console.error('Invalid payment amount:', amount);
       return false;
     }
 
@@ -32,7 +37,7 @@ export const initializePayment = async ({
         theme: {
           color: '#6366f1',
         },
-        handler: function(response: any): boolean {
+        handler: function(response: RazorpayResponse): boolean {
           if (response.razorpay_payment_id) {
             console.log('Payment successful with ID:', response.razorpay_payment_id);
             toast({
@@ -42,11 +47,18 @@ export const initializePayment = async ({
             resolve(true);
             return true;
           }
+          console.log('Payment failed - no payment ID received');
+          toast({
+            title: "Payment Failed",
+            description: "Please try again or contact support",
+            variant: "destructive",
+          });
           resolve(false);
           return false;
         },
         modal: {
           ondismiss: function() {
+            console.log('Payment modal dismissed by user');
             toast({
               title: "Payment Cancelled",
               description: "You can try again when ready",
@@ -65,7 +77,7 @@ export const initializePayment = async ({
   } catch (error) {
     console.error('Payment initialization error:', error);
     toast({
-      title: "Payment Error",
+      title: "Error",
       description: "Unable to initialize payment. Please try again.",
       variant: "destructive",
     });
@@ -73,7 +85,7 @@ export const initializePayment = async ({
   }
 };
 
-export const validatePaymentAmount = (amount: number): boolean => {
+const validatePaymentAmount = (amount: number): boolean => {
   if (!amount || amount <= 0) {
     toast({
       title: "Invalid Amount",
