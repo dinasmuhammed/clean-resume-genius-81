@@ -18,10 +18,11 @@ export const initializePayment = async ({
   console.log('Initializing payment with options:', { amount, currency, format });
   
   if (!validatePaymentAmount(amount)) {
+    console.error('Invalid payment amount:', amount);
     return false;
   }
 
-  return new Promise((resolve) => {
+  return new Promise<boolean>((resolve) => {
     const options = {
       key: 'rzp_test_yQFgBqUY5IyZyF',
       amount: amount * 100,
@@ -45,7 +46,8 @@ export const initializePayment = async ({
           resolve(true);
           return true;
         }
-        console.log('Payment failed - no payment ID received');
+        
+        console.error('Payment failed - no payment ID received');
         toast({
           title: "Payment Failed",
           description: "Please try again or contact support",
@@ -68,8 +70,18 @@ export const initializePayment = async ({
       }
     };
 
-    const razorpay = new (window as any).Razorpay(options);
-    razorpay.open();
+    try {
+      const razorpay = new (window as any).Razorpay(options);
+      razorpay.open();
+    } catch (error) {
+      console.error('Failed to initialize Razorpay:', error);
+      toast({
+        title: "Error",
+        description: "Failed to initialize payment. Please try again.",
+        variant: "destructive",
+      });
+      resolve(false);
+    }
   });
 };
 
