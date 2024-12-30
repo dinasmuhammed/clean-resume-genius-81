@@ -1,93 +1,144 @@
 import { toast } from "@/hooks/use-toast";
 
-interface PaymentOptions {
-  amount: number;
-  currency?: string;
-  format?: string;
+// Define Razorpay types for better TypeScript support
+declare global {
+  interface Window {
+    Razorpay: {
+      new (options: RazorpayOptions): RazorpayInstance;
+    };
+  }
 }
 
-export const initializePayment = async ({ amount, currency = 'INR', format = 'PDF' }: PaymentOptions) => {
-  try {
-    console.log('Initializing payment with options:', { amount, currency, format });
-    
-    const options = {
-      key: 'rzp_test_yQFgBqUY5IyZyF', // Replace with your actual key
-      amount: amount * 100, // Razorpay expects amount in smallest currency unit
-      currency,
-      name: 'Resume Builder',
-      description: `Resume download in ${format} format`,
-      handler: function (response: any) {
-        console.log('Payment successful:', response);
-        toast({
-          title: "Payment Successful",
-          description: "Your resume is being prepared for download.",
-        });
-        // Handle successful payment
-        handlePaymentSuccess(response, format);
-      },
-      prefill: {
-        name: '',
-        email: '',
-      },
-      theme: {
-        color: '#6366f1',
-      },
-      modal: {
-        ondismiss: function() {
-          console.log('Payment modal dismissed');
-          toast({
-            title: "Payment Cancelled",
-            description: "You can try again when you're ready.",
-            variant: "destructive",
-          });
-        }
-      }
-    };
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  image: string;
+  handler: (response: RazorpayResponse) => void;
+  prefill: {
+    name: string;
+    email: string;
+    contact: string;
+  };
+  notes: {
+    address: string;
+  };
+  theme: {
+    color: string;
+  };
+  modal?: {
+    ondismiss: () => void;
+  };
+}
 
-    const razorpay = new (window as any).Razorpay(options);
-    console.log('Razorpay instance created');
-    razorpay.open();
-    
-    return true;
-  } catch (error) {
-    console.error('Payment initialization failed:', error);
-    toast({
-      title: "Payment Error",
-      description: "There was an error initializing the payment. Please try again.",
-      variant: "destructive",
-    });
-    return false;
-  }
-};
+interface RazorpayInstance {
+  open: () => void;
+}
 
-const handlePaymentSuccess = (response: any, format: string) => {
-  try {
-    console.log('Processing successful payment:', { response, format });
-    // Add your payment success logic here
-    // For example, trigger the resume download
-    
-    toast({
-      title: "Download Starting",
-      description: `Your resume will download shortly in ${format} format.`,
-    });
-  } catch (error) {
-    console.error('Error processing payment success:', error);
-    toast({
-      title: "Processing Error",
-      description: "There was an error processing your payment. Please contact support.",
-      variant: "destructive",
-    });
-  }
-};
+interface RazorpayResponse {
+  razorpay_payment_id: string;
+  razorpay_order_id?: string;
+  razorpay_signature?: string;
+}
 
-export const validatePaymentAmount = (amount: number): boolean => {
-  if (amount <= 0) {
+interface PaymentSuccessHandler {
+  (): void;
+}
+
+const RAZORPAY_KEY = "rzp_live_5JYQnqKRnKhB5y";
+
+export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandler) => {
+  console.log('Initializing payment with amount:', amount);
+  
+  if (!amount || amount <= 0) {
+    console.error('Invalid payment amount:', amount);
     toast({
       title: "Invalid Amount",
       description: "Payment amount must be greater than 0.",
       variant: "destructive",
     });
-    return false;
+    return Promise.reject(new Error('Invalid amount'));
   }
-  return true;
+
+  if (!window.Razorpay) {
+    console.error('Razorpay SDK not loaded');
+    toast({
+      title: "Payment Error",
+      description: "Payment system is not available. Please refresh the page.",
+      variant: "destructive",
+    });
+    return Promise.reject(new Error('Razorpay not initialized'));
+  }
+
+  return new Promise((resolve, reject) => {
+    try {
+      console.log('Creating Razorpay instance with options');
+      
+      const options: RazorpayOptions = {
+        key: RAZORPAY_KEY,
+        amount: amount * 100, // Convert to paise
+        currency: "INR",
+        name: "SXO Resume",
+        description: "Resume Builder Premium Access",
+        image: "https://i.imgur.com/n5tjHFD.png",
+        handler: function (response: RazorpayResponse) {
+          console.log('Payment response received:', response);
+          if (response.razorpay_payment_id) {
+            console.log('Payment successful:', response.razorpay_payment_id);
+            localStorage.setItem('last_payment_id', response.razorpay_payment_id);
+            toast({
+              title: "Payment Successful",
+              description: "Your resume will be downloaded automatically.",
+            });
+            onSuccess();
+            resolve(response);
+          } else {
+            console.error('Payment verification failed - no payment ID');
+            toast({
+              title: "Payment Failed",
+              description: "Payment verification failed. Please try again.",
+              variant: "destructive",
+            });
+            reject(new Error('Payment verification failed'));
+          }
+        },
+        prefill: {
+          name: "",
+          email: "",
+          contact: ""
+        },
+        notes: {
+          address: "SXO Resume Builder"
+        },
+        theme: {
+          color: "#2C3E50"
+        },
+        modal: {
+          ondismiss: function() {
+            console.log('Payment modal dismissed by user');
+            toast({
+              title: "Payment Cancelled",
+              description: "You cancelled the payment process.",
+            });
+            reject(new Error('Payment cancelled by user'));
+          }
+        }
+      };
+
+      console.log('Opening Razorpay payment modal');
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+      
+    } catch (error) {
+      console.error('Payment initialization error:', error);
+      toast({
+        title: "Payment Error",
+        description: "Failed to initialize payment. Please try again.",
+        variant: "destructive",
+      });
+      reject(error);
+    }
+  });
 };

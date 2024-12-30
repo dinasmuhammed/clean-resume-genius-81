@@ -18,8 +18,17 @@ export const exportToFormat = async (format: string = 'pdf') => {
     margin: 1,
     filename: `resume.${format}`,
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    html2canvas: { 
+      scale: 2,
+      useCORS: true,
+      logging: true
+    },
+    jsPDF: { 
+      unit: 'in', 
+      format: 'a4', 
+      orientation: 'portrait',
+      compress: true
+    }
   };
 
   try {
