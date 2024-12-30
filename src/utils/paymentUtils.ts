@@ -14,6 +14,25 @@ interface RazorpayInstance {
   open: () => void;
 }
 
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  prefill: {
+    name: string;
+    email: string;
+  };
+  theme: {
+    color: string;
+  };
+  handler: (response: RazorpayResponse) => void;
+  modal: {
+    ondismiss: () => void;
+  };
+}
+
 export const initializePayment = async ({
   amount,
   currency = 'INR',
@@ -27,7 +46,7 @@ export const initializePayment = async ({
   }
 
   return new Promise<boolean>((resolve) => {
-    const options = {
+    const options: RazorpayOptions = {
       key: 'rzp_test_yQFgBqUY5IyZyF',
       amount: amount * 100,
       currency,
@@ -40,7 +59,7 @@ export const initializePayment = async ({
       theme: {
         color: '#6366f1',
       },
-      handler: function(response: RazorpayResponse): boolean {
+      handler: function(response: RazorpayResponse): void {
         if (response.razorpay_payment_id) {
           console.log('Payment successful with ID:', response.razorpay_payment_id);
           toast({
@@ -48,20 +67,18 @@ export const initializePayment = async ({
             description: "Your resume is ready for download",
           });
           resolve(true);
-          return true;
+        } else {
+          console.error('Payment failed - no payment ID received');
+          toast({
+            title: "Payment Failed",
+            description: "Please try again or contact support",
+            variant: "destructive",
+          });
+          resolve(false);
         }
-        
-        console.error('Payment failed - no payment ID received');
-        toast({
-          title: "Payment Failed",
-          description: "Please try again or contact support",
-          variant: "destructive",
-        });
-        resolve(false);
-        return false;
       },
       modal: {
-        ondismiss: function(): boolean {
+        ondismiss: function(): void {
           console.log('Payment modal dismissed by user');
           toast({
             title: "Payment Cancelled",
@@ -69,7 +86,6 @@ export const initializePayment = async ({
             variant: "destructive",
           });
           resolve(false);
-          return false;
         }
       }
     };
