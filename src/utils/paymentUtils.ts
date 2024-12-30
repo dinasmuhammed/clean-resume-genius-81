@@ -12,13 +12,14 @@ export const initializePayment = async ({ amount, currency = 'INR', format = 'PD
     
     // Validate the payment amount before proceeding
     if (!validatePaymentAmount(amount)) {
-      throw new Error('Invalid payment amount');
+      console.error('Payment validation failed for amount:', amount);
+      return false;
     }
 
-    // Configure Razorpay options
+    // Configure Razorpay options with improved error handling
     const options = {
-      key: 'rzp_test_yQFgBqUY5IyZyF', // Replace with your actual key
-      amount: amount * 100, // Convert to smallest currency unit
+      key: 'rzp_test_yQFgBqUY5IyZyF',
+      amount: amount * 100,
       currency,
       name: 'Resume Builder',
       description: `Resume download in ${format} format`,
@@ -49,11 +50,21 @@ export const initializePayment = async ({ amount, currency = 'INR', format = 'PD
       }
     };
 
-    // Create and open Razorpay instance
-    const razorpay = new (window as any).Razorpay(options);
-    razorpay.open();
-    
-    return true;
+    // Initialize Razorpay with enhanced error tracking
+    try {
+      const razorpay = new (window as any).Razorpay(options);
+      console.log('Razorpay instance created successfully');
+      razorpay.open();
+      return true;
+    } catch (razorpayError) {
+      console.error('Razorpay initialization failed:', razorpayError);
+      toast({
+        title: "Payment Error",
+        description: "Failed to initialize payment gateway. Please try again.",
+        variant: "destructive",
+      });
+      return false;
+    }
   } catch (error) {
     console.error('Payment initialization failed:', error);
     toast({
@@ -67,6 +78,7 @@ export const initializePayment = async ({ amount, currency = 'INR', format = 'PD
 
 export const validatePaymentAmount = (amount: number): boolean => {
   if (amount <= 0) {
+    console.error('Invalid payment amount:', amount);
     toast({
       title: "Invalid Amount",
       description: "Payment amount must be greater than 0.",
