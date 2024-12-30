@@ -13,17 +13,18 @@ import Terms from "@/pages/Terms";
 import Cookies from "@/pages/Cookies";
 import Error from "@/pages/Error";
 import Splash from "@/pages/Splash";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000,
-      retry: 1,
-    },
-  },
-});
+import { useState } from "react";
 
 const App = () => {
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000,
+        retry: 1,
+      },
+    },
+  }));
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
