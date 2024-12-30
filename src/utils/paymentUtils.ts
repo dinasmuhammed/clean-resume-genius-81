@@ -18,53 +18,48 @@ export const initializePayment = async ({
       return false;
     }
 
-    const options = {
-      key: 'rzp_test_yQFgBqUY5IyZyF',
-      amount: amount * 100, // Razorpay expects amount in smallest currency unit
-      currency,
-      name: 'Resume Builder Pro',
-      description: `Professional Resume in ${format} format`,
-      prefill: {
-        name: '',
-        email: '',
-      },
-      theme: {
-        color: '#6366f1',
-      },
-      handler: function(response: any) {
-        if (response.razorpay_payment_id) {
-          console.log('Payment successful with ID:', response.razorpay_payment_id);
-          toast({
-            title: "Payment Successful",
-            description: "Your resume is ready for download",
-          });
-          return true;
-        }
-        return false;
-      },
-      modal: {
-        ondismiss: function() {
-          toast({
-            title: "Payment Cancelled",
-            description: "You can try again when ready",
-            variant: "destructive",
-          });
-        }
-      }
-    };
-
-    // Create and open Razorpay instance
-    const razorpay = new (window as any).Razorpay(options);
-    razorpay.open();
-    
     return new Promise((resolve) => {
-      options.handler = function(response: any) {
-        if (response.razorpay_payment_id) {
-          resolve(true);
-        } else {
+      const options = {
+        key: 'rzp_test_yQFgBqUY5IyZyF',
+        amount: amount * 100, // Razorpay expects amount in smallest currency unit
+        currency,
+        name: 'Resume Builder Pro',
+        description: `Professional Resume in ${format} format`,
+        prefill: {
+          name: '',
+          email: '',
+        },
+        theme: {
+          color: '#6366f1',
+        },
+        handler: function(response: any): boolean {
+          if (response.razorpay_payment_id) {
+            console.log('Payment successful with ID:', response.razorpay_payment_id);
+            toast({
+              title: "Payment Successful",
+              description: "Your resume is ready for download",
+            });
+            resolve(true);
+            return true;
+          }
           resolve(false);
+          return false;
+        },
+        modal: {
+          ondismiss: function() {
+            toast({
+              title: "Payment Cancelled",
+              description: "You can try again when ready",
+              variant: "destructive",
+            });
+            resolve(false);
+          }
         }
       };
+
+      // Create and open Razorpay instance
+      const razorpay = new (window as any).Razorpay(options);
+      razorpay.open();
     });
 
   } catch (error) {
