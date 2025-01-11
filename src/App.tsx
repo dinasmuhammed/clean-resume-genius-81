@@ -15,7 +15,7 @@ import Cookies from "@/pages/Cookies";
 import Error from "@/pages/Error";
 import Splash from "@/pages/Splash";
 
-// Initialize QueryClient with configuration
+// Initialize QueryClient outside of component
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -25,7 +25,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

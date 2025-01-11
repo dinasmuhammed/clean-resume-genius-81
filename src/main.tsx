@@ -48,10 +48,20 @@ if (!root) {
   throw new Error('Root element not found');
 }
 
-createRoot(root).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
-);
+// Initialize app with error boundary and proper routing
+try {
+  createRoot(root).render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+} catch (error) {
+  console.error('Failed to initialize app:', error);
+  toast({
+    title: "Error",
+    description: "Failed to initialize the application. Please refresh the page.",
+    variant: "destructive"
+  });
+}
