@@ -12,11 +12,22 @@ import { Link } from "react-router-dom";
 import { exportToFormat } from "@/utils/pdfExport";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const Index = () => {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState("personal");
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [showPaymentInfo, setShowPaymentInfo] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
   const [resumeData, setResumeData] = useState({
     personal: {},
@@ -55,6 +66,11 @@ const Index = () => {
   };
 
   const handleExport = async () => {
+    setShowPaymentInfo(true);
+  };
+
+  const handlePaymentInfoConfirm = () => {
+    setShowPaymentInfo(false);
     setShowPaymentDialog(true);
   };
 
@@ -176,6 +192,28 @@ const Index = () => {
         </div>
       </div>
       
+      <AlertDialog open={showPaymentInfo} onOpenChange={setShowPaymentInfo}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Important Payment Information</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-4 text-left">
+              <p>
+                Please ensure that you complete your payment promptly. Otherwise, the payment may fail, and you'll need to wait 7 days to have the amount refunded to your account.
+              </p>
+              <p>
+                Ensure you make the payment using your UPI ID or number. Do not scan the QR code.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handlePaymentInfoConfirm}>
+              I Understand, Proceed to Payment
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <PaymentDialog
         open={showPaymentDialog}
         onOpenChange={setShowPaymentDialog}
