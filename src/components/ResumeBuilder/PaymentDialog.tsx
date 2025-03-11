@@ -1,3 +1,4 @@
+
 import { Download } from "lucide-react";
 import {
   AlertDialog,
@@ -15,6 +16,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { initializePayment } from "@/utils/paymentUtils";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 interface PaymentDialogProps {
   open: boolean;
@@ -42,7 +44,13 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
   };
 
   const handlePayment = async () => {
-    if (isProcessing) return;
+    if (isProcessing) {
+      toast({
+        title: "Please wait",
+        description: "Your payment is being processed...",
+      });
+      return;
+    }
     
     console.log('Starting payment process');
     setIsValidatingCode(true);
@@ -79,16 +87,29 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
         setIsValidatingCode(false);
         setIsProcessing(false);
         onOpenChange(false);
+        
+        toast({
+          title: "Payment Successful!",
+          description: "Your download will start automatically.",
+        });
       });
     } catch (error) {
       console.error('Payment error:', error);
       setIsValidatingCode(false);
       setIsProcessing(false);
-      toast({
-        title: "Payment Error",
-        description: "There was an error processing your payment. Please try again.",
-        variant: "destructive",
-      });
+      
+      if (error.message === 'Payment cancelled by user') {
+        toast({
+          title: "Payment Cancelled",
+          description: "You cancelled the payment process. Try again when you're ready.",
+        });
+      } else {
+        toast({
+          title: "Payment Error",
+          description: "There was an error processing your payment. Please try again.",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -180,8 +201,17 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
             className="w-full sm:w-auto"
             disabled={isValidatingCode || isProcessing}
           >
-            <Download className="w-4 h-4 mr-2" />
-            {isAtsCheck ? 'Check Now' : 'Download Now'}
+            {isProcessing ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4 mr-2" />
+                {isAtsCheck ? 'Check Now' : 'Download Now'}
+              </>
+            )}
           </AlertDialogAction>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
         </AlertDialogFooter>
