@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -38,6 +39,16 @@ export default {
         primary: {
           DEFAULT: "#2C3E50",
           foreground: "#ffffff",
+          50: "#E9ECEF",
+          100: "#D6DBE0",
+          200: "#ADB7C1",
+          300: "#8594A3",
+          400: "#5C7084",
+          500: "#2C3E50",
+          600: "#233240",
+          700: "#1A2530",
+          800: "#111920",
+          900: "#080C10",
         },
         secondary: {
           DEFAULT: "#BDC3C7",
@@ -46,6 +57,16 @@ export default {
         accent: {
           DEFAULT: "#3498DB",
           foreground: "#ffffff",
+          50: "#EBF5FC",
+          100: "#D6EAF8",
+          200: "#AED6F1",
+          300: "#85C1E9",
+          400: "#5DADE2",
+          500: "#3498DB",
+          600: "#2980B9",
+          700: "#1F6898",
+          800: "#154F76",
+          900: "#0C3654",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -74,7 +95,7 @@ export default {
         screen: ['100vh', '100dvh'],
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
       },
       fontSize: {
         'fluid-sm': 'clamp(0.8rem, 0.17vw + 0.76rem, 0.89rem)',
@@ -87,6 +108,7 @@ export default {
         'fade-in': 'fadeIn 0.3s ease-in-out',
         'slide-in': 'slideIn 0.3s ease-in-out',
         'scale-in': 'scaleIn 0.3s ease-in-out',
+        'pulse-subtle': 'pulseSubtle 2s infinite',
       },
       keyframes: {
         fadeIn: {
@@ -101,6 +123,24 @@ export default {
           '0%': { transform: 'scale(0.95)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
+        pulseSubtle: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.8' },
+        },
+      },
+      screens: {
+        'xs': '475px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+        'short': { 'raw': '(max-height: 640px)' },
+        'tall': { 'raw': '(min-height: 800px)' },
+        'mobile': { 'raw': '(max-width: 767px)' },
+        'desktop': { 'raw': '(min-width: 1024px)' },
+        'portrait': { 'raw': '(orientation: portrait)' },
+        'landscape': { 'raw': '(orientation: landscape)' },
       },
     },
   },

@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useEffect } from 'react';
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -26,13 +27,24 @@ const queryClient = new QueryClient({
 });
 
 const App: React.FC = () => {
+  // Update document title dynamically based on route
+  useEffect(() => {
+    document.title = "Resume Builder - Create Professional Resumes Online";
+    
+    // Add meta description for SEO
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Build an ATS-optimized resume in minutes with our professional resume builder. Stand out to recruiters and land your dream job.');
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen flex flex-col bg-background">
-          <Sonner position="top-center" closeButton richColors />
+          <Sonner position="top-center" closeButton richColors className="z-50" />
           <Navbar />
-          <main className="flex-1 w-full max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8">
+          <main id="main-content" className="flex-1 w-full max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />

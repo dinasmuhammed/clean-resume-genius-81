@@ -15,8 +15,14 @@ export const exportToFormat = async (format: string = 'pdf') => {
     return;
   }
 
-  // Apply print-specific styles to ensure proper layout
+  // Apply print-specific styles to ensure proper layout across devices
   const originalStyles = element.getAttribute('style') || '';
+  
+  // Responsive adjustments for different screen sizes
+  const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+  const scaleFactor = viewportWidth < 768 ? 1.5 : 2; // Higher scale factor for mobile
+  
+  // Apply mobile-optimized styles
   element.setAttribute('style', `${originalStyles}; width: 100%; max-width: 8.5in; margin: 0 auto;`);
 
   const opt = {
@@ -24,9 +30,9 @@ export const exportToFormat = async (format: string = 'pdf') => {
     filename: `resume.${format}`,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { 
-      scale: 2,
+      scale: scaleFactor,
       useCORS: true,
-      logging: true,
+      logging: false, // Disable logging in production
       allowTaint: true,
       letterRendering: true
     },
@@ -46,11 +52,24 @@ export const exportToFormat = async (format: string = 'pdf') => {
 
   try {
     console.log('Starting resume export to:', format);
+    
+    // Add an accessibility message for screen readers
+    const accessibilityMessage = document.createElement('div');
+    accessibilityMessage.setAttribute('role', 'status');
+    accessibilityMessage.setAttribute('aria-live', 'polite');
+    accessibilityMessage.style.position = 'absolute';
+    accessibilityMessage.style.left = '-9999px';
+    accessibilityMessage.innerText = 'Generating your resume for download. This may take a moment.';
+    document.body.appendChild(accessibilityMessage);
+    
     await html2pdf().set(opt).from(element).save();
     console.log('Resume export completed');
     
     // Reset the styles
     element.setAttribute('style', originalStyles);
+    
+    // Clean up accessibility message
+    document.body.removeChild(accessibilityMessage);
     
     toast({
       title: "Download Complete",

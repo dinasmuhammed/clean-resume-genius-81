@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -28,11 +29,19 @@
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
     font-size: 16px;
+    text-size-adjust: 100%; /* Prevent font scaling on orientation change */
   }
 
   @media (max-width: 640px) {
     html {
       font-size: 14px;
+    }
+  }
+
+  /* Optimize for smaller screens */
+  @media (max-width: 380px) {
+    html {
+      font-size: 13px;
     }
   }
 
@@ -42,10 +51,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
 
   img {
     @apply max-w-full h-auto;
+    content-visibility: auto; /* Improve paint performance */
   }
 
   /* Improved touch targets for mobile */
@@ -56,7 +69,17 @@
   /* Better form elements on mobile */
   input, select, textarea {
     @apply text-base;
-    font-size: 16px !important;
+    font-size: 16px !important; /* Prevent iOS zoom on focus */
+  }
+
+  /* Focus states for accessibility */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+
+  /* Skip to content link for accessibility */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:py-2 focus:px-4 focus:bg-white focus:text-primary focus:rounded;
   }
 }
 
@@ -91,6 +114,11 @@
   .text-responsive {
     @apply text-sm sm:text-base lg:text-lg;
   }
+
+  /* Mobile-friendly section spacing */
+  .section-spacing {
+    @apply py-6 sm:py-8 md:py-12;
+  }
 }
 
 @layer utilities {
@@ -110,20 +138,34 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-}
 
-@media print {
-  .print\:hidden {
-    display: none;
+  /* Print optimization */
+  @media print {
+    .print\:hidden {
+      display: none !important;
+    }
+    .print\:m-0 {
+      margin: 0 !important;
+    }
+    .print\:p-0 {
+      padding: 0 !important;
+    }
+    .print\:shadow-none {
+      box-shadow: none !important;
+    }
+    .print\:bg-white {
+      background-color: white !important;
+    }
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  /* Reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
@@ -140,4 +182,9 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Make input placeholders lighter */
+::placeholder {
+  @apply text-gray-400;
 }

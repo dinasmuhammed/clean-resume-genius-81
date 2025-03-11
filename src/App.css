@@ -1,3 +1,4 @@
+
 #root {
   max-width: 100%;
   margin: 0 auto;
@@ -43,10 +44,36 @@
   color: #888;
 }
 
-/* Responsive breakpoints */
+/* Enhanced Responsive breakpoints */
 @media screen and (max-width: 640px) {
   .card {
     padding: 0.75em;
+  }
+  
+  h1 {
+    font-size: 1.75rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .card {
+    padding: 0.5em;
+  }
+  
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  .logo {
+    height: 3em;
   }
 }
 
@@ -55,6 +82,10 @@
   .card:active {
     transform: scale(0.98);
   }
+  
+  button:active, a:active {
+    opacity: 0.8;
+  }
 }
 
 /* Improved performance */
@@ -62,4 +93,22 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: preserve-3d;
+}
+
+/* Prevent content jumping */
+.prevent-layout-shift {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Fix for Safari mobile bottom bar */
+.safe-bottom-padding {
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+}
+
+/* Optimize images for retina displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .optimize-for-retina {
+    image-rendering: -webkit-optimize-contrast;
+  }
 }
