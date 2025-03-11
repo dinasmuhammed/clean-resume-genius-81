@@ -50,7 +50,27 @@ interface PaymentSuccessHandler {
 
 const RAZORPAY_KEY = "rzp_live_5JYQnqKRnKhB5y";
 
-export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandler) => {
+// Load the Razorpay script dynamically if needed
+const loadRazorpayScript = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+    
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => {
+      console.error("Failed to load Razorpay SDK");
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
+};
+
+export const initializePayment = async (amount: number, onSuccess: PaymentSuccessHandler) => {
   console.log('Initializing payment with amount:', amount);
   
   if (!amount || amount <= 0) {
@@ -63,7 +83,9 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
     return Promise.reject(new Error('Invalid amount'));
   }
 
-  if (!window.Razorpay) {
+  // Ensure Razorpay is loaded
+  const isLoaded = await loadRazorpayScript();
+  if (!isLoaded || !window.Razorpay) {
     console.error('Razorpay SDK not loaded');
     toast({
       title: "Payment Error",
@@ -89,6 +111,18 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
           if (response.razorpay_payment_id) {
             console.log('Payment successful:', response.razorpay_payment_id);
             localStorage.setItem('last_payment_id', response.razorpay_payment_id);
+            
+            // Send confirmation email if email is available
+            try {
+              const userEmail = localStorage.getItem('user_email');
+              if (userEmail) {
+                sendPaymentConfirmation(userEmail, response.razorpay_payment_id);
+              }
+            } catch (emailError) {
+              console.error('Error sending confirmation email:', emailError);
+              // Don't block the payment success flow if email fails
+            }
+            
             toast({
               title: "Payment Successful",
               description: "Your resume will be downloaded automatically.",
@@ -106,9 +140,9 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
           }
         },
         prefill: {
-          name: "",
-          email: "",
-          contact: ""
+          name: localStorage.getItem('user_name') || "",
+          email: localStorage.getItem('user_email') || "",
+          contact: localStorage.getItem('user_phone') || ""
         },
         notes: {
           address: "SXO Resume Builder"
@@ -142,4 +176,11 @@ export const initializePayment = (amount: number, onSuccess: PaymentSuccessHandl
       reject(error);
     }
   });
+};
+
+// Helper function to send payment confirmation
+const sendPaymentConfirmation = (email: string, paymentId: string) => {
+  console.log(`Would send confirmation email to ${email} for payment ${paymentId}`);
+  // This would typically call a backend API endpoint to send the email
+  // For now, we'll just log it since we don't have a backend setup yet
 };

@@ -15,8 +15,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { initializePayment } from "@/utils/paymentUtils";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Loader2, CheckCircle } from "lucide-react";
 
 interface PaymentDialogProps {
   open: boolean;
@@ -31,9 +31,34 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
   const [isValidatingCode, setIsValidatingCode] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState("pdf");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isReferralValid, setIsReferralValid] = useState<boolean | null>(null);
+
+  // Save form data to localStorage for prefill
+  useEffect(() => {
+    if (open) {
+      // Reset processing state when dialog opens
+      setIsProcessing(false);
+      
+      // Retrieve previously used format if any
+      const savedFormat = localStorage.getItem('preferred_format');
+      if (savedFormat && ['pdf', 'docx', 'doc'].includes(savedFormat)) {
+        setSelectedFormat(savedFormat);
+      }
+    }
+  }, [open]);
+
+  // Save selected format preference
+  useEffect(() => {
+    if (selectedFormat) {
+      localStorage.setItem('preferred_format', selectedFormat);
+    }
+  }, [selectedFormat]);
 
   const validateReferralCode = (code: string) => {
-    return code.length === 5 && code.endsWith("ak90");
+    // Add debounce or more sophisticated validation as needed
+    const isValid = code.length === 5 && code.endsWith("ak90");
+    setIsReferralValid(isValid);
+    return isValid;
   };
 
   const calculateDiscountedAmount = (originalAmount: number, code: string) => {
@@ -81,6 +106,21 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
         }
       }
 
+      // Store user's email for later sending confirmation
+      const formElements = document.querySelectorAll('input[type="email"]');
+      formElements.forEach(element => {
+        const input = element as HTMLInputElement;
+        if (input.value) {
+          localStorage.setItem('user_email', input.value);
+        }
+      });
+
+      // Save user name if available
+      const nameInput = document.querySelector('input[id="fullName"]') as HTMLInputElement;
+      if (nameInput && nameInput.value) {
+        localStorage.setItem('user_name', nameInput.value);
+      }
+
       await initializePayment(finalAmount, () => {
         console.log('Payment successful, initiating download/check');
         onSuccess(selectedFormat);
@@ -115,7 +155,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="sm:max-w-[425px]">
+      <AlertDialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
         <AlertDialogHeader>
           <AlertDialogTitle>{isAtsCheck ? "ATS Analysis" : "Resume Download"}</AlertDialogTitle>
           <AlertDialogDescription>
@@ -127,15 +167,33 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
             <ul className="mt-4 space-y-2">
               {isAtsCheck ? (
                 <>
-                  <li>• Detailed ATS compatibility score</li>
-                  <li>• Keyword analysis</li>
-                  <li>• Format optimization tips</li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    Detailed ATS compatibility score
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    Keyword analysis
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    Format optimization tips
+                  </li>
                 </>
               ) : (
                 <>
-                  <li>• Professional formatting</li>
-                  <li>• ATS optimization</li>
-                  <li>• Multiple format options</li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    Professional formatting
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    ATS optimization
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    Multiple format options
+                  </li>
                 </>
               )}
             </ul>
@@ -182,13 +240,26 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
 
             <div className="mt-4 space-y-2">
               <Label htmlFor="referralCode">Have a referral code?</Label>
-              <Input
-                id="referralCode"
-                placeholder="Enter referral code"
-                value={referralCode}
-                onChange={(e) => setReferralCode(e.target.value)}
-                disabled={isValidatingCode}
-              />
+              <div className="relative">
+                <Input
+                  id="referralCode"
+                  placeholder="Enter referral code"
+                  value={referralCode}
+                  onChange={(e) => {
+                    setReferralCode(e.target.value);
+                    if (e.target.value.length >= 5) {
+                      validateReferralCode(e.target.value);
+                    } else if (isReferralValid !== null) {
+                      setIsReferralValid(null);
+                    }
+                  }}
+                  disabled={isValidatingCode}
+                  className={isReferralValid === true ? "border-green-500 pr-10" : isReferralValid === false ? "border-red-500 pr-10" : ""}
+                />
+                {isReferralValid === true && (
+                  <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-green-500" />
+                )}
+              </div>
               <p className="text-xs text-muted-foreground">
                 Use a valid referral code to get 10% off!
               </p>
