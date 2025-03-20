@@ -111,10 +111,14 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
     try {
       console.log('Creating Razorpay instance with options');
       
-      // Save user data for later reference
-      const userEmail = document.querySelector('input[type="email"]')?.value || localStorage.getItem('user_email') || "";
-      const userName = document.querySelector('input[id="fullName"]')?.value || localStorage.getItem('user_name') || "";
-      const userPhone = document.querySelector('input[id="phone"]')?.value || localStorage.getItem('user_phone') || "";
+      // Save user data for later reference - Fix type errors by casting to HTMLInputElement
+      const emailElement = document.querySelector('input[type="email"]') as HTMLInputElement | null;
+      const nameElement = document.querySelector('input[id="fullName"]') as HTMLInputElement | null;
+      const phoneElement = document.querySelector('input[id="phone"]') as HTMLInputElement | null;
+      
+      const userEmail = emailElement?.value || localStorage.getItem('user_email') || "";
+      const userName = nameElement?.value || localStorage.getItem('user_name') || "";
+      const userPhone = phoneElement?.value || localStorage.getItem('user_phone') || "";
       
       if (userEmail) localStorage.setItem('user_email', userEmail);
       if (userName) localStorage.setItem('user_name', userName);
