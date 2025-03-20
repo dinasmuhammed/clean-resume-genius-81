@@ -1,8 +1,9 @@
+
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Code, X } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 interface SkillsFormProps {
   isActive: boolean;
@@ -10,22 +11,29 @@ interface SkillsFormProps {
 }
 
 export const SkillsForm = ({ isActive, onComplete }: SkillsFormProps) => {
+  const { toast } = useToast();
   const [skills, setSkills] = useState<string[]>([]);
   const [currentSkill, setCurrentSkill] = useState("");
 
   const handleAddSkill = (e: React.FormEvent) => {
     e.preventDefault();
-    if (skills.length >= 5) {
+    if (skills.length >= 15) {
       toast({
         variant: "destructive",
         title: "Skills limit reached",
-        description: "You can only add up to 5 skills."
+        description: "You can only add up to 15 skills."
       });
       return;
     }
     if (currentSkill.trim() && !skills.includes(currentSkill.trim())) {
       setSkills(prev => [...prev, currentSkill.trim()]);
       setCurrentSkill("");
+    } else if (skills.includes(currentSkill.trim())) {
+      toast({
+        variant: "destructive",
+        title: "Duplicate skill",
+        description: "This skill is already in your list."
+      });
     }
   };
 
@@ -42,7 +50,7 @@ export const SkillsForm = ({ isActive, onComplete }: SkillsFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="section-title">
+      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
         <Code className="w-5 h-5" />
         Skills
       </h2>
@@ -56,6 +64,12 @@ export const SkillsForm = ({ isActive, onComplete }: SkillsFormProps) => {
               onChange={(e) => setCurrentSkill(e.target.value)}
               placeholder="Enter a skill"
               className="flex-1"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleAddSkill(e);
+                }
+              }}
             />
             <Button
               type="button"
@@ -78,6 +92,7 @@ export const SkillsForm = ({ isActive, onComplete }: SkillsFormProps) => {
                 type="button"
                 onClick={() => handleRemoveSkill(skill)}
                 className="hover:text-red-500 focus:outline-none"
+                aria-label={`Remove ${skill}`}
               >
                 <X className="w-4 h-4" />
               </button>

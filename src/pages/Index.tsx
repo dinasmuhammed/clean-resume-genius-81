@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfoForm } from "@/components/ResumeForm/PersonalInfoForm";
@@ -7,7 +8,7 @@ import { SkillsForm } from "@/components/ResumeForm/SkillsForm";
 import { ResumePreviewer } from "@/components/ResumePreviewer/ResumePreviewer";
 import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { useToast } from "@/hooks/use-toast";
-import { Download, FileText, CheckCircle, Heart, ArrowLeft, Eye, User, Briefcase, GraduationCap, Code } from "lucide-react";
+import { Download, FileText, CheckCircle, ArrowLeft, Eye, User, Briefcase, GraduationCap, Code } from "lucide-react";
 import { Link } from "react-router-dom";
 import { exportToFormat } from "@/utils/pdfExport";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
@@ -150,22 +151,30 @@ const Index = () => {
               </div>
 
               <div className="space-y-6">
-                <PersonalInfoForm
-                  isActive={activeSection === "personal"}
-                  onComplete={(data) => handleSectionComplete("personal", data)}
-                />
-                <ExperienceForm
-                  isActive={activeSection === "experience"}
-                  onComplete={(data) => handleSectionComplete("experience", data)}
-                />
-                <EducationForm
-                  isActive={activeSection === "education"}
-                  onComplete={(data) => handleSectionComplete("education", data)}
-                />
-                <SkillsForm
-                  isActive={activeSection === "skills"}
-                  onComplete={(data) => handleSectionComplete("skills", data)}
-                />
+                {activeSection === "personal" && (
+                  <PersonalInfoForm
+                    isActive={true}
+                    onComplete={(data) => handleSectionComplete("personal", data)}
+                  />
+                )}
+                {activeSection === "experience" && (
+                  <ExperienceForm
+                    isActive={true}
+                    onComplete={(data) => handleSectionComplete("experience", data)}
+                  />
+                )}
+                {activeSection === "education" && (
+                  <EducationForm
+                    isActive={true}
+                    onComplete={(data) => handleSectionComplete("education", data)}
+                  />
+                )}
+                {activeSection === "skills" && (
+                  <SkillsForm
+                    isActive={true}
+                    onComplete={(data) => handleSectionComplete("skills", data)}
+                  />
+                )}
               </div>
             </div>
           </div>

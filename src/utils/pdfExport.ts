@@ -1,9 +1,10 @@
 
 import html2pdf from 'html2pdf.js';
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 export const exportToFormat = async (format: string = 'pdf') => {
   const element = document.getElementById('resume-preview');
+  const { toast } = useToast();
   
   if (!element) {
     console.error('Resume preview element not found');
@@ -75,25 +76,6 @@ export const exportToFormat = async (format: string = 'pdf') => {
       title: "Download Complete",
       description: "Your resume has been downloaded successfully.",
     });
-    
-    // Track successful downloads
-    try {
-      const downloadCount = parseInt(localStorage.getItem('download_count') || '0');
-      localStorage.setItem('download_count', (downloadCount + 1).toString());
-      
-      // If this is their first download, show a feedback prompt
-      if (downloadCount === 0) {
-        setTimeout(() => {
-          toast({
-            title: "How was your experience?",
-            description: "We'd love to hear your feedback about our resume builder!",
-          });
-        }, 3000);
-      }
-    } catch (e) {
-      // Ignore analytics errors
-      console.error('Analytics error:', e);
-    }
     
   } catch (error) {
     console.error('Error generating PDF:', error);

@@ -1,3 +1,4 @@
+
 import { calculateResumeScore } from '@/utils/algorithms';
 
 interface ResumePreviewerProps {
@@ -14,7 +15,7 @@ export const ResumePreviewer = ({ data, isPaid = false }: ResumePreviewerProps) 
   const PreviewContent = () => (
     <div className="max-w-[850px] mx-auto p-8 print:p-6">
       {/* Contact Information */}
-      {data.personal.fullName && (
+      {data.personal && data.personal.fullName && (
         <div className="text-center border-b border-gray-200 pb-3 mb-4">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">{data.personal.fullName}</h1>
           <div className="flex flex-wrap justify-center gap-3 text-sm text-gray-600">
@@ -32,7 +33,7 @@ export const ResumePreviewer = ({ data, isPaid = false }: ResumePreviewerProps) 
       )}
 
       {/* Professional Summary/Objective */}
-      {data.personal.summary && (
+      {data.personal && data.personal.summary && (
         <div className="mb-4">
           <h2 className="text-lg font-bold text-gray-900 border-b border-gray-200 pb-1 mb-2">
             Professional Summary
@@ -42,7 +43,7 @@ export const ResumePreviewer = ({ data, isPaid = false }: ResumePreviewerProps) 
       )}
 
       {/* Work Experience Section */}
-      {data.experience.length > 0 && (
+      {data.experience && data.experience.length > 0 && (
         <div className="mb-4">
           <h2 className="text-lg font-bold text-gray-900 border-b border-gray-200 pb-1 mb-2">
             Work Experience
@@ -50,7 +51,7 @@ export const ResumePreviewer = ({ data, isPaid = false }: ResumePreviewerProps) 
           <div className="space-y-3">
             {data.experience.map((exp, index) => (
               <div key={index} className="pl-0">
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start flex-wrap">
                   <h3 className="font-semibold text-gray-900 text-sm">{exp.position}</h3>
                   <span className="text-xs text-gray-600">
                     {exp.startDate} - {exp.endDate || "Present"}
@@ -65,7 +66,7 @@ export const ResumePreviewer = ({ data, isPaid = false }: ResumePreviewerProps) 
       )}
 
       {/* Education Section */}
-      {data.education.length > 0 && (
+      {data.education && data.education.length > 0 && (
         <div className="mb-4">
           <h2 className="text-lg font-bold text-gray-900 border-b border-gray-200 pb-1 mb-2">
             Education
@@ -73,14 +74,14 @@ export const ResumePreviewer = ({ data, isPaid = false }: ResumePreviewerProps) 
           <div className="space-y-2">
             {data.education.map((edu, index) => (
               <div key={index}>
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start flex-wrap">
                   <h3 className="font-semibold text-gray-900 text-sm">{edu.school}</h3>
                   <span className="text-xs text-gray-600">
                     {edu.startDate} - {edu.endDate || "Present"}
                   </span>
                 </div>
                 <p className="text-sm text-gray-700">
-                  {edu.degree} in {edu.field}
+                  {edu.degree} {edu.field ? `in ${edu.field}` : ''}
                 </p>
               </div>
             ))}
@@ -89,7 +90,7 @@ export const ResumePreviewer = ({ data, isPaid = false }: ResumePreviewerProps) 
       )}
 
       {/* Skills Section */}
-      {data.skills.length > 0 && (
+      {data.skills && data.skills.length > 0 && (
         <div>
           <h2 className="text-lg font-bold text-gray-900 border-b border-gray-200 pb-1 mb-2">
             Skills
