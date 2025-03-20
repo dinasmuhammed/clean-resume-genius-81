@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import './index.css'
 import { disableRightClick } from './utils/rightClickProtection'
-import { toast } from "@/hooks/use-toast"
+import { toast } from "@/components/ui/use-toast"
 
 // Initialize protection in all environments
 disableRightClick();

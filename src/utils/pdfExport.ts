@@ -1,18 +1,11 @@
 
 import html2pdf from 'html2pdf.js';
-import { useToast } from "@/hooks/use-toast";
 
 export const exportToFormat = async (format: string = 'pdf') => {
   const element = document.getElementById('resume-preview');
-  const { toast } = useToast();
   
   if (!element) {
     console.error('Resume preview element not found');
-    toast({
-      title: "Export Error",
-      description: "Could not find resume preview. Please try again.",
-      variant: "destructive"
-    });
     return;
   }
 
@@ -46,11 +39,6 @@ export const exportToFormat = async (format: string = 'pdf') => {
     }
   };
 
-  toast({
-    title: "Preparing Download",
-    description: "Your resume is being generated, please wait...",
-  });
-
   try {
     console.log('Starting resume export to:', format);
     
@@ -72,21 +60,10 @@ export const exportToFormat = async (format: string = 'pdf') => {
     // Clean up accessibility message
     document.body.removeChild(accessibilityMessage);
     
-    toast({
-      title: "Download Complete",
-      description: "Your resume has been downloaded successfully.",
-    });
-    
   } catch (error) {
     console.error('Error generating PDF:', error);
     
     // Reset the styles
     element.setAttribute('style', originalStyles);
-    
-    toast({
-      title: "Export Error",
-      description: "Failed to generate your resume. Please try again.",
-      variant: "destructive"
-    });
   }
 };
