@@ -19,6 +19,15 @@ export const exportToFormat = async (format: string = 'pdf') => {
   // Apply mobile-optimized styles
   element.setAttribute('style', `${originalStyles}; width: 100%; max-width: 8.5in; margin: 0 auto;`);
 
+  // Create accessibility message for screen readers
+  const accessibilityMessage = document.createElement('div');
+  accessibilityMessage.setAttribute('role', 'status');
+  accessibilityMessage.setAttribute('aria-live', 'polite');
+  accessibilityMessage.style.position = 'absolute';
+  accessibilityMessage.style.left = '-9999px';
+  accessibilityMessage.innerText = 'Generating your resume for download. This may take a moment.';
+  document.body.appendChild(accessibilityMessage);
+
   const opt = {
     margin: [0.5, 0.5],
     filename: `resume.${format}`,
@@ -42,28 +51,14 @@ export const exportToFormat = async (format: string = 'pdf') => {
   try {
     console.log('Starting resume export to:', format);
     
-    // Add an accessibility message for screen readers
-    const accessibilityMessage = document.createElement('div');
-    accessibilityMessage.setAttribute('role', 'status');
-    accessibilityMessage.setAttribute('aria-live', 'polite');
-    accessibilityMessage.style.position = 'absolute';
-    accessibilityMessage.style.left = '-9999px';
-    accessibilityMessage.innerText = 'Generating your resume for download. This may take a moment.';
-    document.body.appendChild(accessibilityMessage);
-    
     await html2pdf().set(opt).from(element).save();
     console.log('Resume export completed');
     
-    // Reset the styles
-    element.setAttribute('style', originalStyles);
-    
-    // Clean up accessibility message
-    document.body.removeChild(accessibilityMessage);
-    
   } catch (error) {
     console.error('Error generating PDF:', error);
-    
-    // Reset the styles
+  } finally {
+    // Always reset the styles and remove accessibility message
     element.setAttribute('style', originalStyles);
+    document.body.removeChild(accessibilityMessage);
   }
 };

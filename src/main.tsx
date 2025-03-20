@@ -12,11 +12,13 @@ disableRightClick();
 
 // Prevent screenshots and recordings with better error handling
 document.addEventListener('keyup', (e) => {
+  // Detect various screenshot combinations across platforms
   const isScreenshotAttempt = 
     (e.key === 'PrintScreen') ||
     (e.metaKey && e.shiftKey && e.key === '3') || // Mac screenshot full
     (e.metaKey && e.shiftKey && e.key === '4') || // Mac screenshot area
-    (e.metaKey && e.shiftKey && e.key === '5');   // Mac screen recording
+    (e.metaKey && e.shiftKey && e.key === '5') || // Mac screen recording
+    (e.ctrlKey && e.key === 'PrintScreen');       // Windows screenshot to clipboard
   
   if (isScreenshotAttempt) {
     e.preventDefault();
@@ -31,7 +33,7 @@ document.addEventListener('keyup', (e) => {
 
 // Additional screenshot prevention with user feedback
 window.addEventListener('keydown', (e) => {
-  if (e.ctrlKey && e.key === 'p') {
+  if ((e.ctrlKey && e.key === 'p') || (e.metaKey && e.key === 'p')) {
     e.cancelBubble = true;
     e.preventDefault();
     toast({
@@ -42,6 +44,13 @@ window.addEventListener('keydown', (e) => {
     return false;
   }
 });
+
+// Fix for iOS/Safari context menu
+document.addEventListener('touchstart', function(e) {
+  if (e.touches.length > 1) {
+    e.preventDefault();
+  }
+}, { passive: false });
 
 const root = document.getElementById('root');
 

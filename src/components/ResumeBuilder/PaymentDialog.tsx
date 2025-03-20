@@ -33,7 +33,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
   const [isProcessing, setIsProcessing] = useState(false);
   const [isReferralValid, setIsReferralValid] = useState<boolean | null>(null);
 
-  // Save form data to localStorage for prefill
+  // Reset state when dialog opens
   useEffect(() => {
     if (open) {
       // Reset processing state when dialog opens
@@ -55,7 +55,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
   }, [selectedFormat]);
 
   const validateReferralCode = (code: string) => {
-    // Add debounce or more sophisticated validation as needed
+    // Simple validation for referral codes
     const isValid = code.length === 5 && code.endsWith("ak90");
     setIsReferralValid(isValid);
     return isValid;
@@ -63,7 +63,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
 
   const calculateDiscountedAmount = (originalAmount: number, code: string) => {
     if (validateReferralCode(code)) {
-      return Math.floor(originalAmount * 0.9);
+      return Math.floor(originalAmount * 0.9); // 10% discount
     }
     return originalAmount;
   };
@@ -284,7 +284,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
               </>
             )}
           </AlertDialogAction>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel className="mt-2 sm:mt-0">Cancel</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -10,6 +10,9 @@ const Error = () => {
   useEffect(() => {
     // Log the error page render once
     console.log('Error page rendered');
+    
+    // Update document title for better UX
+    document.title = "Page Not Found - Resume Builder";
   }, []);
 
   return (
@@ -24,12 +27,12 @@ const Error = () => {
               navigate(-1);
             }} 
             variant="outline"
-            className="min-w-[120px]"
+            className="min-w-[120px] h-auto py-2"
           >
             Go Back
           </Button>
           <Link to="/">
-            <Button className="min-w-[120px]">
+            <Button className="min-w-[120px] h-auto py-2">
               Go Home
             </Button>
           </Link>
