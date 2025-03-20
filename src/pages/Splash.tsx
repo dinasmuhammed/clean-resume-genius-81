@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Laptop, Shield, Clock } from "lucide-react";
@@ -6,10 +7,16 @@ import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { PricingPlans } from "@/components/Pricing/PricingPlans";
 import { FindBuilder } from "@/components/ResumeBuilder/FindBuilder";
 import { TutorialSection } from "@/components/ResumeBuilder/TutorialSection";
+import SeoKeywords from "@/components/SEO/SeoKeywords";
+import SeoStructuredData from "@/components/SEO/SeoStructuredData";
 
 const Splash = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-gray-100">
+      {/* SEO Components */}
+      <SeoKeywords page="home" />
+      <SeoStructuredData type="home" />
+      
       {/* Navigation Bar */}
       <nav className="w-full px-4 py-4 bg-white border-b z-50 shadow-sm">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -54,13 +61,33 @@ const Splash = () => {
               Build an ATS-optimized resume that helps you stand out. Our intelligent system ensures your resume gets noticed by recruiters.
             </p>
             <p>
-           Make sure you pay the amount quickly; otherwise, the payment will fail, and you'll have to wait 7 days to get the amount credited back to your account.<br />
-Please ensure that you have made the payment through your UPI ID or number. Do not scan the QR code
-
+              Make sure you pay the amount quickly; otherwise, the payment will fail, and you'll have to wait 7 days to get the amount credited back to your account.<br />
+              Please ensure that you have made the payment through your UPI ID or number. Do not scan the QR code
             </p>
             <div className="pt-4">
               <SocialLinks />
             </div>
+          </div>
+
+          {/* Hidden SEO content for search engines */}
+          <div className="sr-only" aria-hidden="true">
+            <h2>Professional ATS Resume Builder for Job Seekers</h2>
+            <p>
+              SXO Resume Builder is the leading online platform for creating ATS-optimized resumes that help job seekers land interviews. Our professional templates are designed to pass through Applicant Tracking Systems while highlighting your skills and experience to recruiters.
+            </p>
+            <h3>Resume Builder Features</h3>
+            <ul>
+              <li>ATS-friendly resume templates that pass automated screening</li>
+              <li>Keyword optimization tools for specific job descriptions</li>
+              <li>Professional formatting with perfect ATS compatibility</li>
+              <li>Expert content suggestions for each resume section</li>
+              <li>ATS compatibility checker to test resume performance</li>
+              <li>Professional resume templates for all career levels</li>
+              <li>Resume builder for entry-level applicants and experienced professionals</li>
+              <li>Industry-specific resume templates and examples</li>
+              <li>One-page and two-page resume options for different careers</li>
+              <li>Resume sections optimized for ATS scanning and human reviewers</li>
+            </ul>
           </div>
 
           {/* Add Pricing Plans */}

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfoForm } from "@/components/ResumeForm/PersonalInfoForm";
@@ -13,6 +12,8 @@ import { Link } from "react-router-dom";
 import { exportToFormat } from "@/utils/pdfExport";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import SeoKeywords from "@/components/SEO/SeoKeywords";
+import SeoStructuredData from "@/components/SEO/SeoStructuredData";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -96,6 +97,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
+      <SeoKeywords page="builder" />
+      <SeoStructuredData type="builder" />
+      
       <div className="container mx-auto px-4 max-w-7xl">
         <header className="text-center mb-6 sm:mb-8">
           <div className="flex items-center justify-center gap-4 mb-4 sm:mb-6">
@@ -129,6 +133,22 @@ const Index = () => {
             <SocialLinks />
           </div>
         </header>
+
+        <div className="sr-only" aria-hidden="true">
+          <h2>Professional Resume Builder with ATS Optimization</h2>
+          <p>
+            Our resume builder helps you create professional resumes that are optimized for Applicant Tracking Systems (ATS).
+            Focus on your job search while we handle the formatting and optimization to ensure your resume gets noticed by recruiters.
+          </p>
+          <h3>Key Resume Builder Features</h3>
+          <ul>
+            <li>ATS-friendly resume templates</li>
+            <li>Keyword optimization for specific job descriptions</li>
+            <li>Professional formatting that passes ATS scans</li>
+            <li>Expert tips for each resume section</li>
+            <li>Real-time resume preview as you type</li>
+          </ul>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           <div className="space-y-6">
