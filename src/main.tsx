@@ -10,9 +10,9 @@ import { toast } from "@/components/ui/use-toast"
 // Initialize protection in all environments
 disableRightClick();
 
-// Prevent screenshots and recordings with better error handling
+// More reliable screenshot detection with improved messaging
 document.addEventListener('keyup', (e) => {
-  // Detect various screenshot combinations across platforms
+  // Enhanced screenshot detection across platforms
   const isScreenshotAttempt = 
     (e.key === 'PrintScreen') ||
     (e.metaKey && e.shiftKey && e.key === '3') || // Mac screenshot full
@@ -23,34 +23,48 @@ document.addEventListener('keyup', (e) => {
   if (isScreenshotAttempt) {
     e.preventDefault();
     toast({
-      title: "Screenshot Blocked",
-      description: "Screenshots are not allowed for security reasons.",
+      title: "Content Protected",
+      description: "This resume content is protected by copyright.",
       variant: "destructive"
     });
     return false;
   }
 });
 
-// Additional screenshot prevention with user feedback
-window.addEventListener('keydown', (e) => {
+// Improved print prevention with better error handling
+document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey && e.key === 'p') || (e.metaKey && e.key === 'p')) {
-    e.cancelBubble = true;
     e.preventDefault();
+    e.stopPropagation();
+    
     toast({
-      title: "Print Blocked",
-      description: "Printing is not allowed for security reasons.",
+      title: "Print Feature Disabled",
+      description: "Please use the download button to save your resume.",
       variant: "destructive"
     });
     return false;
   }
 });
 
-// Fix for iOS/Safari context menu
+// Fix iOS touch events for better mobile experience
 document.addEventListener('touchstart', function(e) {
   if (e.touches.length > 1) {
     e.preventDefault();
   }
 }, { passive: false });
+
+// Prevent saving page via keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault();
+    toast({
+      title: "Save Function Disabled",
+      description: "Please use the download button to save your resume.",
+      variant: "destructive"
+    });
+    return false;
+  }
+});
 
 const root = document.getElementById('root');
 
