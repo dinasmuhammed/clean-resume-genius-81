@@ -88,7 +88,10 @@ const App: React.FC = () => {
         <div className="min-h-screen flex flex-col bg-background">
           <Sonner position="top-center" closeButton richColors className="z-50" />
           <Navbar />
-          <main id="main-content" className="flex-1 w-full max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8">
+          <main 
+            id="main-content" 
+            className="flex-1 w-full max-w-full mx-auto px-2 xs:px-4 sm:px-6 lg:px-8 safe-bottom"
+          >
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
