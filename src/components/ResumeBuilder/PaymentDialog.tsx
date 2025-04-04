@@ -1,4 +1,3 @@
-
 import { Download } from "lucide-react";
 import {
   AlertDialog,
@@ -132,7 +131,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
           title: "Payment Successful!",
           description: "Your download will start automatically.",
         });
-      });
+      }, selectedFormat);
     } catch (error) {
       console.error('Payment error:', error);
       setIsValidatingCode(false);

@@ -111,7 +111,7 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
     try {
       console.log('Creating Razorpay instance with options');
       
-      // Save user data for later reference - Fix type errors by casting to HTMLInputElement
+      // Fix type errors by explicitly casting to HTMLInputElement
       const emailElement = document.querySelector('input[type="email"]') as HTMLInputElement | null;
       const nameElement = document.querySelector('input[id="fullName"]') as HTMLInputElement | null;
       const phoneElement = document.querySelector('input[id="phone"]') as HTMLInputElement | null;
