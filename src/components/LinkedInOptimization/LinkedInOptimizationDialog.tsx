@@ -28,6 +28,7 @@ type FormValues = z.infer<typeof formSchema>;
 const LinkedInOptimizationDialog = () => {
   const [isPaid, setIsPaid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -40,15 +41,21 @@ const LinkedInOptimizationDialog = () => {
     }
   });
 
+  // Validate form when values change
+  form.watch(() => {
+    const isValid = form.formState.isValid;
+    if (isValid !== isFormValid) {
+      setIsFormValid(isValid);
+    }
+  });
+
   const handlePayment = async () => {
     try {
-      // Get form values but don't submit yet
+      // Validate form before payment
       const values = form.getValues();
-      
-      // Validate the form manually
       const result = formSchema.safeParse(values);
+      
       if (!result.success) {
-        // Show validation errors
         form.trigger();
         return;
       }
@@ -57,8 +64,10 @@ const LinkedInOptimizationDialog = () => {
         setIsPaid(true);
         toast({
           title: "Payment Successful",
-          description: "Please complete and submit the form now.",
+          description: "Your LinkedIn profile optimization request is now being processed.",
         });
+        // Automatically submit the form after payment
+        handleFormSubmit(values);
       });
     } catch (error) {
       console.error("Payment error:", error);
@@ -70,16 +79,7 @@ const LinkedInOptimizationDialog = () => {
     }
   };
 
-  const onSubmit = async (data: FormValues) => {
-    if (!isPaid) {
-      toast({
-        title: "Payment Required",
-        description: "Please complete the payment before submitting your information.",
-        variant: "destructive"
-      });
-      return;
-    }
-
+  const handleFormSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     
     try {
@@ -112,6 +112,13 @@ const LinkedInOptimizationDialog = () => {
     }
   };
 
+  const onSubmit = async (data: FormValues) => {
+    // Only handle payment if the form is valid
+    if (form.formState.isValid) {
+      handlePayment();
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -134,20 +141,6 @@ const LinkedInOptimizationDialog = () => {
             <p className="text-sm text-muted-foreground">
               Our expert team will review and optimize your LinkedIn profile to increase your visibility to recruiters and improve your professional brand.
             </p>
-            
-            {!isPaid && (
-              <Button onClick={handlePayment} className="mt-4 w-full">
-                <CreditCard className="h-4 w-4 mr-2" />
-                Pay ₹499 to Continue
-              </Button>
-            )}
-            
-            {isPaid && (
-              <div className="bg-green-50 text-green-700 p-2 rounded mt-4 text-sm flex items-center">
-                <Bot className="h-4 w-4 mr-2" />
-                Payment complete! Please fill out the form below.
-              </div>
-            )}
           </div>
           
           <Form {...form}>
@@ -159,7 +152,7 @@ const LinkedInOptimizationDialog = () => {
                   <FormItem>
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="John Doe" {...field} disabled={isSubmitting} />
+                      <Input placeholder="John Doe" {...field} disabled={isSubmitting || isPaid} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -173,7 +166,7 @@ const LinkedInOptimizationDialog = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="john@example.com" {...field} disabled={isSubmitting} />
+                      <Input type="email" placeholder="john@example.com" {...field} disabled={isSubmitting || isPaid} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -187,7 +180,7 @@ const LinkedInOptimizationDialog = () => {
                   <FormItem>
                     <FormLabel>Phone Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="+1 (555) 000-0000" {...field} disabled={isSubmitting} />
+                      <Input placeholder="+1 (555) 000-0000" {...field} disabled={isSubmitting || isPaid} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -201,10 +194,10 @@ const LinkedInOptimizationDialog = () => {
                   <FormItem>
                     <FormLabel>LinkedIn Profile URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://www.linkedin.com/in/yourprofile" {...field} disabled={!isPaid || isSubmitting} />
+                      <Input placeholder="https://www.linkedin.com/in/yourprofile" {...field} disabled={isSubmitting || isPaid} />
                     </FormControl>
                     <FormDescription>
-                      {!isPaid ? "Complete payment to enable this field" : "Enter your full LinkedIn profile URL"}
+                      Enter your full LinkedIn profile URL
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -222,7 +215,7 @@ const LinkedInOptimizationDialog = () => {
                         placeholder="Any specific areas you'd like us to focus on..."
                         className="h-24"
                         {...field}
-                        disabled={!isPaid || isSubmitting}
+                        disabled={isSubmitting || isPaid}
                       />
                     </FormControl>
                     <FormMessage />
@@ -230,13 +223,20 @@ const LinkedInOptimizationDialog = () => {
                 )}
               />
               
-              <Button 
-                type="submit" 
-                className="w-full" 
-                disabled={!isPaid || isSubmitting}
-              >
-                {isSubmitting ? "Submitting..." : "Submit for Optimization"}
-              </Button>
+              {!isPaid ? (
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={!isFormValid || isSubmitting}
+                >
+                  {isSubmitting ? "Processing..." : "Continue to Payment"}
+                </Button>
+              ) : (
+                <div className="bg-green-50 text-green-700 p-3 rounded mt-4 text-sm flex items-center">
+                  <Bot className="h-4 w-4 mr-2" />
+                  Payment complete! Your LinkedIn profile optimization request has been submitted.
+                </div>
+              )}
             </form>
           </Form>
         </div>
