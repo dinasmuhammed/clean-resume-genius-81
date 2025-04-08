@@ -110,17 +110,33 @@
   }
 }
 
-/* Improved performance */
+/* Performance optimizations */
 * {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: preserve-3d;
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
-/* Prevent content jumping */
-.prevent-layout-shift {
+/* CSS variables for performance tuning */
+:root {
+  --animation-duration: 0.3s;
+  --transition-duration: 0.2s;
+  --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-timing: ease-in-out;
+}
+
+/* Prevent content jumping with content-visibility */
+.content-visibility-auto {
   content-visibility: auto;
   contain-intrinsic-size: 0 500px;
+}
+
+/* Optimize images with native lazy loading */
+img.optimize-loading {
+  loading: lazy;
+  decoding: async;
 }
 
 /* Fix for Safari mobile bottom bar */
@@ -176,4 +192,38 @@
   -webkit-overflow-scrolling: touch;
   overflow-y: auto;
   max-height: 80vh;
+}
+
+/* Accelerated GPU rendering */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Improved animation performance */
+.performant-animation {
+  animation-duration: var(--animation-duration);
+  animation-timing-function: var(--animation-timing);
+  transition-duration: var(--transition-duration);
+  transition-timing-function: var(--transition-timing);
+}
+
+/* Reduced motion media query with optimized transitions */
+@media (prefers-reduced-motion) {
+  .performant-animation {
+    animation-duration: 0.001s;
+    transition-duration: 0.001s;
+  }
+}
+
+/* Optimize paint performance */
+.optimize-paint {
+  contain: content;
+  will-change: contents;
+}
+
+/* Optimize layout performance */
+.optimize-layout {
+  contain: layout;
+  content-visibility: auto;
 }
