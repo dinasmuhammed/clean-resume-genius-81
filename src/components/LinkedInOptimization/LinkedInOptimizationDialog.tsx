@@ -122,12 +122,12 @@ const LinkedInOptimizationDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="gap-2">
+        <Button variant="outline" className="gap-2 w-full sm:w-auto">
           <Linkedin className="h-4 w-4" />
           LinkedIn Optimization
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] w-[95vw] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
           <DialogTitle className="flex gap-2 items-center">
             <Linkedin className="h-5 w-5" />
@@ -196,7 +196,7 @@ const LinkedInOptimizationDialog = () => {
                     <FormControl>
                       <Input placeholder="https://www.linkedin.com/in/yourprofile" {...field} disabled={isSubmitting || isPaid} />
                     </FormControl>
-                    <FormDescription>
+                    <FormDescription className="text-xs sm:text-sm">
                       Enter your full LinkedIn profile URL
                     </FormDescription>
                     <FormMessage />
@@ -226,15 +226,15 @@ const LinkedInOptimizationDialog = () => {
               {!isPaid ? (
                 <Button 
                   type="submit" 
-                  className="w-full" 
+                  className="w-full mobile-friendly-button" 
                   disabled={!isFormValid || isSubmitting}
                 >
                   {isSubmitting ? "Processing..." : "Continue to Payment"}
                 </Button>
               ) : (
                 <div className="bg-green-50 text-green-700 p-3 rounded mt-4 text-sm flex items-center">
-                  <Bot className="h-4 w-4 mr-2" />
-                  Payment complete! Your LinkedIn profile optimization request has been submitted.
+                  <Bot className="h-4 w-4 mr-2 flex-shrink-0" />
+                  <span>Payment complete! Your LinkedIn profile optimization request has been submitted.</span>
                 </div>
               )}
             </form>

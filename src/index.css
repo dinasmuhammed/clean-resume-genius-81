@@ -54,6 +54,7 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    width: 100%;
   }
 
   img {
@@ -119,6 +120,24 @@
   .section-spacing {
     @apply py-6 sm:py-8 md:py-12;
   }
+  
+  /* Form fields responsive styling */
+  .form-field-container {
+    @apply w-full mb-4;
+  }
+  
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+  
+  .form-input {
+    @apply w-full p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary;
+  }
+  
+  /* Mobile-optimized buttons */
+  .mobile-friendly-button {
+    @apply w-full md:w-auto py-3 px-4 text-base;
+  }
 }
 
 @layer utilities {
@@ -167,6 +186,26 @@
       scroll-behavior: auto !important;
     }
   }
+  
+  /* Fix for mobile overflow issues */
+  .mobile-container {
+    @apply max-w-full overflow-x-hidden;
+  }
+  
+  /* Mobile padding adjustments */
+  .mobile-padding {
+    @apply px-4 sm:px-6 md:px-8;
+  }
+  
+  /* Better spacing for stacked mobile elements */
+  .mobile-stack {
+    @apply flex flex-col gap-4;
+  }
+  
+  /* Mobile-first grid */
+  .mobile-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6;
+  }
 }
 
 .animate-fade-in {
@@ -187,4 +226,42 @@
 /* Make input placeholders lighter */
 ::placeholder {
   @apply text-gray-400;
+}
+
+/* Mobile optimization for dialogs and modals */
+.dialog-mobile-optimized {
+  @apply p-4 sm:p-6;
+  max-height: 90vh;
+  width: 95vw;
+  max-width: 95vw;
+}
+
+@media (min-width: 640px) {
+  .dialog-mobile-optimized {
+    width: auto;
+    max-width: 500px;
+  }
+}
+
+/* Improve form layouts on small screens */
+.form-row {
+  @apply flex flex-col sm:flex-row gap-4 w-full;
+}
+
+.form-col-full {
+  @apply w-full;
+}
+
+.form-col-half {
+  @apply w-full sm:w-1/2;
+}
+
+/* Fix for mobile tables */
+.mobile-table {
+  @apply block w-full overflow-x-auto sm:overflow-visible sm:inline-table whitespace-nowrap sm:whitespace-normal;
+}
+
+/* Fix for touch targets on mobile */
+.mobile-touch-target {
+  @apply min-h-[48px] min-w-[48px];
 }

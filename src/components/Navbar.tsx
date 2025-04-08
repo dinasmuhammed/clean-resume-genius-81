@@ -60,27 +60,19 @@ const Navbar = () => {
                 <NavigationMenuTrigger className="text-sm">Tools</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="grid gap-2 p-4 w-[300px]">
-                    <Link to="/builder" className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md">
-                      <FileText className="w-4 h-4 text-gray-400" />
-                      <div>
-                        <div className="text-sm font-medium text-gray-900">Resume Builder</div>
-                        <p className="text-xs text-gray-500">Create your professional resume</p>
-                      </div>
-                    </Link>
-                    <Link to="/ats-checker" className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md">
-                      <CheckCircle2 className="w-4 h-4 text-gray-400" />
-                      <div>
-                        <div className="text-sm font-medium text-gray-900">ATS Checker</div>
-                        <p className="text-xs text-gray-500">Verify ATS compatibility</p>
-                      </div>
-                    </Link>
-                    <Link to="/interview-guide" className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md">
-                      <BookOpen className="w-4 h-4 text-gray-400" />
-                      <div>
-                        <div className="text-sm font-medium text-gray-900">Interview Guide</div>
-                        <p className="text-xs text-gray-500">Prepare for interviews</p>
-                      </div>
-                    </Link>
+                    {navLinks.slice(0, 3).map((link) => (
+                      <Link 
+                        key={link.path}
+                        to={link.path} 
+                        className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md"
+                      >
+                        <link.icon className="w-4 h-4 text-gray-400" />
+                        <div>
+                          <div className="text-sm font-medium text-gray-900">{link.title}</div>
+                          <p className="text-xs text-gray-500">{link.description}</p>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -113,13 +105,14 @@ const Navbar = () => {
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="h-10 w-10">
                 <Menu className="w-5 h-5" />
+                <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[80%] sm:w-[350px]">
+            <SheetContent side="right" className="w-[85vw] sm:w-[350px] p-0">
               <div className="flex flex-col h-full">
-                <div className="flex-1 py-6">
+                <div className="flex-1 py-6 px-4 overflow-y-auto mobile-scroll-view">
                   <div className="space-y-1">
                     {navLinks.map((link) => (
                       <Link 
@@ -128,17 +121,17 @@ const Navbar = () => {
                         className="flex items-center p-3 rounded-md hover:bg-gray-100"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        <link.icon className="w-5 h-5 mr-3 text-gray-500" />
-                        <div>
-                          <div className="font-medium">{link.title}</div>
-                          <p className="text-sm text-gray-500">{link.description}</p>
+                        <link.icon className="w-5 h-5 mr-3 text-gray-500 flex-shrink-0" />
+                        <div className="min-w-0">
+                          <div className="font-medium truncate">{link.title}</div>
+                          <p className="text-sm text-gray-500 truncate">{link.description}</p>
                         </div>
                       </Link>
                     ))}
                   </div>
                 </div>
                 
-                <div className="border-t pt-4 flex flex-wrap gap-2">
+                <div className="border-t pt-4 pb-6 px-4 space-y-3">
                   <LinkedInAutomationDialog />
                   <FeedbackDialog />
                 </div>
