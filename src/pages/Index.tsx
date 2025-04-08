@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfoForm } from "@/components/ResumeForm/PersonalInfoForm";
@@ -7,13 +8,14 @@ import { SkillsForm } from "@/components/ResumeForm/SkillsForm";
 import { ResumePreviewer } from "@/components/ResumePreviewer/ResumePreviewer";
 import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { useToast } from "@/hooks/use-toast";
-import { Download, FileText, CheckCircle, ArrowLeft, Eye, User, Briefcase, GraduationCap, Code } from "lucide-react";
+import { Download, FileText, CheckCircle, ArrowLeft, Eye, User, Briefcase, GraduationCap, Code, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { exportToFormat } from "@/utils/pdfExport";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import SeoKeywords from "@/components/SEO/SeoKeywords";
 import SeoStructuredData from "@/components/SEO/SeoStructuredData";
+import LinkedInOptimizationDialog from "@/components/LinkedInOptimization/LinkedInOptimizationDialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -121,14 +123,12 @@ const Index = () => {
                 </Button>
               </Link>
               <Link to="/interview-guide">
-                <Button 
-                  variant="outline" 
-                  className="flex items-center gap-2 text-sm sm:text-base"
-                >
+                <Button variant="outline" className="flex items-center gap-2 text-sm sm:text-base">
                   <CheckCircle className="w-4 h-4" />
                   Interview Tips
                 </Button>
               </Link>
+              <LinkedInOptimizationDialog />
             </div>
             <SocialLinks />
           </div>

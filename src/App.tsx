@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,6 +14,7 @@ import Terms from "@/pages/Terms";
 import Cookies from "@/pages/Cookies";
 import Error from "@/pages/Error";
 import Splash from "@/pages/Splash";
+import LinkedInOptimizationDialog from "@/components/LinkedInOptimization/LinkedInOptimizationDialog";
 
 // Initialize QueryClient with configuration
 const queryClient = new QueryClient({

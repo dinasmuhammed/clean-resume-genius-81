@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Laptop, Shield, Clock } from "lucide-react";
@@ -9,6 +8,7 @@ import { FindBuilder } from "@/components/ResumeBuilder/FindBuilder";
 import { TutorialSection } from "@/components/ResumeBuilder/TutorialSection";
 import SeoKeywords from "@/components/SEO/SeoKeywords";
 import SeoStructuredData from "@/components/SEO/SeoStructuredData";
+import LinkedInOptimizationDialog from "@/components/LinkedInOptimization/LinkedInOptimizationDialog";
 
 const Splash = () => {
   return (
@@ -24,6 +24,7 @@ const Splash = () => {
             Resume Builder
           </Link>
           <div className="flex items-center gap-4">
+            <LinkedInOptimizationDialog />
             <Link to="/builder">
               <Button variant="ghost">Create Resume</Button>
             </Link>
@@ -190,6 +191,31 @@ const Splash = () => {
 
           <div className="pt-6 sm:pt-8 text-xs sm:text-sm text-gray-500">
             <p className="max-w-md mx-auto">Join thousands of job seekers who have successfully landed their dream jobs using our Resume Builder</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Add LinkedIn Optimization Section */}
+      <div className="py-12 bg-white rounded-xl shadow-sm mt-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
+              Premium Add-on Services
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+              Take your professional profile to the next level with our expert services
+            </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+              <div className="bg-gray-50 rounded-xl p-6 shadow-sm max-w-md mx-auto">
+                <h3 className="text-xl font-semibold mb-3">LinkedIn Profile Optimization</h3>
+                <p className="text-gray-600 mb-4">
+                  Our experts will review and optimize your LinkedIn profile to maximize visibility to recruiters.
+                </p>
+                <p className="text-lg font-bold text-primary mb-4">₹499</p>
+                <LinkedInOptimizationDialog />
+              </div>
+            </div>
           </div>
         </div>
       </div>
