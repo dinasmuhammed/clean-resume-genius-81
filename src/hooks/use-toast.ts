@@ -2,9 +2,10 @@
 import { toast as sonnerToast, type ToastT } from "sonner";
 
 // Define our own Toast type since sonner's type is imported as ToastT
-type Toast = Omit<ToastT, 'id'> & {
+type Toast = Omit<ToastT, 'id' | 'type'> & {
   variant?: "default" | "destructive" | "success";
   id?: string | number;
+  // Omit the 'type' property from sonner as it conflicts with our Toast component
 };
 
 // Define the unified return type for useToast
