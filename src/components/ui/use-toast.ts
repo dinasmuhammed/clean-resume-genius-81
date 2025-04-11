@@ -1,3 +1,3 @@
 
 // Forward exports from the hooks implementation
-export { useToast, toast } from "@/hooks/use-toast";
+export { useToast, toast, type UseToastReturnType } from "@/hooks/use-toast";

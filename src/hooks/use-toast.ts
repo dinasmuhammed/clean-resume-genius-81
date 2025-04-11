@@ -2,8 +2,9 @@
 import { toast as sonnerToast, type ToastT } from "sonner";
 
 // Define our own Toast type since sonner's type is imported as ToastT
-type Toast = ToastT & {
+type Toast = Omit<ToastT, 'id'> & {
   variant?: "default" | "destructive" | "success";
+  id?: string | number;
 };
 
 // Define the unified return type for useToast
@@ -13,7 +14,7 @@ export interface UseToastReturnType {
 }
 
 export function toast(props: Toast) {
-  const { variant, ...rest } = props;
+  const { variant, id = crypto.randomUUID(), ...rest } = props;
   
   // Add variant-specific styling
   let className = "";
@@ -25,6 +26,7 @@ export function toast(props: Toast) {
   
   return sonnerToast(rest.title as string, {
     ...rest,
+    id,
     className,
   });
 }
