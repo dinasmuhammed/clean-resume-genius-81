@@ -1,5 +1,5 @@
 
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 // Define Razorpay types for better TypeScript support
 declare global {
@@ -53,7 +53,8 @@ interface PaymentSuccessHandler {
   (format?: string): void;
 }
 
-// Fixed Razorpay key to ensure consistent format
+// Use a constant for Razorpay key - in production this should come from environment variables
+// This is a publishable key so it's ok to have in the client
 const RAZORPAY_KEY = "rzp_live_5JYQnqKRnKhB5y";
 
 // Load the Razorpay script dynamically with better error handling

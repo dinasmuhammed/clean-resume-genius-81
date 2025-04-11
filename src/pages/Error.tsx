@@ -5,6 +5,12 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
+interface ErrorState {
+  errorMessage?: string;
+  errorCode?: number;
+  errorSource?: string;
+}
+
 const Error = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -14,14 +20,19 @@ const Error = () => {
   });
 
   useEffect(() => {
-    // Log the error page render once
-    console.log('Error page rendered', location);
+    // Log the error page render with more context
+    console.log('Error page rendered', { 
+      pathname: location.pathname,
+      state: location.state,
+      search: location.search
+    });
     
     // Update document title for better UX
     document.title = "Error - Resume Builder";
 
     // Check if there's a specific error message from state
-    const state = location.state as { errorMessage?: string, errorCode?: number } | null;
+    const state = location.state as ErrorState | null;
+    
     if (state?.errorMessage) {
       setErrorInfo({
         title: `Error ${state.errorCode || ''}`,
@@ -32,11 +43,24 @@ const Error = () => {
         title: "Payment Error",
         description: "There was an issue processing your payment. Please try again or contact support."
       });
+    } else if (location.search.includes('error=')) {
+      // Handle query param errors
+      const params = new URLSearchParams(location.search);
+      const errorMsg = params.get('error');
+      setErrorInfo({
+        title: "Application Error",
+        description: errorMsg || "An unknown error occurred."
+      });
     }
   }, [location]);
 
   const handleRefresh = () => {
     window.location.reload();
+  };
+
+  const handleSupport = () => {
+    // Open support chat or email in production
+    window.open('mailto:support@sxoresume.com?subject=Error%20Report', '_blank');
   };
 
   return (
@@ -77,6 +101,14 @@ const Error = () => {
           >
             <RefreshCw className="h-4 w-4" />
             Refresh
+          </Button>
+          
+          <Button 
+            onClick={handleSupport}
+            variant="ghost"
+            className="min-w-[120px] h-auto py-2 mt-2"
+          >
+            Contact Support
           </Button>
         </div>
       </div>
