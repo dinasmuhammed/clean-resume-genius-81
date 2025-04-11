@@ -36,7 +36,7 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
-      cacheTime: 5 * 60 * 1000,
+      gcTime: 5 * 60 * 1000, // Changed from cacheTime to gcTime
     },
   },
 });
