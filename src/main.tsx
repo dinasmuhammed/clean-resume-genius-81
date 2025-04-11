@@ -5,10 +5,17 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import './index.css'
 import { disableRightClick } from './utils/rightClickProtection'
-import { toast } from "@/components/ui/use-toast"
+import { toast } from "@/hooks/use-toast"
+import { applyMobileOptimizations, setupOrientationChangeHandler } from './utils/performanceUtils.ts'
 
 // Initialize protection in all environments
 disableRightClick();
+
+// Apply mobile-specific optimizations
+applyMobileOptimizations();
+
+// Handle mobile orientation changes
+setupOrientationChangeHandler();
 
 // More reliable screenshot detection with improved messaging
 document.addEventListener('keyup', (e) => {
@@ -52,6 +59,14 @@ document.addEventListener('touchstart', function(e) {
     e.preventDefault();
   }
 }, { passive: false });
+
+// Add iOS-specific viewport fixes
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+if (isIOS) {
+  document.addEventListener('touchmove', function(e) {
+    if (e.scale !== 1) { e.preventDefault(); }
+  }, { passive: false });
+}
 
 // Prevent saving page via keyboard shortcuts
 document.addEventListener('keydown', function(e) {

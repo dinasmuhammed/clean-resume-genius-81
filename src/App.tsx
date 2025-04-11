@@ -36,7 +36,7 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
-      gcTime: 5 * 60 * 1000, // Changed from cacheTime to gcTime
+      gcTime: 5 * 60 * 1000, // Using gcTime instead of deprecated cacheTime
     },
   },
 });
@@ -70,6 +70,22 @@ const App: React.FC = () => {
           }
         }, 0);
       });
+    }
+    
+    // Add viewport meta tag for mobile optimization if it doesn't exist
+    if (!document.querySelector('meta[name="viewport"]')) {
+      const viewportMeta = document.createElement('meta');
+      viewportMeta.name = 'viewport';
+      viewportMeta.content = 'width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover';
+      document.head.appendChild(viewportMeta);
+    }
+    
+    // Add touch icon for iOS devices
+    if (!document.querySelector('link[rel="apple-touch-icon"]')) {
+      const touchIcon = document.createElement('link');
+      touchIcon.rel = 'apple-touch-icon';
+      touchIcon.href = '/favicon.svg';
+      document.head.appendChild(touchIcon);
     }
   }, []);
   

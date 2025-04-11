@@ -85,6 +85,34 @@ export const preloadCriticalResources = (urls: string[]) => {
   });
 };
 
+// Mobile-specific performance optimizations
+export const applyMobileOptimizations = () => {
+  // Check if we're on a mobile device
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  if (isMobile) {
+    // Reduce animation duration on mobile devices for better performance
+    document.documentElement.style.setProperty('--animation-duration', '0.2s');
+    
+    // Apply touch-specific optimizations
+    document.body.classList.add('touch-device');
+    
+    // Optimize scrolling performance
+    document.body.style.webkitOverflowScrolling = 'touch';
+    
+    // Prevent 300ms tap delay on mobile devices
+    const touchScript = document.createElement('script');
+    touchScript.src = 'https://unpkg.com/fastclick@1.0.6/lib/fastclick.js';
+    touchScript.onload = function() {
+      if ('FastClick' in window) {
+        // @ts-ignore
+        FastClick.attach(document.body);
+      }
+    };
+    document.head.appendChild(touchScript);
+  }
+};
+
 // Optimize PDF export by chunking the work
 export const optimizedPdfExport = async (
   element: HTMLElement,
@@ -143,5 +171,28 @@ export const createResourceLoader = () => {
       }
       return true;
     }
+  };
+};
+
+// Helper for handling orientation changes
+export const setupOrientationChangeHandler = (callback?: () => void) => {
+  const handler = () => {
+    // Update CSS custom property with viewport height to handle mobile browser chrome
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    
+    if (callback) callback();
+  };
+  
+  // Set initial value
+  handler();
+  
+  // Listen for orientation changes and resize events
+  window.addEventListener('orientationchange', handler);
+  window.addEventListener('resize', debounce(handler, 150));
+  
+  return () => {
+    window.removeEventListener('orientationchange', handler);
+    window.removeEventListener('resize', handler);
   };
 };
