@@ -1,11 +1,18 @@
 
-import { toast as sonnerToast, type Toast } from "sonner";
+import { toast as sonnerToast, type ToastT } from "sonner";
 
-type ToastProps = Toast & {
+// Define our own Toast type since sonner's type is imported as ToastT
+type Toast = ToastT & {
   variant?: "default" | "destructive" | "success";
 };
 
-export function toast(props: ToastProps) {
+// Define the unified return type for useToast
+export interface UseToastReturnType {
+  toast: (props: Toast) => string | number;
+  toasts: Toast[];
+}
+
+export function toast(props: Toast) {
   const { variant, ...rest } = props;
   
   // Add variant-specific styling
@@ -22,8 +29,12 @@ export function toast(props: ToastProps) {
   });
 }
 
-export const useToast = () => {
+// Create a wrapper around sonner's toast functionality
+const toasts: Toast[] = []; // This is just a placeholder as sonner handles the actual toast state
+
+export const useToast = (): UseToastReturnType => {
   return {
     toast,
+    toasts,
   };
 };

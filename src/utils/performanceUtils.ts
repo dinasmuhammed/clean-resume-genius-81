@@ -97,8 +97,8 @@ export const applyMobileOptimizations = () => {
     // Apply touch-specific optimizations
     document.body.classList.add('touch-device');
     
-    // Optimize scrolling performance
-    document.body.style.webkitOverflowScrolling = 'touch';
+    // Optimize scrolling performance using property accessor with type assertion
+    (document.body.style as any).webkitOverflowScrolling = 'touch';
     
     // Prevent 300ms tap delay on mobile devices
     const touchScript = document.createElement('script');

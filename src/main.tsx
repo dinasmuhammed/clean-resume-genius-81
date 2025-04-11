@@ -61,10 +61,10 @@ document.addEventListener('touchstart', function(e) {
 }, { passive: false });
 
 // Add iOS-specific viewport fixes
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
 if (isIOS) {
   document.addEventListener('touchmove', function(e) {
-    if (e.scale !== 1) { e.preventDefault(); }
+    if ((e as any).scale !== 1) { e.preventDefault(); }
   }, { passive: false });
 }
 
