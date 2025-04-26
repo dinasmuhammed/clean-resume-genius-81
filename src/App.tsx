@@ -1,4 +1,3 @@
-
 import React, { useEffect, lazy, Suspense } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +8,7 @@ import Footer from "@/components/Footer";
 import { setupLazyLoadImages, preloadCriticalResources } from '@/utils/performanceUtils';
 
 // Lazy-loaded components for better initial load performance
+const Home = lazy(() => import("@/pages/Home"));
 const Index = lazy(() => import("@/pages/Index"));
 const About = lazy(() => import("@/pages/About"));
 const ATSChecker = lazy(() => import("@/pages/ATSChecker"));
@@ -18,6 +18,7 @@ const Terms = lazy(() => import("@/pages/Terms"));
 const Cookies = lazy(() => import("@/pages/Cookies"));
 const Error = lazy(() => import("@/pages/Error"));
 const Splash = lazy(() => import("@/pages/Splash"));
+const Pricing = lazy(() => import("@/pages/Pricing"));
 const LinkedInOptimizationDialog = lazy(() => import("@/components/LinkedInOptimization/LinkedInOptimizationDialog"));
 
 // Loading component for Suspense
@@ -118,6 +119,9 @@ const App: React.FC = () => {
     } else if (path === "/splash") {
       title = "SXO Resume Builder | Professional ATS-Optimized Resume Creation";
       description = "Create professional, ATS-friendly resumes that help you stand out to recruiters and land more interviews with our advanced resume builder.";
+    } else if (path === "/builder") {
+      title = "Resume Builder | Create Professional Resumes Online";
+      description = "Build an ATS-optimized resume in minutes with our professional resume builder. Stand out to recruiters and land your dream job.";
     }
     
     // Update document title
@@ -154,7 +158,8 @@ const App: React.FC = () => {
           >
             <Suspense fallback={<Loading />}>
               <Routes>
-                <Route path="/" element={<Index />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/builder" element={<Index />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/ats-checker" element={<ATSChecker />} />
                 <Route path="/interview-guide" element={<InterviewGuide />} />
@@ -162,6 +167,7 @@ const App: React.FC = () => {
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/cookies" element={<Cookies />} />
                 <Route path="/splash" element={<Splash />} />
+                <Route path="/pricing" element={<Pricing />} />
                 <Route path="*" element={<Error />} />
               </Routes>
             </Suspense>

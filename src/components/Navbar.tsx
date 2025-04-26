@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +8,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { FileText, CheckCircle2, BookOpen, Info, Menu } from "lucide-react";
+import { FileText, CheckCircle2, BookOpen, Info, Menu, Home, DollarSign } from "lucide-react";
 import FeedbackDialog from "./FeedbackDialog";
 import LinkedInAutomationDialog from "./LinkedInAutomation/LinkedInAutomationDialog";
 import { useState } from "react";
@@ -19,6 +18,12 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
+    {
+      title: "Home",
+      icon: Home,
+      path: "/",
+      description: "Return to homepage"
+    },
     {
       title: "Resume Builder",
       icon: FileText,
@@ -36,6 +41,12 @@ const Navbar = () => {
       icon: BookOpen,
       path: "/interview-guide",
       description: "Prepare for interviews"
+    },
+    {
+      title: "Pricing",
+      icon: DollarSign,
+      path: "/pricing",
+      description: "View our pricing plans"
     },
     {
       title: "About Us",
