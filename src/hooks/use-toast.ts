@@ -5,7 +5,6 @@ import { toast as sonnerToast, type ToastT } from "sonner";
 export type Toast = Omit<ToastT, 'id'> & {
   variant?: "default" | "destructive" | "success";
   id?: string | number;
-  // We won't use the type property anymore
 };
 
 // Define the unified return type for useToast
@@ -27,7 +26,7 @@ export function toast(props: Toast) {
   
   // Map our variants to sonner's supported types
   // We'll convert our variant to a format sonner understands
-  let sonnerType;
+  let sonnerType: any;
   if (variant === "destructive") {
     sonnerType = "error";
   } else if (variant === "success") {
@@ -40,8 +39,8 @@ export function toast(props: Toast) {
     ...rest,
     id,
     className,
-    // Use our mapped sonnerType instead of 'type'
-    type: sonnerType
+    // Use our mapped sonnerType
+    ...(sonnerType && { type: sonnerType })
   });
 }
 

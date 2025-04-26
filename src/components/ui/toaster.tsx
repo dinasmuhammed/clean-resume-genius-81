@@ -16,8 +16,11 @@ export function Toaster() {
   return (
     <ToastProvider>
       {toasts && toasts.map(function ({ id, title, description, action, variant, ...props }) {
+        // Remove any potential 'type' property from props to avoid conflicts
+        const { type, ...restProps } = props as any;
+        
         return (
-          <Toast key={id || Math.random().toString()} variant={variant} {...props}>
+          <Toast key={id || Math.random().toString()} variant={variant} {...restProps}>
             <div className="grid gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
               {description && (

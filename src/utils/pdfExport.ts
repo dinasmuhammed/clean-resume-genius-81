@@ -71,7 +71,6 @@ export const exportToFormat = async (format: string = 'pdf') => {
       precision: 4,
       hotfixes: ["px_scaling"],
       putOnlyUsedFonts: true,
-      floatPrecision: "smart"
     }
   };
 
@@ -100,14 +99,24 @@ export const exportToFormat = async (format: string = 'pdf') => {
     
     // Use the optimized export process with progress reporting
     if (format === 'pdf') {
-      // For PDF format, use the optimized version with chunking for better performance
-      const worker = await html2pdf()
+      updateProgress(0.25);
+      
+      // For PDF format, use html2pdf with better handling
+      const worker = html2pdf()
         .from(element)
         .set(opt)
         .outputPdf('blob');
       
+      // Show progress updates
+      updateProgress(0.5);
+      setTimeout(() => updateProgress(0.75), 500);
+      
+      // Wait for the PDF to be generated
+      const blob = await worker;
+      updateProgress(1);
+      
       // Create download link
-      const url = URL.createObjectURL(worker);
+      const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
       link.download = `resume.${format}`;
