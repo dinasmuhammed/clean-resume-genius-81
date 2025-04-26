@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PricingPlans } from "@/components/Pricing/PricingPlans";
 import { Features } from "@/components/Features/Features";
 import { HeroSection } from "@/components/HeroSection/HeroSection";
+import { AffiliateSection } from "@/components/AffiliateProgram/AffiliateSection";
 import SeoKeywords from "@/components/SEO/SeoKeywords";
 import SeoStructuredData from "@/components/SEO/SeoStructuredData";
 
@@ -24,6 +25,9 @@ const Home = () => {
 
       {/* Pricing Section */}
       <PricingPlans />
+
+      {/* Affiliate Program Section */}
+      <AffiliateSection />
 
       {/* CTA Section */}
       <section className="py-16 bg-gray-50">
