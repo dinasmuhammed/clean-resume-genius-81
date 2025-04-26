@@ -2,11 +2,10 @@
 import { toast as sonnerToast, type ToastT } from "sonner";
 
 // Define our own Toast type since sonner's type is imported as ToastT
-type Toast = Omit<ToastT, 'id'> & {
+export type Toast = Omit<ToastT, 'id'> & {
   variant?: "default" | "destructive" | "success";
   id?: string | number;
-  // Add the type property that's being destructured in the toaster component
-  type?: string;
+  // We won't use the type property anymore
 };
 
 // Define the unified return type for useToast
@@ -26,14 +25,23 @@ export function toast(props: Toast) {
     className = "bg-green-500 text-white";
   }
   
-  // Map our variant to sonner's type if needed
-  let type = rest.type;
+  // Map our variants to sonner's supported types
+  // We'll convert our variant to a format sonner understands
+  let sonnerType;
+  if (variant === "destructive") {
+    sonnerType = "error";
+  } else if (variant === "success") {
+    sonnerType = "success";
+  } else {
+    sonnerType = "default";
+  }
   
   return sonnerToast(rest.title as string, {
     ...rest,
     id,
     className,
-    type
+    // Use our mapped sonnerType instead of 'type'
+    type: sonnerType
   });
 }
 
