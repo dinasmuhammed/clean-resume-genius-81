@@ -26,10 +26,14 @@ export function toast(props: Toast) {
     className = "bg-green-500 text-white";
   }
   
+  // Map our variant to sonner's type if needed
+  let type = rest.type;
+  
   return sonnerToast(rest.title as string, {
     ...rest,
     id,
     className,
+    type
   });
 }
 

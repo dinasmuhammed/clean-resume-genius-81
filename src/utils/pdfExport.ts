@@ -1,4 +1,3 @@
-
 import html2pdf from 'html2pdf.js';
 import { debounce, optimizedPdfExport } from './performanceUtils';
 
@@ -10,12 +9,20 @@ export const exportToFormat = async (format: string = 'pdf') => {
     throw new Error('Resume preview element not found');
   }
 
-  // Show loading indication to user
+  // Show loading indication to user with improved accessibility
   const loadingIndicator = document.createElement('div');
   loadingIndicator.setAttribute('role', 'status');
   loadingIndicator.setAttribute('aria-live', 'polite');
-  loadingIndicator.className = 'fixed top-0 left-0 right-0 bg-primary/80 text-white text-center py-2 z-50';
-  loadingIndicator.textContent = `Preparing your resume for ${format.toUpperCase()} export...`;
+  loadingIndicator.className = 'fixed top-0 left-0 right-0 bg-primary/90 text-white text-center py-3 z-50 shadow-md animate-fade-in';
+  loadingIndicator.innerHTML = `
+    <div class="flex items-center justify-center gap-3">
+      <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <span>Preparing your resume for ${format.toUpperCase()} export...</span>
+    </div>
+  `;
   document.body.appendChild(loadingIndicator);
   
   // Capture original styles to restore later
@@ -42,18 +49,18 @@ export const exportToFormat = async (format: string = 'pdf') => {
   const opt = {
     margin: [0.5, 0.5],
     filename: `resume.${format}`,
-    image: { type: 'jpeg', quality: 0.95 }, // Slightly reduced quality for better performance
+    image: { type: 'jpeg', quality: 0.95 }, 
     html2canvas: { 
-      scale: isMobile ? 2 : 2.5, // Higher scale factor for better quality
+      scale: isMobile ? 2 : 3, // Higher scale factor for better quality
       useCORS: true,
       logging: false,
       allowTaint: true,
       letterRendering: true,
       scrollX: 0,
       scrollY: 0,
-      backgroundColor: null, // Transparent background is faster to render
-      removeContainer: true, // Clean up temporary elements
-      imageTimeout: 15000, // Increased timeout for image loading
+      backgroundColor: null,
+      removeContainer: true,
+      imageTimeout: 15000,
       ignoreElements: (element: Element) => element.classList.contains('no-export'),
     },
     jsPDF: { 
@@ -61,7 +68,7 @@ export const exportToFormat = async (format: string = 'pdf') => {
       format: 'a4', 
       orientation: 'portrait',
       compress: true,
-      precision: 3, // Slightly lower precision for better performance
+      precision: 4,
       hotfixes: ["px_scaling"],
       putOnlyUsedFonts: true,
       floatPrecision: "smart"
@@ -81,7 +88,14 @@ export const exportToFormat = async (format: string = 'pdf') => {
     let currentProgress = 0;
     const updateProgress = debounce((progress: number) => {
       currentProgress = progress;
-      loadingIndicator.textContent = `Exporting resume: ${Math.round(progress * 100)}%`;
+      loadingIndicator.innerHTML = `
+        <div class="flex flex-col items-center justify-center">
+          <span>Exporting resume: ${Math.round(progress * 100)}%</span>
+          <div class="w-64 bg-white/30 rounded-full h-2.5 mt-2">
+            <div class="bg-white h-2.5 rounded-full" style="width: ${Math.round(progress * 100)}%"></div>
+          </div>
+        </div>
+      `;
     }, 100);
     
     // Use the optimized export process with progress reporting
@@ -136,7 +150,6 @@ export const exportToFormat = async (format: string = 'pdf') => {
   }
 };
 
-// Add a more reliable method for download failure recovery with performance optimizations
 export const fallbackExport = (format: string = 'pdf') => {
   const element = document.getElementById('resume-preview');
   
