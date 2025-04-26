@@ -1,8 +1,7 @@
-
 import React from 'react';
 
 interface SeoKeywordsProps {
-  page?: 'home' | 'builder' | 'ats' | 'interview';
+  page?: 'home' | 'builder' | 'ats' | 'interview' | 'pricing';
 }
 
 const SeoKeywords: React.FC<SeoKeywordsProps> = ({ page = 'home' }) => {
@@ -35,6 +34,13 @@ const SeoKeywords: React.FC<SeoKeywordsProps> = ({ page = 'home' }) => {
       "virtual interview tips", "follow-up email templates", "interview thank you notes",
       "panel interview preparation", "technical interview guidance", "interview confidence",
       "answering difficult questions", "interview body language", "remote interview success"
+    ],
+    pricing: [
+      "resume builder pricing", "best value resume service", "professional resume cost",
+      "affordable resume creator", "resume writing service pricing", "resume template pricing",
+      "online resume builder subscription", "one time payment resume tool", "resume package deals",
+      "career service pricing", "ATS checker cost", "resume optimization pricing",
+      "CV builder plans", "resume writing packages", "job application tools cost"
     ]
   };
 

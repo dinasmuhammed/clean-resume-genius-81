@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 
 interface SeoStructuredDataProps {
-  type: 'home' | 'builder' | 'ats' | 'interview';
+  type: 'home' | 'builder' | 'ats' | 'interview' | 'pricing';
 }
 
 const SeoStructuredData: React.FC<SeoStructuredDataProps> = ({ type }) => {
@@ -65,6 +65,8 @@ const SeoStructuredData: React.FC<SeoStructuredDataProps> = ({ type }) => {
         return 'Check if your resume is optimized for Applicant Tracking Systems (ATS) with our advanced ATS compatibility checker. Improve your chances of getting interviews.';
       case 'interview':
         return 'Prepare for job interviews with expert tips, common question answers, and strategies to showcase your skills and experience effectively.';
+      case 'pricing':
+        return 'Transparent, affordable pricing plans for our professional resume building tools. Choose the right option for your career needs and budget.';
       default:
         return 'SXO Resume Builder - The professional tool for creating ATS-optimized resumes and advancing your career.';
     }
