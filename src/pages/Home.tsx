@@ -33,6 +33,24 @@ const Home = () => {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">Ready to Build Your Professional Resume?</h2>
+          
+          {/* Product Hunt Badge */}
+          <div className="flex justify-center mb-8">
+            <a 
+              href="https://www.producthunt.com/posts/sxo-resume?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sxo&#0045;resume" 
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img 
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=594173&theme=light&t=1746111330161" 
+                alt="SXO Resume - Professional resume builder | Product Hunt" 
+                style={{ width: '250px', height: '54px' }} 
+                width="250" 
+                height="54" 
+              />
+            </a>
+          </div>
+
           <div className="space-x-4">
             <Link to="/builder">
               <Button size="lg">Get Started</Button>
