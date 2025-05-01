@@ -1,4 +1,3 @@
-
 import { Download } from "lucide-react";
 import {
   AlertDialog,
@@ -121,8 +120,10 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
         localStorage.setItem('user_name', nameInput.value);
       }
 
+      // Call initializePayment with success callback that closes dialog and triggers onSuccess
       await initializePayment(finalAmount, () => {
         console.log('Payment successful, initiating download/check');
+        // Trigger the success callback with the selected format
         onSuccess(selectedFormat);
         setIsValidatingCode(false);
         setIsProcessing(false);
@@ -130,7 +131,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
         
         toast({
           title: "Payment Successful!",
-          description: "Your download will start automatically.",
+          description: "Your download has started automatically.",
         });
       }, selectedFormat);
     } catch (error) {

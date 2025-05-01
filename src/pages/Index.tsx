@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfoForm } from "@/components/ResumeForm/PersonalInfoForm";
@@ -61,12 +60,26 @@ const Index = () => {
   const handlePaymentSuccess = (format: string) => {
     setShowPaymentDialog(false);
     setIsPaid(true);
+    
+    // Explicitly start the export process with the specified format
+    setTimeout(() => {
+      exportToFormat(format).then(() => {
+        console.log(`Resume download started in ${format} format`);
+      }).catch(error => {
+        console.error("Error during export:", error);
+        toast({
+          title: "Export Error",
+          description: "There was an error downloading your resume. Please try again.",
+          variant: "destructive"
+        });
+      });
+    }, 500); // Short delay to ensure UI updates first
+    
     toast({
       title: "Success",
-      description: "Your resume is ready to download!",
+      description: "Your resume is downloading automatically!",
       variant: "default"
     });
-    exportToFormat(format);
   };
 
   const handleExport = async () => {

@@ -139,6 +139,11 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
             localStorage.setItem('last_payment_id', response.razorpay_payment_id);
             localStorage.setItem('payment_successful', 'true');
             
+            // Store selected format in localStorage to use if download needs to be triggered again
+            if (format) {
+              localStorage.setItem('last_download_format', format);
+            }
+            
             // Send confirmation email if email is available
             try {
               const userEmail = localStorage.getItem('user_email');
@@ -152,8 +157,11 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
             
             toast({
               title: "Payment Successful",
-              description: "Your resume will be downloaded automatically.",
+              description: "Your resume is being downloaded automatically.",
             });
+            
+            // Call the onSuccess callback with format parameter
+            // This will trigger the download in the component
             onSuccess(format);
             resolve(response);
           } else {
