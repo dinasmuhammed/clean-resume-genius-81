@@ -1,3 +1,4 @@
+
 import { Check } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -16,8 +17,8 @@ export const PricingPlans = () => {
               <CardTitle>Resume Builder</CardTitle>
               <CardDescription>Create a professional, ATS-optimized resume</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold">₹599</span>
-                <span className="text-gray-600 ml-2">($7.5)</span>
+                <span className="text-4xl font-bold">₹399</span>
+                <span className="text-gray-600 ml-2">($5)</span>
               </div>
             </CardHeader>
             <CardContent>
