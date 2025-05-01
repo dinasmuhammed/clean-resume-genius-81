@@ -1,3 +1,4 @@
+
 import { Download } from "lucide-react";
 import {
   AlertDialog,
@@ -81,7 +82,7 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
     setIsProcessing(true);
     
     try {
-      const baseAmount = isAtsCheck ? 59 : 599;
+      const baseAmount = isAtsCheck ? 59 : 399;
       let finalAmount = baseAmount;
 
       if (referralCode) {
