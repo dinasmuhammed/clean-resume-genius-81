@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -8,12 +7,11 @@ import { HeroSection } from "@/components/HeroSection/HeroSection";
 import { AffiliateSection } from "@/components/AffiliateProgram/AffiliateSection";
 import SeoKeywords from "@/components/SEO/SeoKeywords";
 import SeoStructuredData from "@/components/SEO/SeoStructuredData";
-
 const Home = () => {
-  const { toast } = useToast();
-
-  return (
-    <div className="min-h-screen">
+  const {
+    toast
+  } = useToast();
+  return <div className="min-h-screen">
       <SeoKeywords page="home" />
       <SeoStructuredData type="home" />
       
@@ -36,18 +34,8 @@ const Home = () => {
           
           {/* Product Hunt Badge */}
           <div className="flex justify-center mb-8">
-            <a 
-              href="https://www.producthunt.com/posts/sxo-resume?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sxo&#0045;resume" 
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img 
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=594173&theme=light&t=1746111330161" 
-                alt="SXO Resume - Professional resume builder | Product Hunt" 
-                style={{ width: '250px', height: '54px' }} 
-                width="250" 
-                height="54" 
-              />
+            <a href="https://www.producthunt.com/posts/sxo-resume?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sxo&#0045;resume" target="_blank" rel="noopener noreferrer">
+              
             </a>
           </div>
 
@@ -61,8 +49,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Home;
