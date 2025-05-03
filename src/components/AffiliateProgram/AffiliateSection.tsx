@@ -1,11 +1,15 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link as LinkIcon, Star, Award } from 'lucide-react';
+
 export const AffiliateSection = () => {
   const whatsappLink = "https://api.whatsapp.com/send/?phone=919656778508&text&type=phone_number&app_absent=0";
-  return <section className="py-16 bg-white">
+  
+  return (
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6">Join Our Affiliate Program</h2>
@@ -24,8 +28,13 @@ export const AffiliateSection = () => {
           </div>
 
           {/* Special offer banner */}
+          <div className="mb-8 px-6 py-4 bg-amber-50 border border-amber-200 rounded-lg text-center">
+            <p className="text-amber-800 font-medium flex items-center justify-center">
+              <Award className="w-5 h-5 mr-2 text-amber-600" /> 
+              First 100 Affiliates = 40% Commission for 3 Months
+            </p>
+          </div>
           
-
           <Card>
             <CardHeader>
               <CardTitle>Affiliate Benefits</CardTitle>
@@ -71,5 +80,6 @@ export const AffiliateSection = () => {
           </Card>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };

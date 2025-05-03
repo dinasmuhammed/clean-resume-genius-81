@@ -6,8 +6,10 @@ import { PricingPlans } from "@/components/Pricing/PricingPlans";
 import { Features } from "@/components/Features/Features";
 import { HeroSection } from "@/components/HeroSection/HeroSection";
 import { AffiliateSection } from "@/components/AffiliateProgram/AffiliateSection";
+import { WhiteLabelRequestForm } from "@/components/WhiteLabel/WhiteLabelRequestForm";
 import SeoKeywords from "@/components/SEO/SeoKeywords";
 import SeoStructuredData from "@/components/SEO/SeoStructuredData";
+
 const Home = () => {
   const {
     toast
@@ -27,6 +29,9 @@ const Home = () => {
 
       {/* Affiliate Program Section */}
       <AffiliateSection />
+
+      {/* White Label Licensing Form */}
+      <WhiteLabelRequestForm />
 
       {/* CTA Section */}
       <section className="py-16 bg-gray-50">
