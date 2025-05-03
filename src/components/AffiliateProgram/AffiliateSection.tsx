@@ -1,15 +1,11 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link as LinkIcon, Star, Award } from 'lucide-react';
-
 export const AffiliateSection = () => {
   const whatsappLink = "https://api.whatsapp.com/send/?phone=919656778508&text&type=phone_number&app_absent=0";
-  
-  return (
-    <section className="py-16 bg-white">
+  return <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6">Join Our Affiliate Program</h2>
@@ -19,32 +15,16 @@ export const AffiliateSection = () => {
 
           {/* Product Hunt Badge */}
           <div className="flex justify-center mb-6">
-            <a 
-              href="https://www.producthunt.com/posts/sxo-resume?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sxo&#0045;resume" 
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img 
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=594173&theme=light&t=1746111330161" 
-                alt="SXO Resume - Professional resume builder | Product Hunt" 
-                style={{ width: '250px', height: '54px' }} 
-                width="250" 
-                height="54" 
-              />
+            <a href="https://www.producthunt.com/posts/sxo-resume?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sxo&#0045;resume" target="_blank" rel="noopener noreferrer">
+              <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=594173&theme=light&t=1746111330161" alt="SXO Resume - Professional resume builder | Product Hunt" style={{
+              width: '250px',
+              height: '54px'
+            }} width="250" height="54" />
             </a>
           </div>
 
           {/* Special offer banner */}
-          <div className="bg-gradient-to-r from-amber-100 to-amber-200 p-4 rounded-md mb-6 shadow-sm border border-amber-300">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Award className="h-5 w-5 text-amber-600" />
-              <h3 className="font-semibold text-amber-900">Limited Time Offer</h3>
-              <Award className="h-5 w-5 text-amber-600" />
-            </div>
-            <p className="text-amber-900 font-bold">
-              First 100 Affiliates = 40% Commission for 3 Months
-            </p>
-          </div>
+          
 
           <Card>
             <CardHeader>
@@ -77,12 +57,7 @@ export const AffiliateSection = () => {
               </div>
 
               <div className="pt-4">
-                <a 
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block"
-                >
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-block">
                   <Button size="lg" className="w-full sm:w-auto">
                     Contact Us on WhatsApp
                   </Button>
@@ -96,6 +71,5 @@ export const AffiliateSection = () => {
           </Card>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
