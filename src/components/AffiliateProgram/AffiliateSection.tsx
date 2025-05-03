@@ -14,14 +14,7 @@ export const AffiliateSection = () => {
           </p>
 
           {/* Product Hunt Badge */}
-          <div className="flex justify-center mb-6">
-            <a href="https://www.producthunt.com/posts/sxo-resume?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sxo&#0045;resume" target="_blank" rel="noopener noreferrer">
-              <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=594173&theme=light&t=1746111330161" alt="SXO Resume - Professional resume builder | Product Hunt" style={{
-              width: '250px',
-              height: '54px'
-            }} width="250" height="54" />
-            </a>
-          </div>
+          
 
           {/* Special offer banner */}
           
