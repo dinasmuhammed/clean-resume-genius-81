@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,7 +10,6 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@/hooks/use-toast';
-
 const formSchema = z.object({
   businessName: z.string().min(2, "Business name is required"),
   contactName: z.string().min(2, "Contact person name is required"),
@@ -19,10 +17,10 @@ const formSchema = z.object({
   businessDetails: z.string().min(10, "Please provide more details about your business"),
   subscriptionPreference: z.enum(["monthly", "annually"])
 });
-
 export const WhiteLabelRequestForm = () => {
-  const { toast } = useToast();
-  
+  const {
+    toast
+  } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,7 +31,6 @@ export const WhiteLabelRequestForm = () => {
       subscriptionPreference: 'monthly'
     }
   });
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await fetch('https://formspree.io/f/xanoedeb', {
@@ -43,7 +40,6 @@ export const WhiteLabelRequestForm = () => {
         },
         body: JSON.stringify(values)
       });
-      
       if (response.ok) {
         toast({
           title: "Form submitted successfully",
@@ -62,9 +58,7 @@ export const WhiteLabelRequestForm = () => {
       });
     }
   };
-
-  return (
-    <section className="py-16 bg-white">
+  return <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
@@ -75,14 +69,7 @@ export const WhiteLabelRequestForm = () => {
           </div>
 
           {/* Product Hunt Badge */}
-          <div className="flex justify-center mb-10">
-            <a href="https://www.producthunt.com/posts/sxo-resume?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sxo&#0045;resume" target="_blank" rel="noopener noreferrer">
-              <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=594173&theme=light&t=1746111330161" alt="SXO Resume - Professional resume builder | Product Hunt" style={{
-                width: '250px',
-                height: '54px'
-              }} width="250" height="54" />
-            </a>
-          </div>
+          
 
           <Card>
             <CardHeader>
@@ -92,78 +79,52 @@ export const WhiteLabelRequestForm = () => {
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="businessName"
-                    render={({ field }) => (
-                      <FormItem>
+                  <FormField control={form.control} name="businessName" render={({
+                  field
+                }) => <FormItem>
                         <FormLabel>Business Name</FormLabel>
                         <FormControl>
                           <Input placeholder="Your business name" {...field} />
                         </FormControl>
                         <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      </FormItem>} />
 
-                  <FormField
-                    control={form.control}
-                    name="contactName"
-                    render={({ field }) => (
-                      <FormItem>
+                  <FormField control={form.control} name="contactName" render={({
+                  field
+                }) => <FormItem>
                         <FormLabel>Contact Person Name</FormLabel>
                         <FormControl>
                           <Input placeholder="Full name" {...field} />
                         </FormControl>
                         <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      </FormItem>} />
 
-                  <FormField
-                    control={form.control}
-                    name="phoneNumber"
-                    render={({ field }) => (
-                      <FormItem>
+                  <FormField control={form.control} name="phoneNumber" render={({
+                  field
+                }) => <FormItem>
                         <FormLabel>Phone Number</FormLabel>
                         <FormControl>
                           <Input placeholder="Your phone number" {...field} />
                         </FormControl>
                         <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      </FormItem>} />
 
-                  <FormField
-                    control={form.control}
-                    name="businessDetails"
-                    render={({ field }) => (
-                      <FormItem>
+                  <FormField control={form.control} name="businessDetails" render={({
+                  field
+                }) => <FormItem>
                         <FormLabel>Business Details</FormLabel>
                         <FormControl>
-                          <Textarea 
-                            placeholder="Services you offer, target audience, etc." 
-                            className="min-h-[120px]" 
-                            {...field} 
-                          />
+                          <Textarea placeholder="Services you offer, target audience, etc." className="min-h-[120px]" {...field} />
                         </FormControl>
                         <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      </FormItem>} />
 
-                  <FormField
-                    control={form.control}
-                    name="subscriptionPreference"
-                    render={({ field }) => (
-                      <FormItem className="space-y-3">
+                  <FormField control={form.control} name="subscriptionPreference" render={({
+                  field
+                }) => <FormItem className="space-y-3">
                         <FormLabel>Subscription Preference</FormLabel>
                         <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex flex-col space-y-1"
-                          >
+                          <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="monthly" id="monthly" />
                               <Label htmlFor="monthly">Monthly</Label>
@@ -175,9 +136,7 @@ export const WhiteLabelRequestForm = () => {
                           </RadioGroup>
                         </FormControl>
                         <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      </FormItem>} />
 
                   <Button type="submit" className="w-full">Submit Request</Button>
                 </form>
@@ -186,6 +145,5 @@ export const WhiteLabelRequestForm = () => {
           </Card>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
