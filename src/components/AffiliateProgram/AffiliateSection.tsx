@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Link as LinkIcon } from 'lucide-react';
+import { Link as LinkIcon, Star, Award } from 'lucide-react';
 
 export const AffiliateSection = () => {
   const whatsappLink = "https://api.whatsapp.com/send/?phone=919656778508&text&type=phone_number&app_absent=0";
@@ -34,6 +34,18 @@ export const AffiliateSection = () => {
             </a>
           </div>
 
+          {/* Special offer banner */}
+          <div className="bg-gradient-to-r from-amber-100 to-amber-200 p-4 rounded-md mb-6 shadow-sm border border-amber-300">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Award className="h-5 w-5 text-amber-600" />
+              <h3 className="font-semibold text-amber-900">Limited Time Offer</h3>
+              <Award className="h-5 w-5 text-amber-600" />
+            </div>
+            <p className="text-amber-900 font-bold">
+              First 100 Affiliates = 40% Commission for 3 Months
+            </p>
+          </div>
+
           <Card>
             <CardHeader>
               <CardTitle>Affiliate Benefits</CardTitle>
@@ -53,6 +65,13 @@ export const AffiliateSection = () => {
                   <div>
                     <h3 className="font-semibold">Competitive Commission</h3>
                     <p className="text-sm text-gray-600">Earn attractive commissions on each conversion</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <Star className="w-5 h-5 text-amber-500 mt-1" />
+                  <div>
+                    <h3 className="font-semibold">Early Bird Bonus</h3>
+                    <p className="text-sm text-gray-600">First 100 affiliates get 40% commission for 3 months</p>
                   </div>
                 </div>
               </div>
