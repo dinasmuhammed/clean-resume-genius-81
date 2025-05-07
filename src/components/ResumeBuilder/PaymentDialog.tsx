@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -20,13 +19,15 @@ interface PaymentDialogProps {
   onOpenChange: (open: boolean) => void;
   onSuccess: (format: string) => void;
   discountApplied?: boolean;
+  isAtsCheck?: boolean;
 }
 
 export const PaymentDialog: React.FC<PaymentDialogProps> = ({
   open,
   onOpenChange,
   onSuccess,
-  discountApplied = false
+  discountApplied = false,
+  isAtsCheck = false
 }) => {
   const [format, setFormat] = useState<string>("pdf");
   const [isPaymentSubmitted, setIsPaymentSubmitted] = useState(false);

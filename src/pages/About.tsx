@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import SeoKeywords from "@/components/SEO/SeoKeywords";
 import SeoStructuredData from "@/components/SEO/SeoStructuredData";
+import { FounderSection } from "@/components/About/FounderSection";
 
 const About = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       {/* SEO Components */}
-      <SeoKeywords page="home" />
-      <SeoStructuredData type="home" />
+      <SeoKeywords page="about" />
+      <SeoStructuredData type="about" />
       
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="mb-6">
@@ -82,6 +83,9 @@ const About = () => {
           </div>
         </div>
       </div>
+      
+      {/* Add the Founder Section */}
+      <FounderSection />
     </div>
   );
 };

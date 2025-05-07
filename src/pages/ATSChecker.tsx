@@ -224,7 +224,6 @@ const ATSChecker = () => {
         open={showPaymentDialog}
         onOpenChange={setShowPaymentDialog}
         onSuccess={handlePaymentSuccess}
-        isAtsCheck={true}
       />
     </div>
   );
