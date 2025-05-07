@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -10,8 +9,8 @@ const About = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       {/* SEO Components */}
-      <SeoKeywords page="about" />
-      <SeoStructuredData type="about" />
+      <SeoKeywords page="home" />
+      <SeoStructuredData type="home" />
       
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="mb-6">
