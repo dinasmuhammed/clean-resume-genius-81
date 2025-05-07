@@ -33,6 +33,7 @@ interface RazorpayOptions {
   };
   modal?: {
     ondismiss: () => void;
+    escape: boolean;
   };
   retry?: {
     enabled: boolean;
@@ -53,6 +54,17 @@ interface RazorpayResponse {
 
 interface PaymentSuccessHandler {
   (format?: string): void;
+}
+
+interface PaymentOptions {
+  amount: number;
+  onSuccess: PaymentSuccessHandler;
+  format?: string;
+  userData: {
+    name: string;
+    email: string;
+    phone: string;
+  };
 }
 
 // Use a constant for Razorpay key - in production this should come from environment variables
@@ -85,7 +97,9 @@ const loadRazorpayScript = (): Promise<boolean> => {
   });
 };
 
-export const initializePayment = async (amount: number, onSuccess: PaymentSuccessHandler, format?: string): Promise<any> => {
+export const initializePayment = async (options: PaymentOptions): Promise<any> => {
+  const { amount, onSuccess, format, userData } = options;
+  
   console.log('Initializing payment with amount:', amount, 'format:', format);
   
   if (!amount || amount <= 0) {
@@ -114,18 +128,7 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
     try {
       console.log('Creating Razorpay instance with options');
       
-      // Fix type errors by explicitly casting to HTMLInputElement
-      const emailElement = document.querySelector('input[type="email"]') as HTMLInputElement | null;
-      const nameElement = document.querySelector('input[id="name"]') as HTMLInputElement | null;
-      const phoneElement = document.querySelector('input[id="phone"]') as HTMLInputElement | null;
-      
-      const userEmail = emailElement?.value || localStorage.getItem('user_email') || "";
-      const userName = nameElement?.value || localStorage.getItem('user_name') || "";
-      const userPhone = phoneElement?.value || localStorage.getItem('user_phone') || "";
-      
-      if (userEmail) localStorage.setItem('user_email', userEmail);
-      if (userName) localStorage.setItem('user_name', userName);
-      if (userPhone) localStorage.setItem('user_phone', userPhone);
+      const { name, email, phone } = userData;
       
       // Create a unique order ID
       const orderId = `order_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
@@ -174,10 +177,7 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
             
             // Send confirmation email if email is available
             try {
-              const userEmail = localStorage.getItem('user_email');
-              if (userEmail) {
-                sendPaymentConfirmation(userEmail, response.razorpay_payment_id);
-              }
+              sendPaymentConfirmation(email, response.razorpay_payment_id);
             } catch (emailError) {
               console.error('Error sending confirmation email:', emailError);
               // Don't block the payment success flow if email fails
@@ -186,6 +186,7 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
             toast({
               title: "Payment Successful",
               description: "Your resume is being downloaded automatically.",
+              variant: "success"
             });
             
             // Call the onSuccess callback with format parameter
@@ -203,9 +204,9 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
           }
         },
         prefill: {
-          name: userName,
-          email: userEmail,
-          contact: userPhone
+          name,
+          email,
+          contact: phone
         },
         notes: {
           address: "SXO Resume Builder"
@@ -225,7 +226,8 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
               description: "You cancelled the payment process.",
             });
             reject(new Error('Payment cancelled by user'));
-          }
+          },
+          escape: false
         }
       };
 
@@ -239,6 +241,7 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
           description: "There was a network error. Please try again.",
           variant: "destructive",
         });
+        reject(new Error('Payment network error'));
       });
       
       razorpay.open();
@@ -268,12 +271,12 @@ export const checkPreviousPayment = (): boolean => {
 };
 
 // Function to calculate the final price with any applicable discounts
-export const calculatePrice = (basePrice: number): number => {
-  // Check if the user has completed the time challenge
+export const calculatePrice = (basePrice: number, discountApplied = false): number => {
+  // Check if the user has completed the time challenge or a discount is applied
   const hasCompletedChallenge = localStorage.getItem('resume_challenge_completed') === 'true';
   
-  // Apply 10% discount if challenge completed
-  if (hasCompletedChallenge) {
+  // Apply 10% discount if challenge completed or discount is applied
+  if (hasCompletedChallenge || discountApplied) {
     return Math.round(basePrice * 0.9); // 10% discount, rounded to nearest integer
   }
   
