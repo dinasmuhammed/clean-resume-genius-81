@@ -1,6 +1,7 @@
 
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 // Define Razorpay types for better TypeScript support
 declare global {
@@ -134,14 +135,14 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
         try {
           const { data: { session } } = await supabase.auth.getSession();
           if (session?.user?.id) {
-            await supabase.from('orders').insert({
+            await supabase.from("orders").insert({
               order_id: orderId,
               payment_id: paymentId,
               user_id: session.user.id,
               amount: amount,
               product_type: format ? `resume_${format}` : 'resume',
               status: 'completed'
-            });
+            } as Database["public"]["Tables"]["orders"]["Insert"]);
           }
         } catch (error) {
           console.error('Failed to store order data:', error);

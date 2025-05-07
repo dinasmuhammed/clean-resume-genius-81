@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { calculatePrice, initializePayment } from "@/utils/paymentUtils";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 interface PaymentDialogProps {
   open: boolean;
@@ -51,13 +52,13 @@ export const PaymentDialog: React.FC<PaymentDialogProps> = ({
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user?.id) {
         try {
-          await supabase.from('payment_attempts').insert({
+          await supabase.from("payment_attempts").insert({
             user_id: session.user.id,
             amount: finalPrice,
             status: 'initiated',
             product: isAtsCheck ? 'ats_check' : 'resume_download',
             format: format
-          });
+          } as Database["public"]["Tables"]["payment_attempts"]["Insert"]);
         } catch (error) {
           console.error("Failed to record payment attempt:", error);
           // Continue with payment even if logging fails
@@ -78,12 +79,12 @@ export const PaymentDialog: React.FC<PaymentDialogProps> = ({
         // Record successful payment in Supabase if user is logged in
         if (session?.user?.id) {
           try {
-            supabase.from('payment_success').insert({
+            supabase.from("payment_success").insert({
               user_id: session.user.id,
               amount: finalPrice,
               product: isAtsCheck ? 'ats_check' : 'resume_download',
               format: format
-            });
+            } as Database["public"]["Tables"]["payment_success"]["Insert"]);
           } catch (error) {
             console.error("Failed to record successful payment:", error);
             // Don't block the download if logging fails
