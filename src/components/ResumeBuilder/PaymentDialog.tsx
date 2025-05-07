@@ -1,293 +1,189 @@
-import { Download } from "lucide-react";
+
+import React, { useState, useEffect } from "react";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { initializePayment } from "@/utils/paymentUtils";
-import { useToast } from "@/components/ui/use-toast";
-import { useState, useEffect } from "react";
-import { Loader2, CheckCircle } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/hooks/use-toast";
+import { calculatePrice } from "@/utils/paymentUtils";
 
 interface PaymentDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess: (format: string) => void;
-  isAtsCheck?: boolean;
+  discountApplied?: boolean;
 }
 
-export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = false }: PaymentDialogProps) => {
-  const { toast } = useToast();
-  const [referralCode, setReferralCode] = useState("");
-  const [isValidatingCode, setIsValidatingCode] = useState(false);
-  const [selectedFormat, setSelectedFormat] = useState("pdf");
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isReferralValid, setIsReferralValid] = useState<boolean | null>(null);
+export const PaymentDialog: React.FC<PaymentDialogProps> = ({
+  open,
+  onOpenChange,
+  onSuccess,
+  discountApplied = false
+}) => {
+  const [format, setFormat] = useState<string>("pdf");
+  const [isPaymentSubmitted, setIsPaymentSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [paymentId, setPaymentId] = useState("");
+  
+  const basePrice = 399;
+  const finalPrice = calculatePrice(basePrice);
+  const showDiscount = discountApplied || localStorage.getItem('resume_challenge_completed') === 'true';
 
-  // Reset state when dialog opens
-  useEffect(() => {
-    if (open) {
-      // Reset processing state when dialog opens
-      setIsProcessing(false);
-      
-      // Retrieve previously used format if any
-      const savedFormat = localStorage.getItem('preferred_format');
-      if (savedFormat && ['pdf', 'docx', 'doc'].includes(savedFormat)) {
-        setSelectedFormat(savedFormat);
-      }
-    }
-  }, [open]);
-
-  // Save selected format preference
-  useEffect(() => {
-    if (selectedFormat) {
-      localStorage.setItem('preferred_format', selectedFormat);
-    }
-  }, [selectedFormat]);
-
-  const validateReferralCode = (code: string) => {
-    // Simple validation for referral codes
-    const isValid = code.length === 5 && code.endsWith("ak90");
-    setIsReferralValid(isValid);
-    return isValid;
+  const handleFormatChange = (value: string) => {
+    setFormat(value);
   };
 
-  const calculateDiscountedAmount = (originalAmount: number, code: string) => {
-    if (validateReferralCode(code)) {
-      return Math.floor(originalAmount * 0.9); // 10% discount
-    }
-    return originalAmount;
-  };
-
-  const handlePayment = async () => {
-    if (isProcessing) {
+  const handlePaymentComplete = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!paymentId.trim()) {
       toast({
-        title: "Please wait",
-        description: "Your payment is being processed...",
+        title: "Payment ID Required",
+        description: "Please enter the payment ID to complete your purchase.",
+        variant: "destructive"
       });
       return;
     }
     
-    console.log('Starting payment process');
-    setIsValidatingCode(true);
-    setIsProcessing(true);
+    setIsLoading(true);
     
-    try {
-      const baseAmount = isAtsCheck ? 59 : 399;
-      let finalAmount = baseAmount;
-
-      if (referralCode) {
-        if (validateReferralCode(referralCode)) {
-          finalAmount = calculateDiscountedAmount(baseAmount, referralCode);
-          console.log('Referral code applied, new amount:', finalAmount);
-          toast({
-            title: "Referral Applied",
-            description: "You got 10% off with your referral code!",
-          });
-        } else {
-          console.log('Invalid referral code:', referralCode);
-          toast({
-            title: "Invalid Referral",
-            description: "The referral code is not valid.",
-            variant: "destructive",
-          });
-          setIsValidatingCode(false);
-          setIsProcessing(false);
-          return;
-        }
-      }
-
-      // Store user's email for later sending confirmation
-      const formElements = document.querySelectorAll('input[type="email"]');
-      formElements.forEach(element => {
-        const input = element as HTMLInputElement;
-        if (input.value) {
-          localStorage.setItem('user_email', input.value);
-        }
-      });
-
-      // Save user name if available
-      const nameInput = document.querySelector('input[id="fullName"]') as HTMLInputElement;
-      if (nameInput && nameInput.value) {
-        localStorage.setItem('user_name', nameInput.value);
-      }
-
-      // Call initializePayment with success callback that closes dialog and triggers onSuccess
-      await initializePayment(finalAmount, () => {
-        console.log('Payment successful, initiating download/check');
-        // Trigger the success callback with the selected format
-        onSuccess(selectedFormat);
-        setIsValidatingCode(false);
-        setIsProcessing(false);
-        onOpenChange(false);
-        
-        toast({
-          title: "Payment Successful!",
-          description: "Your download has started automatically.",
-        });
-      }, selectedFormat);
-    } catch (error) {
-      console.error('Payment error:', error);
-      setIsValidatingCode(false);
-      setIsProcessing(false);
+    // Simulate payment verification
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsPaymentSubmitted(true);
       
-      if (error.message === 'Payment cancelled by user') {
-        toast({
-          title: "Payment Cancelled",
-          description: "You cancelled the payment process. Try again when you're ready.",
-        });
-      } else {
-        toast({
-          title: "Payment Error",
-          description: "There was an error processing your payment. Please try again.",
-          variant: "destructive",
-        });
-      }
-    }
+      toast({
+        title: "Payment Verified",
+        description: "Your payment has been successfully verified!",
+        variant: "success"
+      });
+      
+      // Call the onSuccess callback after a short delay
+      setTimeout(() => {
+        onSuccess(format);
+      }, 1000);
+    }, 2000);
   };
 
-  return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
-        <AlertDialogHeader>
-          <AlertDialogTitle>{isAtsCheck ? "ATS Analysis" : "Resume Download"}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {isAtsCheck ? (
-              "Get your resume analyzed by our ATS system:"
-            ) : (
-              "Unlock your professional resume with our premium ATS-optimized format:"
-            )}
-            <ul className="mt-4 space-y-2">
-              {isAtsCheck ? (
-                <>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Detailed ATS compatibility score
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Keyword analysis
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Format optimization tips
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Professional formatting
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    ATS optimization
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Multiple format options
-                  </li>
-                </>
-              )}
-            </ul>
+  // Pre-populate user info from localStorage if available
+  const userName = localStorage.getItem('user_name') || "";
+  const userEmail = localStorage.getItem('user_email') || "";
+  const userPhone = localStorage.getItem('user_phone') || "";
 
-            {!isAtsCheck && (
-              <div className="mt-4 space-y-2">
-                <Label>Select Format</Label>
-                <RadioGroup
-                  defaultValue="pdf"
-                  value={selectedFormat}
-                  onValueChange={setSelectedFormat}
-                  className="grid grid-cols-3 gap-2"
-                >
-                  <div>
-                    <RadioGroupItem value="pdf" id="pdf" className="peer sr-only" />
-                    <Label
-                      htmlFor="pdf"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                    >
-                      PDF
-                    </Label>
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Resume Download</DialogTitle>
+          <DialogDescription>
+            Complete the payment to download your professional resume.
+          </DialogDescription>
+        </DialogHeader>
+        
+        {!isPaymentSubmitted ? (
+          <form onSubmit={handlePaymentComplete}>
+            <div className="grid gap-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="format">Select Format</Label>
+                <RadioGroup defaultValue={format} onValueChange={handleFormatChange} className="flex gap-4">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="pdf" id="pdf" />
+                    <Label htmlFor="pdf">PDF</Label>
                   </div>
-                  <div>
-                    <RadioGroupItem value="docx" id="docx" className="peer sr-only" />
-                    <Label
-                      htmlFor="docx"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                    >
-                      DOCX
-                    </Label>
-                  </div>
-                  <div>
-                    <RadioGroupItem value="doc" id="doc" className="peer sr-only" />
-                    <Label
-                      htmlFor="doc"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                    >
-                      DOC
-                    </Label>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="docx" id="docx" />
+                    <Label htmlFor="docx">DOCX</Label>
                   </div>
                 </RadioGroup>
               </div>
-            )}
-
-            <div className="mt-4 space-y-2">
-              <Label htmlFor="referralCode">Have a referral code?</Label>
-              <div className="relative">
-                <Input
-                  id="referralCode"
-                  placeholder="Enter referral code"
-                  value={referralCode}
-                  onChange={(e) => {
-                    setReferralCode(e.target.value);
-                    if (e.target.value.length >= 5) {
-                      validateReferralCode(e.target.value);
-                    } else if (isReferralValid !== null) {
-                      setIsReferralValid(null);
-                    }
-                  }}
-                  disabled={isValidatingCode}
-                  className={isReferralValid === true ? "border-green-500 pr-10" : isReferralValid === false ? "border-red-500 pr-10" : ""}
-                />
-                {isReferralValid === true && (
-                  <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-green-500" />
-                )}
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label className="text-base">Price:</Label>
+                  <div className="text-right">
+                    {showDiscount && (
+                      <div className="line-through text-gray-500">₹{basePrice}</div>
+                    )}
+                    <div className="text-lg font-semibold flex items-center gap-1">
+                      ₹{finalPrice}
+                      {showDiscount && (
+                        <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">
+                          10% OFF
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Use a valid referral code to get 10% off!
-              </p>
+              
+              <div className="border rounded-md p-4 bg-gray-50">
+                <div className="text-sm font-semibold mb-2">Payment Information</div>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label htmlFor="name">Name</Label>
+                      <Input id="name" defaultValue={userName} readOnly />
+                    </div>
+                    <div>
+                      <Label htmlFor="phone">Phone</Label>
+                      <Input id="phone" defaultValue={userPhone} readOnly />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="email">Email</Label>
+                    <Input id="email" type="email" defaultValue={userEmail} readOnly />
+                  </div>
+                  <div>
+                    <Label htmlFor="paymentId" className="text-sm font-medium">
+                      UPI Transaction ID
+                    </Label>
+                    <Input
+                      id="paymentId"
+                      value={paymentId}
+                      onChange={(e) => setPaymentId(e.target.value)}
+                      placeholder="Enter UPI Transaction ID"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-sm text-gray-500">
+                Payment Instructions: Make a payment of ₹{finalPrice} to UPI ID: resume@upi and enter the transaction ID above.
+              </div>
             </div>
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter className="flex-col space-y-2 sm:space-y-0">
-          <AlertDialogAction 
-            onClick={handlePayment} 
-            className="w-full sm:w-auto"
-            disabled={isValidatingCode || isProcessing}
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              <>
-                <Download className="w-4 h-4 mr-2" />
-                {isAtsCheck ? 'Check Now' : 'Download Now'}
-              </>
-            )}
-          </AlertDialogAction>
-          <AlertDialogCancel className="mt-2 sm:mt-0">Cancel</AlertDialogCancel>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            
+            <DialogFooter>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full"
+              >
+                {isLoading ? "Verifying..." : "Verify Payment"}
+              </Button>
+            </DialogFooter>
+          </form>
+        ) : (
+          <div className="py-6 text-center">
+            <div className="rounded-full bg-green-100 w-12 h-12 mx-auto flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 text-green-600">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Payment Successful!</h3>
+            <p className="text-gray-500 mb-6">Your resume is being prepared for download.</p>
+            <div className="animate-pulse text-sm text-gray-500">Downloading will start automatically...</div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };

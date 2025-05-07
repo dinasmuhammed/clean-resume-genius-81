@@ -1,0 +1,15 @@
+
+/* Optional: Add any specific styles for the TimeChallenge component here if needed */
+.timer-blink {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.timer-urgent {
+  color: #ef4444;
+}

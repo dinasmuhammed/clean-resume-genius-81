@@ -1,4 +1,3 @@
-
 import { toast } from "@/hooks/use-toast";
 
 // Define Razorpay types for better TypeScript support
@@ -237,4 +236,17 @@ const sendPaymentConfirmation = (email: string, paymentId: string) => {
 // Check if a previous payment was successful
 export const checkPreviousPayment = (): boolean => {
   return localStorage.getItem('payment_successful') === 'true';
+};
+
+// Function to calculate the final price with any applicable discounts
+export const calculatePrice = (basePrice: number): number => {
+  // Check if the user has completed the time challenge
+  const hasCompletedChallenge = localStorage.getItem('resume_challenge_completed') === 'true';
+  
+  // Apply 10% discount if challenge completed
+  if (hasCompletedChallenge) {
+    return basePrice * 0.9; // 10% discount
+  }
+  
+  return basePrice;
 };
