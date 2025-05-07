@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -12,7 +13,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import { calculatePrice } from "@/utils/paymentUtils";
+import { calculatePrice, initializePayment } from "@/utils/paymentUtils";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PaymentDialogProps {
   open: boolean;
@@ -32,7 +34,6 @@ export const PaymentDialog: React.FC<PaymentDialogProps> = ({
   const [format, setFormat] = useState<string>("pdf");
   const [isPaymentSubmitted, setIsPaymentSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [paymentId, setPaymentId] = useState("");
   
   const basePrice = 399;
   const finalPrice = calculatePrice(basePrice);
@@ -42,36 +43,68 @@ export const PaymentDialog: React.FC<PaymentDialogProps> = ({
     setFormat(value);
   };
 
-  const handlePaymentComplete = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!paymentId.trim()) {
+  const handlePaymentInitiation = async () => {
+    try {
+      setIsLoading(true);
+      
+      // Record payment attempt in Supabase if user is logged in
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user?.id) {
+        try {
+          await supabase.from('payment_attempts').insert({
+            user_id: session.user.id,
+            amount: finalPrice,
+            status: 'initiated',
+            product: isAtsCheck ? 'ats_check' : 'resume_download',
+            format: format
+          });
+        } catch (error) {
+          console.error("Failed to record payment attempt:", error);
+          // Continue with payment even if logging fails
+        }
+      }
+      
+      // Initialize Razorpay payment
+      await initializePayment(finalPrice, (paymentFormat) => {
+        setIsLoading(false);
+        setIsPaymentSubmitted(true);
+        
+        toast({
+          title: "Payment Successful",
+          description: "Your resume is being prepared for download.",
+          variant: "success"
+        });
+        
+        // Record successful payment in Supabase if user is logged in
+        if (session?.user?.id) {
+          try {
+            supabase.from('payment_success').insert({
+              user_id: session.user.id,
+              amount: finalPrice,
+              product: isAtsCheck ? 'ats_check' : 'resume_download',
+              format: format
+            });
+          } catch (error) {
+            console.error("Failed to record successful payment:", error);
+            // Don't block the download if logging fails
+          }
+        }
+        
+        // Call the onSuccess callback after a short delay
+        setTimeout(() => {
+          onSuccess(paymentFormat || format);
+        }, 1000);
+      }, format);
+      
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Payment error:", error);
       toast({
-        title: "Payment ID Required",
-        description: "Please enter the payment ID to complete your purchase.",
+        title: "Payment Failed",
+        description: "There was an issue processing your payment. Please try again.",
         variant: "destructive"
       });
-      return;
     }
-    
-    setIsLoading(true);
-    
-    // Simulate payment verification
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsPaymentSubmitted(true);
-      
-      toast({
-        title: "Payment Verified",
-        description: "Your payment has been successfully verified!",
-        variant: "success"
-      });
-      
-      // Call the onSuccess callback after a short delay
-      setTimeout(() => {
-        onSuccess(format);
-      }, 1000);
-    }, 2000);
   };
 
   // Pre-populate user info from localStorage if available
@@ -90,88 +123,87 @@ export const PaymentDialog: React.FC<PaymentDialogProps> = ({
         </DialogHeader>
         
         {!isPaymentSubmitted ? (
-          <form onSubmit={handlePaymentComplete}>
-            <div className="grid gap-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="format">Select Format</Label>
-                <RadioGroup defaultValue={format} onValueChange={handleFormatChange} className="flex gap-4">
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="pdf" id="pdf" />
-                    <Label htmlFor="pdf">PDF</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="docx" id="docx" />
-                    <Label htmlFor="docx">DOCX</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-              
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label className="text-base">Price:</Label>
-                  <div className="text-right">
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="format">Select Format</Label>
+              <RadioGroup defaultValue={format} onValueChange={handleFormatChange} className="flex gap-4">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="pdf" id="pdf" />
+                  <Label htmlFor="pdf">PDF</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="docx" id="docx" />
+                  <Label htmlFor="docx">DOCX</Label>
+                </div>
+              </RadioGroup>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label className="text-base">Price:</Label>
+                <div className="text-right">
+                  {showDiscount && (
+                    <div className="line-through text-gray-500">₹{basePrice}</div>
+                  )}
+                  <div className="text-lg font-semibold flex items-center gap-1">
+                    ₹{finalPrice}
                     {showDiscount && (
-                      <div className="line-through text-gray-500">₹{basePrice}</div>
+                      <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">
+                        10% OFF
+                      </span>
                     )}
-                    <div className="text-lg font-semibold flex items-center gap-1">
-                      ₹{finalPrice}
-                      {showDiscount && (
-                        <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">
-                          10% OFF
-                        </span>
-                      )}
-                    </div>
                   </div>
                 </div>
               </div>
-              
-              <div className="border rounded-md p-4 bg-gray-50">
-                <div className="text-sm font-semibold mb-2">Payment Information</div>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <Label htmlFor="name">Name</Label>
-                      <Input id="name" defaultValue={userName} readOnly />
-                    </div>
-                    <div>
-                      <Label htmlFor="phone">Phone</Label>
-                      <Input id="phone" defaultValue={userPhone} readOnly />
-                    </div>
+            </div>
+            
+            <div className="border rounded-md p-4 bg-gray-50">
+              <div className="text-sm font-semibold mb-2">Payment Information</div>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <Label htmlFor="name">Name</Label>
+                    <Input 
+                      id="name" 
+                      defaultValue={userName} 
+                      onChange={(e) => localStorage.setItem('user_name', e.target.value)}
+                    />
                   </div>
                   <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" defaultValue={userEmail} readOnly />
-                  </div>
-                  <div>
-                    <Label htmlFor="paymentId" className="text-sm font-medium">
-                      UPI Transaction ID
-                    </Label>
-                    <Input
-                      id="paymentId"
-                      value={paymentId}
-                      onChange={(e) => setPaymentId(e.target.value)}
-                      placeholder="Enter UPI Transaction ID"
-                      required
+                    <Label htmlFor="phone">Phone</Label>
+                    <Input 
+                      id="phone" 
+                      defaultValue={userPhone} 
+                      onChange={(e) => localStorage.setItem('user_phone', e.target.value)}
                     />
                   </div>
                 </div>
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    defaultValue={userEmail} 
+                    onChange={(e) => localStorage.setItem('user_email', e.target.value)}
+                  />
+                </div>
               </div>
-              
-              <div className="text-sm text-gray-500">
-                Payment Instructions: Make a payment of ₹{finalPrice} to UPI ID: resume@upi and enter the transaction ID above.
-              </div>
+            </div>
+            
+            <div className="text-sm text-gray-500">
+              Secure payment powered by Razorpay. Your payment information is protected.
             </div>
             
             <DialogFooter>
               <Button
-                type="submit"
+                onClick={handlePaymentInitiation}
                 disabled={isLoading}
                 className="w-full"
               >
-                {isLoading ? "Verifying..." : "Verify Payment"}
+                {isLoading ? "Processing..." : `Pay ₹${finalPrice}`}
               </Button>
             </DialogFooter>
-          </form>
+          </div>
         ) : (
           <div className="py-6 text-center">
             <div className="rounded-full bg-green-100 w-12 h-12 mx-auto flex items-center justify-center mb-4">

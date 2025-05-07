@@ -1,4 +1,6 @@
+
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 // Define Razorpay types for better TypeScript support
 declare global {
@@ -54,7 +56,7 @@ interface PaymentSuccessHandler {
 
 // Use a constant for Razorpay key - in production this should come from environment variables
 // This is a publishable key so it's ok to have in the client
-const RAZORPAY_KEY = "rzp_live_5JYQnqKRnKhB5y";
+const RAZORPAY_KEY = "rzp_test_your_key_here"; // Replace with your actual test key
 
 // Load the Razorpay script dynamically with better error handling
 const loadRazorpayScript = (): Promise<boolean> => {
@@ -113,7 +115,7 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
       
       // Fix type errors by explicitly casting to HTMLInputElement
       const emailElement = document.querySelector('input[type="email"]') as HTMLInputElement | null;
-      const nameElement = document.querySelector('input[id="fullName"]') as HTMLInputElement | null;
+      const nameElement = document.querySelector('input[id="name"]') as HTMLInputElement | null;
       const phoneElement = document.querySelector('input[id="phone"]') as HTMLInputElement | null;
       
       const userEmail = emailElement?.value || localStorage.getItem('user_email') || "";
@@ -123,6 +125,29 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
       if (userEmail) localStorage.setItem('user_email', userEmail);
       if (userName) localStorage.setItem('user_name', userName);
       if (userPhone) localStorage.setItem('user_phone', userPhone);
+      
+      // Create a unique order ID
+      const orderId = `order_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+      
+      // Store order data in Supabase if user is authenticated
+      const storeOrderData = async (paymentId: string) => {
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.user?.id) {
+            await supabase.from('orders').insert({
+              order_id: orderId,
+              payment_id: paymentId,
+              user_id: session.user.id,
+              amount: amount,
+              product_type: format ? `resume_${format}` : 'resume',
+              status: 'completed'
+            });
+          }
+        } catch (error) {
+          console.error('Failed to store order data:', error);
+          // Don't block the payment flow on storage failure
+        }
+      };
       
       const options: RazorpayOptions = {
         key: RAZORPAY_KEY,
@@ -137,6 +162,9 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
             console.log('Payment successful:', response.razorpay_payment_id);
             localStorage.setItem('last_payment_id', response.razorpay_payment_id);
             localStorage.setItem('payment_successful', 'true');
+            
+            // Store order data in Supabase
+            storeOrderData(response.razorpay_payment_id);
             
             // Store selected format in localStorage to use if download needs to be triggered again
             if (format) {
@@ -229,8 +257,8 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
 // Helper function to send payment confirmation
 const sendPaymentConfirmation = (email: string, paymentId: string) => {
   console.log(`Would send confirmation email to ${email} for payment ${paymentId}`);
-  // This would typically call a backend API endpoint to send the email
-  // For now, we'll just log it since we don't have a backend setup yet
+  // This would typically call a Supabase Edge Function to send the email
+  // For now, we'll just log it
 };
 
 // Check if a previous payment was successful
@@ -245,7 +273,7 @@ export const calculatePrice = (basePrice: number): number => {
   
   // Apply 10% discount if challenge completed
   if (hasCompletedChallenge) {
-    return basePrice * 0.9; // 10% discount
+    return Math.round(basePrice * 0.9); // 10% discount, rounded to nearest integer
   }
   
   return basePrice;
