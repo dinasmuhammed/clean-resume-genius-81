@@ -1,9 +1,9 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import SeoKeywords from "@/components/SEO/SeoKeywords";
 import SeoStructuredData from "@/components/SEO/SeoStructuredData";
-import { FounderSection } from "@/components/About/FounderSection";
 
 const About = () => {
   return (
@@ -82,9 +82,6 @@ const About = () => {
           </div>
         </div>
       </div>
-      
-      {/* Add the Founder Section */}
-      <FounderSection />
     </div>
   );
 };

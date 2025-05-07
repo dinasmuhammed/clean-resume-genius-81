@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfoForm } from "@/components/ResumeForm/PersonalInfoForm";
 import { ExperienceForm } from "@/components/ResumeForm/ExperienceForm";
@@ -8,11 +7,10 @@ import { SkillsForm } from "@/components/ResumeForm/SkillsForm";
 import { ResumePreviewer } from "@/components/ResumePreviewer/ResumePreviewer";
 import { SocialLinks } from "@/components/SocialLinks/SocialLinks";
 import { useToast } from "@/hooks/use-toast";
-import { Download, FileText, CheckCircle, ArrowLeft, Eye, User, Briefcase, GraduationCap, Code, Linkedin, AlarmClock } from "lucide-react";
+import { Download, FileText, CheckCircle, ArrowLeft, Eye, User, Briefcase, GraduationCap, Code, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { exportToFormat } from "@/utils/pdfExport";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
-import { TimeChallenge } from "@/components/ResumeBuilder/TimeChallenge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import SeoKeywords from "@/components/SEO/SeoKeywords";
 import SeoStructuredData from "@/components/SEO/SeoStructuredData";
@@ -34,19 +32,12 @@ const Index = () => {
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [showPaymentInfo, setShowPaymentInfo] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
-  const [challengeCompleted, setChallengeCompleted] = useState(false);
   const [resumeData, setResumeData] = useState({
     personal: {},
     experience: [],
     education: [],
     skills: []
   });
-
-  // Check if the challenge was already completed on mount
-  useEffect(() => {
-    const isCompleted = localStorage.getItem('resume_challenge_completed') === 'true';
-    setChallengeCompleted(isCompleted);
-  }, []);
 
   const sections = [
     { id: "personal", label: "Personal Info", icon: User },
@@ -63,15 +54,6 @@ const Index = () => {
     toast({
       title: "Section saved",
       description: "Your changes have been saved successfully."
-    });
-  };
-
-  const handleChallengeComplete = () => {
-    setChallengeCompleted(true);
-    toast({
-      title: "Challenge Completed!",
-      description: "Congratulations! You've earned a 10% discount on your resume download.",
-      variant: "success"
     });
   };
 
@@ -183,8 +165,6 @@ const Index = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           <div className="space-y-6">
-            <TimeChallenge duration={30} onComplete={handleChallengeComplete} />
-            
             <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
               <div className="flex flex-wrap gap-2 mb-6">
                 {sections.map((section) => {
@@ -280,7 +260,6 @@ const Index = () => {
         open={showPaymentDialog}
         onOpenChange={setShowPaymentDialog}
         onSuccess={handlePaymentSuccess}
-        discountApplied={challengeCompleted}
       />
     </div>
   );

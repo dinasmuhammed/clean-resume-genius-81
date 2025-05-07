@@ -1,7 +1,5 @@
 
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
 
 // Define Razorpay types for better TypeScript support
 declare global {
@@ -33,7 +31,6 @@ interface RazorpayOptions {
   };
   modal?: {
     ondismiss: () => void;
-    escape: boolean;
   };
   retry?: {
     enabled: boolean;
@@ -56,20 +53,9 @@ interface PaymentSuccessHandler {
   (format?: string): void;
 }
 
-interface PaymentOptions {
-  amount: number;
-  onSuccess: PaymentSuccessHandler;
-  format?: string;
-  userData: {
-    name: string;
-    email: string;
-    phone: string;
-  };
-}
-
 // Use a constant for Razorpay key - in production this should come from environment variables
 // This is a publishable key so it's ok to have in the client
-const RAZORPAY_KEY = "rzp_test_your_key_here"; // Replace with your actual test key
+const RAZORPAY_KEY = "rzp_live_5JYQnqKRnKhB5y";
 
 // Load the Razorpay script dynamically with better error handling
 const loadRazorpayScript = (): Promise<boolean> => {
@@ -97,9 +83,7 @@ const loadRazorpayScript = (): Promise<boolean> => {
   });
 };
 
-export const initializePayment = async (options: PaymentOptions): Promise<any> => {
-  const { amount, onSuccess, format, userData } = options;
-  
+export const initializePayment = async (amount: number, onSuccess: PaymentSuccessHandler, format?: string): Promise<any> => {
   console.log('Initializing payment with amount:', amount, 'format:', format);
   
   if (!amount || amount <= 0) {
@@ -128,30 +112,18 @@ export const initializePayment = async (options: PaymentOptions): Promise<any> =
     try {
       console.log('Creating Razorpay instance with options');
       
-      const { name, email, phone } = userData;
+      // Fix type errors by explicitly casting to HTMLInputElement
+      const emailElement = document.querySelector('input[type="email"]') as HTMLInputElement | null;
+      const nameElement = document.querySelector('input[id="fullName"]') as HTMLInputElement | null;
+      const phoneElement = document.querySelector('input[id="phone"]') as HTMLInputElement | null;
       
-      // Create a unique order ID
-      const orderId = `order_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+      const userEmail = emailElement?.value || localStorage.getItem('user_email') || "";
+      const userName = nameElement?.value || localStorage.getItem('user_name') || "";
+      const userPhone = phoneElement?.value || localStorage.getItem('user_phone') || "";
       
-      // Store order data in Supabase if user is authenticated
-      const storeOrderData = async (paymentId: string) => {
-        try {
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session?.user?.id) {
-            await supabase.from("orders").insert({
-              order_id: orderId,
-              payment_id: paymentId,
-              user_id: session.user.id,
-              amount: amount,
-              product_type: format ? `resume_${format}` : 'resume',
-              status: 'completed'
-            } as Database["public"]["Tables"]["orders"]["Insert"]);
-          }
-        } catch (error) {
-          console.error('Failed to store order data:', error);
-          // Don't block the payment flow on storage failure
-        }
-      };
+      if (userEmail) localStorage.setItem('user_email', userEmail);
+      if (userName) localStorage.setItem('user_name', userName);
+      if (userPhone) localStorage.setItem('user_phone', userPhone);
       
       const options: RazorpayOptions = {
         key: RAZORPAY_KEY,
@@ -167,9 +139,6 @@ export const initializePayment = async (options: PaymentOptions): Promise<any> =
             localStorage.setItem('last_payment_id', response.razorpay_payment_id);
             localStorage.setItem('payment_successful', 'true');
             
-            // Store order data in Supabase
-            storeOrderData(response.razorpay_payment_id);
-            
             // Store selected format in localStorage to use if download needs to be triggered again
             if (format) {
               localStorage.setItem('last_download_format', format);
@@ -177,7 +146,10 @@ export const initializePayment = async (options: PaymentOptions): Promise<any> =
             
             // Send confirmation email if email is available
             try {
-              sendPaymentConfirmation(email, response.razorpay_payment_id);
+              const userEmail = localStorage.getItem('user_email');
+              if (userEmail) {
+                sendPaymentConfirmation(userEmail, response.razorpay_payment_id);
+              }
             } catch (emailError) {
               console.error('Error sending confirmation email:', emailError);
               // Don't block the payment success flow if email fails
@@ -186,7 +158,6 @@ export const initializePayment = async (options: PaymentOptions): Promise<any> =
             toast({
               title: "Payment Successful",
               description: "Your resume is being downloaded automatically.",
-              variant: "success"
             });
             
             // Call the onSuccess callback with format parameter
@@ -204,9 +175,9 @@ export const initializePayment = async (options: PaymentOptions): Promise<any> =
           }
         },
         prefill: {
-          name,
-          email,
-          contact: phone
+          name: userName,
+          email: userEmail,
+          contact: userPhone
         },
         notes: {
           address: "SXO Resume Builder"
@@ -226,8 +197,7 @@ export const initializePayment = async (options: PaymentOptions): Promise<any> =
               description: "You cancelled the payment process.",
             });
             reject(new Error('Payment cancelled by user'));
-          },
-          escape: false
+          }
         }
       };
 
@@ -241,7 +211,6 @@ export const initializePayment = async (options: PaymentOptions): Promise<any> =
           description: "There was a network error. Please try again.",
           variant: "destructive",
         });
-        reject(new Error('Payment network error'));
       });
       
       razorpay.open();
@@ -261,24 +230,11 @@ export const initializePayment = async (options: PaymentOptions): Promise<any> =
 // Helper function to send payment confirmation
 const sendPaymentConfirmation = (email: string, paymentId: string) => {
   console.log(`Would send confirmation email to ${email} for payment ${paymentId}`);
-  // This would typically call a Supabase Edge Function to send the email
-  // For now, we'll just log it
+  // This would typically call a backend API endpoint to send the email
+  // For now, we'll just log it since we don't have a backend setup yet
 };
 
 // Check if a previous payment was successful
 export const checkPreviousPayment = (): boolean => {
   return localStorage.getItem('payment_successful') === 'true';
-};
-
-// Function to calculate the final price with any applicable discounts
-export const calculatePrice = (basePrice: number, discountApplied = false): number => {
-  // Check if the user has completed the time challenge or a discount is applied
-  const hasCompletedChallenge = localStorage.getItem('resume_challenge_completed') === 'true';
-  
-  // Apply 10% discount if challenge completed or discount is applied
-  if (hasCompletedChallenge || discountApplied) {
-    return Math.round(basePrice * 0.9); // 10% discount, rounded to nearest integer
-  }
-  
-  return basePrice;
 };
