@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 
 interface SeoStructuredDataProps {
-  type: 'home' | 'builder' | 'ats' | 'interview' | 'pricing';
+  type: 'home' | 'builder' | 'ats' | 'interview' | 'pricing' | 'career-tips';
 }
 
 const SeoStructuredData: React.FC<SeoStructuredDataProps> = ({ type }) => {
@@ -67,6 +67,8 @@ const SeoStructuredData: React.FC<SeoStructuredDataProps> = ({ type }) => {
         return 'Prepare for job interviews with expert tips, common question answers, and strategies to showcase your skills and experience effectively.';
       case 'pricing':
         return 'Transparent, affordable pricing plans for our professional resume building tools. Choose the right option for your career needs and budget.';
+      case 'career-tips':
+        return 'Expert career advice, resume writing tips, and interview preparation strategies to help you advance in your professional journey and land your dream job.';
       default:
         return 'SXO Resume Builder - The professional tool for creating ATS-optimized resumes and advancing your career.';
     }

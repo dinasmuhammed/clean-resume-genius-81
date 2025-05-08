@@ -1,7 +1,8 @@
+
 import React from 'react';
 
 interface SeoKeywordsProps {
-  page?: 'home' | 'builder' | 'ats' | 'interview' | 'pricing';
+  page?: 'home' | 'builder' | 'ats' | 'interview' | 'pricing' | 'career-tips';
 }
 
 const SeoKeywords: React.FC<SeoKeywordsProps> = ({ page = 'home' }) => {
@@ -41,6 +42,13 @@ const SeoKeywords: React.FC<SeoKeywordsProps> = ({ page = 'home' }) => {
       "online resume builder subscription", "one time payment resume tool", "resume package deals",
       "career service pricing", "ATS checker cost", "resume optimization pricing",
       "CV builder plans", "resume writing packages", "job application tools cost"
+    ],
+    'career-tips': [
+      "resume writing advice", "resume format tips", "job interview preparation", 
+      "interview questions and answers", "career development strategies", "job search tips",
+      "professional resume guide", "cover letter tips", "career advancement advice",
+      "job application strategies", "networking for job seekers", "LinkedIn profile optimization",
+      "job market trends", "career change advice", "salary negotiation tips"
     ]
   };
 
@@ -84,7 +92,7 @@ const SeoKeywords: React.FC<SeoKeywordsProps> = ({ page = 'home' }) => {
   ];
 
   // Select the appropriate keyword set based on page
-  const pageKeywords = keywords[page];
+  const pageKeywords = keywords[page] || [];
   
   // Only include a subset of the long-tail and other keywords to avoid overwhelming
   const selectedLongTail = longTailKeywords.slice(0, 10);
