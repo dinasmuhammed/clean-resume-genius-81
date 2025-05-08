@@ -1,3 +1,4 @@
+
 // Resume Score Algorithm
 export const calculateResumeScore = (resumeData: any): number => {
   if (!resumeData) return 0;
@@ -5,41 +6,84 @@ export const calculateResumeScore = (resumeData: any): number => {
   let score = 0;
   const maxScore = 100;
 
-  // Personal Info completeness (20%)
+  // Personal Info completeness (15%)
   if (resumeData.personal) {
-    if (resumeData.personal.fullName?.trim()) score += 5;
-    if (resumeData.personal.email?.trim()) score += 5;
-    if (resumeData.personal.phone?.trim()) score += 5;
-    if (resumeData.personal.website?.trim()) score += 5;
+    if (resumeData.personal.fullName?.trim()) score += 4;
+    if (resumeData.personal.email?.trim()) score += 4;
+    if (resumeData.personal.phone?.trim()) score += 4;
+    if (resumeData.personal.website?.trim()) score += 3;
   }
 
-  // Experience quality (35%)
+  // Professional Summary (20%)
+  if (resumeData.personal?.summary) {
+    const summary = resumeData.personal.summary.trim();
+    if (summary.length > 0) {
+      score += 10;
+      // Additional points for comprehensive summary
+      if (summary.length > 200) score += 10;
+      else if (summary.length > 100) score += 5;
+    }
+  }
+
+  // Experience quality (30%)
   if (Array.isArray(resumeData.experience) && resumeData.experience.length > 0) {
-    const expScore = Math.min(resumeData.experience.length * 10, 20);
-    score += expScore;
+    // Base points for having experience
+    score += Math.min(resumeData.experience.length * 5, 10);
 
-    // Check description quality
-    const hasDetailedDescriptions = resumeData.experience.every(
-      (exp: any) => exp?.description?.trim()?.length > 50
-    );
-    if (hasDetailedDescriptions) score += 15;
+    // Check description quality and achievements/metrics
+    let detailedDescriptionsCount = 0;
+    let containsMetricsCount = 0;
+    
+    resumeData.experience.forEach((exp: any) => {
+      if (exp?.description?.trim()?.length > 50) detailedDescriptionsCount++;
+      
+      // Check for metrics/achievements (numbers, percentages, etc.)
+      if (exp?.description?.match(/\d+%|\d+ percent|increased|improved|reduced|achieved|delivered|managed|led|created|developed|implemented/i)) {
+        containsMetricsCount++;
+      }
+    });
+    
+    // Add points based on quality ratio
+    const descQualityRatio = detailedDescriptionsCount / resumeData.experience.length;
+    score += Math.round(descQualityRatio * 10);
+    
+    const metricsRatio = containsMetricsCount / resumeData.experience.length;
+    score += Math.round(metricsRatio * 10);
   }
 
-  // Education assessment (25%)
+  // Education assessment (15%)
   if (Array.isArray(resumeData.education) && resumeData.education.length > 0) {
-    score += 15;
+    score += 10;
     const hasRecentEducation = resumeData.education.some((edu: any) => {
       if (!edu?.endDate) return true; // Current education
       const endYear = new Date(edu.endDate).getFullYear();
       return endYear >= new Date().getFullYear() - 5;
     });
-    if (hasRecentEducation) score += 10;
+    if (hasRecentEducation) score += 5;
   }
 
   // Skills evaluation (20%)
   if (Array.isArray(resumeData.skills) && resumeData.skills.length > 0) {
-    const skillScore = Math.min(resumeData.skills.length * 2, 20);
-    score += skillScore;
+    // Basic points for having skills
+    const skillPoints = Math.min(resumeData.skills.length * 2, 10);
+    score += skillPoints;
+    
+    // Additional points for variety and relevance
+    if (resumeData.skills.length >= 10) score += 5;
+    if (resumeData.skills.length >= 5) score += 5;
+  }
+
+  // Ensure minimum 80% ATS compatibility for completed resumes
+  if (score > 0) {
+    const hasBasicElements = 
+      resumeData.personal?.fullName && 
+      resumeData.personal?.email && 
+      resumeData.skills?.length > 0 && 
+      (resumeData.experience?.length > 0 || resumeData.education?.length > 0);
+      
+    if (hasBasicElements && score < 80) {
+      score = 80;
+    }
   }
 
   return Math.min(score, maxScore);

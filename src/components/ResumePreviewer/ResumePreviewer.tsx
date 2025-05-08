@@ -1,6 +1,8 @@
 
 import { calculateResumeScore } from '@/utils/algorithms';
 import { useEffect, useState, memo } from 'react';
+import { AlertCircle, CheckCircle } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ResumePreviewerProps {
   data: {
@@ -110,6 +112,11 @@ const PreviewContent = memo(({ data }: { data: ResumePreviewerProps['data'] }) =
         </div>
       </div>
     )}
+
+    {/* ATS Optimization Notice - Hidden for print */}
+    <div className="mt-6 text-center text-xs text-gray-500 print:hidden">
+      <p>This resume is optimized for Applicant Tracking Systems</p>
+    </div>
   </div>
 ));
 
@@ -125,12 +132,61 @@ export const ResumePreviewer = memo(({ data, isPaid = false }: ResumePreviewerPr
     setIsClient(true);
   }, []);
   
+  const getScoreBadge = () => {
+    if (atsScore >= 90) {
+      return (
+        <div className="flex items-center gap-1 text-green-500">
+          <CheckCircle className="h-4 w-4" />
+          <span className="font-medium">Excellent</span>
+        </div>
+      );
+    } else if (atsScore >= 80) {
+      return (
+        <div className="flex items-center gap-1 text-green-500">
+          <CheckCircle className="h-4 w-4" />
+          <span className="font-medium">Good</span>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex items-center gap-1 text-amber-500">
+          <AlertCircle className="h-4 w-4" />
+          <span className="font-medium">Needs Improvement</span>
+        </div>
+      );
+    }
+  };
+  
   return (
     <div className="bg-white rounded-lg shadow-sm relative">
       {isClient && (
-        <div className="absolute top-2 right-2 z-10 bg-primary text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-          <span className="font-medium">ATS Score:</span> {atsScore}/100
-        </div>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="absolute top-2 right-2 z-10 bg-primary text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                <span className="font-medium">ATS Score:</span> {atsScore}/100
+                <span className="ml-1">{getScoreBadge()}</span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <div className="max-w-xs">
+                <p className="font-medium">ATS Compatibility Score</p>
+                <p className="text-xs mt-1">This measures how well your resume will perform with Applicant Tracking Systems.</p>
+                {atsScore < 80 && (
+                  <div className="mt-2 text-xs">
+                    <p className="font-medium text-amber-500">Tips to improve:</p>
+                    <ul className="list-disc pl-4 space-y-1 mt-1">
+                      <li>Add a detailed professional summary</li>
+                      <li>Include metrics and achievements in experience</li>
+                      <li>Ensure all sections are properly filled</li>
+                      <li>Add more relevant skills</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       )}
       <div id="resume-preview" className="print:p-0 print:shadow-none">
         <PreviewContent data={data} />

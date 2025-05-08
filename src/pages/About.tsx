@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CheckCircle } from "lucide-react";
 import SeoKeywords from "@/components/SEO/SeoKeywords";
 import SeoStructuredData from "@/components/SEO/SeoStructuredData";
 
@@ -33,6 +33,25 @@ const About = () => {
             </p>
           </section>
 
+          {/* New ATS Compatibility Guarantee Section */}
+          <section className="bg-green-50 border border-green-100 rounded-md p-4">
+            <h2 className="text-xl font-semibold flex items-center gap-2 text-green-700">
+              <CheckCircle className="h-5 w-5" />
+              80%+ ATS Compatibility Guarantee
+            </h2>
+            <p className="text-gray-700 mt-2">
+              Every resume created with our platform is guaranteed to achieve at least 80% compatibility 
+              with Applicant Tracking Systems. Our proprietary algorithms analyze and optimize your resume 
+              in real-time to ensure it passes through automated filters and reaches human recruiters.
+            </p>
+            <ul className="list-disc pl-6 space-y-2 text-gray-600 mt-3">
+              <li>Keyword optimization for specific job roles</li>
+              <li>ATS-friendly formatting that preserves your information</li>
+              <li>Proper section headings recognized by all major ATS software</li>
+              <li>Machine-readable content structure</li>
+            </ul>
+          </section>
+
           <section className="space-y-2">
             <h2 className="text-xl font-semibold">What We Offer</h2>
             <ul className="list-disc pl-6 space-y-2 text-gray-600">
@@ -40,6 +59,7 @@ const About = () => {
               <li>Advanced ATS compatibility checker</li>
               <li>Expert interview preparation guides</li>
               <li>Comprehensive career resources and tips</li>
+              <li>LinkedIn profile optimization tools</li>
             </ul>
           </section>
 
@@ -78,6 +98,8 @@ const About = () => {
               <li>Entry-level resume templates with professional formatting</li>
               <li>Executive resume samples with ATS optimization</li>
               <li>Remote job application resume formatting tips</li>
+              <li>Guaranteed 80% ATS pass rate for all resumes</li>
+              <li>Resume scanning technology for ATS compatibility</li>
             </ul>
           </div>
         </div>

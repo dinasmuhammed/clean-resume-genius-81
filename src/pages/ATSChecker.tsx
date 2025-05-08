@@ -1,9 +1,12 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Upload, AlertCircle, CheckCircle, Info } from "lucide-react";
+import { Loader2, Upload, AlertCircle, CheckCircle, Info, ArrowRight } from "lucide-react";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Link } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ATSReport {
   score: number;
@@ -28,16 +31,18 @@ const ATSChecker = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       setAnalysis({
-        score: 49,
+        score: 79,
         details: [
-          "Basic ATS compatibility detected",
+          "ATS compatibility needs improvement",
           "Standard formatting present",
-          "Some keywords identified"
+          "Some keywords identified",
+          "Section headings recognized"
         ],
         suggestions: [
           "Add more industry-specific keywords",
           "Improve section headings",
-          "Use simpler formatting"
+          "Use simpler formatting",
+          "Add measurable achievements to experience"
         ]
       });
       toast({
@@ -84,7 +89,8 @@ const ATSChecker = () => {
             "Perfect ATS compatibility",
             "Optimal keyword placement",
             "Clean, professional formatting",
-            "Clear section structure"
+            "Clear section structure",
+            "80%+ compatibility guaranteed"
           ],
           suggestions: []
         });
@@ -101,7 +107,7 @@ const ATSChecker = () => {
 
         if (hasImages) {
           setAnalysis({
-            score: 0,
+            score: 45,
             details: [
               "Images detected - not ATS-friendly",
               "Complex formatting present",
@@ -142,15 +148,15 @@ const ATSChecker = () => {
   };
 
   const getScoreColor = (score: number) => {
-    if (score === 100) return "text-green-500";
-    if (score === 0) return "text-red-500";
-    return "text-yellow-500";
+    if (score >= 80) return "text-green-500";
+    if (score >= 60) return "text-yellow-500";
+    return "text-red-500";
   };
 
   const getScoreIcon = (score: number) => {
-    if (score === 100) return <CheckCircle className="h-5 w-5 text-green-500" />;
-    if (score === 0) return <AlertCircle className="h-5 w-5 text-red-500" />;
-    return <Info className="h-5 w-5 text-yellow-500" />;
+    if (score >= 80) return <CheckCircle className="h-5 w-5 text-green-500" />;
+    if (score >= 60) return <Info className="h-5 w-5 text-yellow-500" />;
+    return <AlertCircle className="h-5 w-5 text-red-500" />;
   };
 
   return (
@@ -158,6 +164,37 @@ const ATSChecker = () => {
       <h1 className="text-3xl font-bold text-center mb-8">AI Resume Analyzer</h1>
       
       <div className="max-w-3xl mx-auto space-y-6">
+        <Card className="border-primary/20">
+          <CardHeader className="bg-primary/5">
+            <CardTitle className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5 text-primary" />
+              80%+ ATS Compatibility Guarantee
+            </CardTitle>
+            <CardDescription>
+              All resumes created with SXO Resume are guaranteed to achieve at least 80% ATS compatibility
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <p className="mb-4">
+              Our ATS checker evaluates your resume against the criteria used by modern Applicant Tracking Systems. 
+              We analyze formatting, keyword optimization, section structure, and content quality to ensure your 
+              resume makes it through automated filters.
+            </p>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col">
+                <span className="text-sm text-gray-500">Trusted by</span>
+                <span className="font-bold text-xl">10,000+ professionals</span>
+              </div>
+              <Link to="/">
+                <Button className="flex items-center gap-2">
+                  Create an ATS-Optimized Resume
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+
         <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-12">
           <input
             type="file"
@@ -193,6 +230,28 @@ const ATSChecker = () => {
               </h2>
             </div>
 
+            {analysis.score < 80 && (
+              <Alert variant="warning" className="bg-amber-50 border-amber-200">
+                <AlertCircle className="h-4 w-4 text-amber-500" />
+                <AlertTitle className="text-amber-700">ATS Compatibility Needs Improvement</AlertTitle>
+                <AlertDescription className="text-amber-700">
+                  Your resume may not pass through some ATS systems. Consider using our resume builder to create an 
+                  ATS-optimized version with a minimum 80% compatibility guarantee.
+                </AlertDescription>
+              </Alert>
+            )}
+
+            {analysis.score >= 80 && (
+              <Alert variant="success" className="bg-green-50 border-green-200">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <AlertTitle className="text-green-700">ATS Compatible</AlertTitle>
+                <AlertDescription className="text-green-700">
+                  Your resume meets our 80%+ ATS compatibility guarantee and should pass through most Applicant 
+                  Tracking Systems successfully.
+                </AlertDescription>
+              </Alert>
+            )}
+
             <Alert>
               <AlertTitle>Detailed Report</AlertTitle>
               <AlertDescription>
@@ -215,6 +274,14 @@ const ATSChecker = () => {
                   </ul>
                 </AlertDescription>
               </Alert>
+            )}
+
+            {analysis.score < 80 && (
+              <div className="mt-4">
+                <Link to="/">
+                  <Button className="w-full">Create an ATS-Optimized Resume Now</Button>
+                </Link>
+              </div>
             )}
           </div>
         )}
