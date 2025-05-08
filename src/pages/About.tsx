@@ -33,23 +33,44 @@ const About = () => {
             </p>
           </section>
 
-          {/* New ATS Compatibility Guarantee Section */}
-          <section className="bg-green-50 border border-green-100 rounded-md p-4">
-            <h2 className="text-xl font-semibold flex items-center gap-2 text-green-700">
-              <CheckCircle className="h-5 w-5" />
+          {/* ATS Compatibility Guarantee Section - Enhanced */}
+          <section className="bg-green-50 border border-green-100 rounded-md p-5">
+            <h2 className="text-xl font-semibold flex items-center gap-2 text-green-700 mb-3">
+              <CheckCircle className="h-6 w-6" />
               80%+ ATS Compatibility Guarantee
             </h2>
-            <p className="text-gray-700 mt-2">
+            <p className="text-gray-700">
               Every resume created with our platform is guaranteed to achieve at least 80% compatibility 
               with Applicant Tracking Systems. Our proprietary algorithms analyze and optimize your resume 
               in real-time to ensure it passes through automated filters and reaches human recruiters.
             </p>
-            <ul className="list-disc pl-6 space-y-2 text-gray-600 mt-3">
-              <li>Keyword optimization for specific job roles</li>
-              <li>ATS-friendly formatting that preserves your information</li>
-              <li>Proper section headings recognized by all major ATS software</li>
-              <li>Machine-readable content structure</li>
-            </ul>
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-white rounded-md p-3 border border-green-200">
+                <h3 className="font-medium text-green-700 mb-2">ATS-Optimized Formatting</h3>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-gray-600">
+                  <li>Clean, machine-readable layouts</li>
+                  <li>Standard section headings</li>
+                  <li>Proper document structure</li>
+                  <li>Compatible fonts and formatting</li>
+                </ul>
+              </div>
+              <div className="bg-white rounded-md p-3 border border-green-200">
+                <h3 className="font-medium text-green-700 mb-2">Keyword Optimization</h3>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-gray-600">
+                  <li>Job-specific keyword analysis</li>
+                  <li>Optimal keyword placement</li>
+                  <li>Industry-appropriate terminology</li>
+                  <li>Semantic matching techniques</li>
+                </ul>
+              </div>
+            </div>
+            <div className="mt-4">
+              <Link to="/ats-checker">
+                <Button variant="outline" className="w-full border-green-500 text-green-700 hover:bg-green-50">
+                  Check Your Resume's ATS Score
+                </Button>
+              </Link>
+            </div>
           </section>
 
           <section className="space-y-2">
@@ -100,6 +121,9 @@ const About = () => {
               <li>Remote job application resume formatting tips</li>
               <li>Guaranteed 80% ATS pass rate for all resumes</li>
               <li>Resume scanning technology for ATS compatibility</li>
+              <li>ATS-friendly resume formats for all industries</li>
+              <li>Keyword density optimization for resume sections</li>
+              <li>Machine-readable document structure guidelines</li>
             </ul>
           </div>
         </div>

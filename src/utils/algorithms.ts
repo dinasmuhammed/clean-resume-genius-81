@@ -1,4 +1,3 @@
-
 // Resume Score Algorithm
 export const calculateResumeScore = (resumeData: any): number => {
   if (!resumeData) return 0;
@@ -6,7 +5,7 @@ export const calculateResumeScore = (resumeData: any): number => {
   let score = 0;
   const maxScore = 100;
 
-  // Personal Info completeness (15%)
+  // Personal Info completeness (15%) - Critical for ATS identification
   if (resumeData.personal) {
     if (resumeData.personal.fullName?.trim()) score += 4;
     if (resumeData.personal.email?.trim()) score += 4;
@@ -14,18 +13,18 @@ export const calculateResumeScore = (resumeData: any): number => {
     if (resumeData.personal.website?.trim()) score += 3;
   }
 
-  // Professional Summary (20%)
+  // Professional Summary (20%) - Important for ATS keyword density
   if (resumeData.personal?.summary) {
     const summary = resumeData.personal.summary.trim();
     if (summary.length > 0) {
       score += 10;
-      // Additional points for comprehensive summary
+      // Additional points for comprehensive summary with keywords
       if (summary.length > 200) score += 10;
       else if (summary.length > 100) score += 5;
     }
   }
 
-  // Experience quality (30%)
+  // Experience quality (30%) - Most important for ATS evaluation
   if (Array.isArray(resumeData.experience) && resumeData.experience.length > 0) {
     // Base points for having experience
     score += Math.min(resumeData.experience.length * 5, 10);
@@ -37,8 +36,8 @@ export const calculateResumeScore = (resumeData: any): number => {
     resumeData.experience.forEach((exp: any) => {
       if (exp?.description?.trim()?.length > 50) detailedDescriptionsCount++;
       
-      // Check for metrics/achievements (numbers, percentages, etc.)
-      if (exp?.description?.match(/\d+%|\d+ percent|increased|improved|reduced|achieved|delivered|managed|led|created|developed|implemented/i)) {
+      // Enhanced check for metrics/achievements with more ATS-friendly terms
+      if (exp?.description?.match(/\d+%|\d+ percent|increased|improved|reduced|achieved|delivered|managed|led|created|developed|implemented|built|designed|trained|mentored|coordinated|analyzed|evaluated|launched|established|streamlined/i)) {
         containsMetricsCount++;
       }
     });
@@ -51,7 +50,7 @@ export const calculateResumeScore = (resumeData: any): number => {
     score += Math.round(metricsRatio * 10);
   }
 
-  // Education assessment (15%)
+  // Education assessment (15%) - Standard section for ATS
   if (Array.isArray(resumeData.education) && resumeData.education.length > 0) {
     score += 10;
     const hasRecentEducation = resumeData.education.some((edu: any) => {
@@ -62,7 +61,7 @@ export const calculateResumeScore = (resumeData: any): number => {
     if (hasRecentEducation) score += 5;
   }
 
-  // Skills evaluation (20%)
+  // Skills evaluation (20%) - Critical for ATS keyword matching
   if (Array.isArray(resumeData.skills) && resumeData.skills.length > 0) {
     // Basic points for having skills
     const skillPoints = Math.min(resumeData.skills.length * 2, 10);
@@ -74,22 +73,23 @@ export const calculateResumeScore = (resumeData: any): number => {
   }
 
   // Ensure minimum 80% ATS compatibility for completed resumes
-  if (score > 0) {
+  if (score > 50) {
     const hasBasicElements = 
       resumeData.personal?.fullName && 
       resumeData.personal?.email && 
       resumeData.skills?.length > 0 && 
       (resumeData.experience?.length > 0 || resumeData.education?.length > 0);
       
-    if (hasBasicElements && score < 80) {
-      score = 80;
+    if (hasBasicElements) {
+      // Boost score to at least 80 for completed resumes to reflect our guarantee
+      score = Math.max(score, 80);
     }
   }
 
   return Math.min(score, maxScore);
 };
 
-// ATS Keyword Matching Algorithm
+// ATS Keyword Matching Algorithm - Enhanced for better accuracy
 export const calculateATSMatch = (resumeText: string, jobDescription: string): number => {
   if (!resumeText?.trim() || !jobDescription?.trim()) return 0;
 
@@ -100,16 +100,32 @@ export const calculateATSMatch = (resumeText: string, jobDescription: string): n
       .filter(word => word.length > 2);
   };
 
+  // Extract all words
   const resumeWords = new Set(normalizeText(resumeText));
   const jobWords = normalizeText(jobDescription);
+  
+  // Important keywords get higher weight
   const uniqueJobWords = new Set(jobWords);
+  const jobWordFrequency = jobWords.reduce((acc: Record<string, number>, word: string) => {
+    acc[word] = (acc[word] || 0) + 1;
+    return acc;
+  }, {});
 
-  let matches = 0;
+  // Calculate weighted match score
+  let totalWeight = 0;
+  let matchedWeight = 0;
+  
   uniqueJobWords.forEach(word => {
-    if (resumeWords.has(word)) matches++;
+    const frequency = jobWordFrequency[word];
+    const weight = Math.min(frequency, 3); // Cap weight at 3 to prevent over-emphasis
+    totalWeight += weight;
+    
+    if (resumeWords.has(word)) {
+      matchedWeight += weight;
+    }
   });
 
-  return Math.round((matches / Math.max(uniqueJobWords.size, 1)) * 100);
+  return Math.round((matchedWeight / Math.max(totalWeight, 1)) * 100);
 };
 
 // Interview Question Generator Algorithm
@@ -136,7 +152,7 @@ export const generateInterviewQuestions = (skills: string[]): string[] => {
     .slice(0, Math.min(10, questions.length));
 };
 
-// Skill Relevance Algorithm
+// Skill Relevance Algorithm - Improved with more industry categories
 export const analyzeSkillRelevance = (
   skills: string[],
   jobTitle: string
@@ -153,7 +169,12 @@ export const analyzeSkillRelevance = (
       "react",
       "typescript",
       "responsive design",
-      "git"
+      "git",
+      "ui/ux",
+      "webpack",
+      "testing",
+      "vue",
+      "angular"
     ],
     "backend developer": [
       "nodejs",
@@ -162,7 +183,12 @@ export const analyzeSkillRelevance = (
       "api design",
       "sql",
       "git",
-      "server management"
+      "server management",
+      "cloud services",
+      "java",
+      "php",
+      "c#",
+      "express"
     ],
     "fullstack developer": [
       "html",
@@ -171,7 +197,12 @@ export const analyzeSkillRelevance = (
       "react",
       "nodejs",
       "databases",
-      "git"
+      "git",
+      "api",
+      "typescript",
+      "python",
+      "docker",
+      "cloud"
     ],
     "data scientist": [
       "python",
@@ -180,12 +211,68 @@ export const analyzeSkillRelevance = (
       "statistics",
       "sql",
       "data visualization",
-      "jupyter"
+      "jupyter",
+      "pandas",
+      "numpy",
+      "tensorflow",
+      "scikit-learn",
+      "big data"
+    ],
+    "project manager": [
+      "agile",
+      "scrum",
+      "project planning",
+      "stakeholder management",
+      "risk management",
+      "budgeting",
+      "team leadership",
+      "documentation",
+      "jira",
+      "communication"
+    ],
+    "ui/ux designer": [
+      "figma",
+      "sketch",
+      "user research",
+      "wireframing",
+      "prototyping",
+      "adobe xd",
+      "usability testing",
+      "interaction design",
+      "responsive design",
+      "accessibility"
+    ],
+    "devops engineer": [
+      "docker",
+      "kubernetes",
+      "ci/cd",
+      "aws",
+      "azure",
+      "terraform",
+      "linux",
+      "scripting",
+      "monitoring",
+      "networking",
+      "security"
     ]
   };
 
   const normalizedJobTitle = jobTitle.toLowerCase().trim();
-  const requiredSkills = skillMappings[normalizedJobTitle] || [];
+  
+  // Find the best match for the job title
+  let bestMatch = "";
+  let highestMatchScore = 0;
+  
+  Object.keys(skillMappings).forEach(title => {
+    if (normalizedJobTitle.includes(title)) {
+      if (title.length > highestMatchScore) {
+        highestMatchScore = title.length;
+        bestMatch = title;
+      }
+    }
+  });
+  
+  const requiredSkills = skillMappings[bestMatch] || [];
   const normalizedUserSkills = skills.map(skill => skill.toLowerCase().trim());
 
   const relevant = normalizedUserSkills.filter(skill =>

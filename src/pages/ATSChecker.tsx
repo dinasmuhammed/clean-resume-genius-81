@@ -231,7 +231,7 @@ const ATSChecker = () => {
             </div>
 
             {analysis.score < 80 && (
-              <Alert variant="warning" className="bg-amber-50 border-amber-200">
+              <Alert className="bg-amber-50 border-amber-200">
                 <AlertCircle className="h-4 w-4 text-amber-500" />
                 <AlertTitle className="text-amber-700">ATS Compatibility Needs Improvement</AlertTitle>
                 <AlertDescription className="text-amber-700">
@@ -242,7 +242,7 @@ const ATSChecker = () => {
             )}
 
             {analysis.score >= 80 && (
-              <Alert variant="success" className="bg-green-50 border-green-200">
+              <Alert className="bg-green-50 border-green-200">
                 <CheckCircle className="h-4 w-4 text-green-500" />
                 <AlertTitle className="text-green-700">ATS Compatible</AlertTitle>
                 <AlertDescription className="text-green-700">
