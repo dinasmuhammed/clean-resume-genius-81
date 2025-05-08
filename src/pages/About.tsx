@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle } from "lucide-react";
 import SeoKeywords from "@/components/SEO/SeoKeywords";
 import SeoStructuredData from "@/components/SEO/SeoStructuredData";
+import { FounderProfile } from "@/components/About/FounderProfile";
 
 const About = () => {
   return (
@@ -22,7 +23,7 @@ const About = () => {
           </Link>
         </div>
         <h1 className="text-3xl font-bold text-primary mb-6">About SXO Resume</h1>
-        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 space-y-4">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 space-y-6">
           <section className="space-y-2">
             <h2 className="text-xl font-semibold">Our Mission</h2>
             <p className="text-gray-600">
@@ -31,6 +32,12 @@ const About = () => {
               technology with expert insights to ensure your resume gets noticed by both automated
               systems and human recruiters.
             </p>
+          </section>
+
+          {/* Meet Our Founder Section */}
+          <section className="space-y-3">
+            <h2 className="text-xl font-semibold">Meet Our Founder</h2>
+            <FounderProfile />
           </section>
 
           {/* ATS Compatibility Guarantee Section - Enhanced */}

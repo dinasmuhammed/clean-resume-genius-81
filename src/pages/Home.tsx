@@ -55,13 +55,21 @@ const Home = () => {
             </a>
           </div>
 
-          <div className="space-x-4">
-            <Link to="/builder">
-              <Button size="lg">Get Started</Button>
-            </Link>
-            <Link to="/ats-checker">
-              <Button variant="outline" size="lg">Check ATS Score</Button>
-            </Link>
+          <div className="space-y-4">
+            <div className="space-x-4">
+              <Link to="/builder">
+                <Button size="lg">Get Started</Button>
+              </Link>
+              <Link to="/ats-checker">
+                <Button variant="outline" size="lg">Check ATS Score</Button>
+              </Link>
+            </div>
+            
+            <div className="mt-6">
+              <Link to="/about" className="text-primary hover:underline">
+                Meet Our Founder and Learn About Our Mission →
+              </Link>
+            </div>
           </div>
         </div>
       </section>
