@@ -19,6 +19,7 @@ const Cookies = lazy(() => import("@/pages/Cookies"));
 const Error = lazy(() => import("@/pages/Error"));
 const Splash = lazy(() => import("@/pages/Splash"));
 const Pricing = lazy(() => import("@/pages/Pricing"));
+const CareerTips = lazy(() => import("@/pages/CareerTips"));
 const LinkedInOptimizationDialog = lazy(() => import("@/components/LinkedInOptimization/LinkedInOptimizationDialog"));
 
 // Loading component for Suspense
@@ -110,6 +111,9 @@ const App: React.FC = () => {
     } else if (path === "/interview-guide") {
       title = "Job Interview Preparation Guide | Professional Interview Tips";
       description = "Prepare for your job interviews with our comprehensive guide including common questions, STAR method responses, and expert tips for success.";
+    } else if (path === "/career-tips") {
+      title = "Career Tips | Resume Advice & Interview Tips";
+      description = "Expert career advice, resume best practices, and interview preparation tips to help you land your dream job.";
     } else if (path === "/privacy") {
       title = "Privacy Policy | SXO Resume Builder";
       description = "Read our privacy policy to understand how we collect, use, and protect your data when using the SXO Resume Builder platform.";
@@ -163,6 +167,7 @@ const App: React.FC = () => {
                 <Route path="/about" element={<About />} />
                 <Route path="/ats-checker" element={<ATSChecker />} />
                 <Route path="/interview-guide" element={<InterviewGuide />} />
+                <Route path="/career-tips" element={<CareerTips />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/cookies" element={<Cookies />} />

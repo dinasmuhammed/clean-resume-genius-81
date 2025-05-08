@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,7 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { FileText, CheckCircle2, BookOpen, Info, Menu, Home, DollarSign } from "lucide-react";
+import { FileText, CheckCircle2, BookOpen, Info, Menu, Home, DollarSign, MessageSquare } from "lucide-react";
 import FeedbackDialog from "./FeedbackDialog";
 import LinkedInAutomationDialog from "./LinkedInAutomation/LinkedInAutomationDialog";
 import { useState } from "react";
@@ -35,6 +36,12 @@ const Navbar = () => {
       icon: CheckCircle2,
       path: "/ats-checker",
       description: "Verify ATS compatibility"
+    },
+    {
+      title: "Career Tips",
+      icon: MessageSquare,
+      path: "/career-tips",
+      description: "Resume advice & interview tips"
     },
     {
       title: "Interview Guide",
@@ -71,7 +78,7 @@ const Navbar = () => {
                 <NavigationMenuTrigger className="text-sm">Tools</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="grid gap-2 p-4 w-[300px]">
-                    {navLinks.slice(0, 3).map((link) => (
+                    {navLinks.slice(0, 4).map((link) => (
                       <Link 
                         key={link.path}
                         to={link.path} 

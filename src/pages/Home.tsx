@@ -65,10 +65,17 @@ const Home = () => {
               </Link>
             </div>
             
-            <div className="mt-6">
-              <Link to="/about" className="text-primary hover:underline">
-                Meet Our Founder and Learn About Our Mission →
-              </Link>
+            <div className="mt-6 space-y-2">
+              <div>
+                <Link to="/career-tips" className="text-primary hover:underline">
+                  View Career Tips & Resume Advice →
+                </Link>
+              </div>
+              <div>
+                <Link to="/about" className="text-primary hover:underline">
+                  Meet Our Founder and Learn About Our Mission →
+                </Link>
+              </div>
             </div>
           </div>
         </div>
