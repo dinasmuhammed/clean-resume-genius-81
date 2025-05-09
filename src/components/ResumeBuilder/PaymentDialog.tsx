@@ -1,3 +1,4 @@
+
 import { Download } from "lucide-react";
 import {
   AlertDialog,
@@ -12,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { initializePayment } from "@/utils/paymentUtils";
+import { initializePayment, checkPreviousPayment } from "@/utils/paymentUtils";
 import { useToast } from "@/components/ui/use-toast";
 import { useState, useEffect } from "react";
 import { Loader2, CheckCircle } from "lucide-react";
@@ -31,12 +32,17 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
   const [selectedFormat, setSelectedFormat] = useState("pdf");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isReferralValid, setIsReferralValid] = useState<boolean | null>(null);
+  const [hasPreviousPurchase, setHasPreviousPurchase] = useState(false);
 
   // Reset state when dialog opens
   useEffect(() => {
     if (open) {
       // Reset processing state when dialog opens
       setIsProcessing(false);
+      
+      // Check for previous purchases
+      const previousPurchase = checkPreviousPayment();
+      setHasPreviousPurchase(previousPurchase);
       
       // Retrieve previously used format if any
       const savedFormat = localStorage.getItem('preferred_format');
@@ -72,6 +78,18 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
       toast({
         title: "Please wait",
         description: "Your payment is being processed...",
+      });
+      return;
+    }
+    
+    // If user already has a valid purchase, skip payment
+    if (hasPreviousPurchase) {
+      console.log('Using previous purchase');
+      onSuccess(selectedFormat);
+      onOpenChange(false);
+      toast({
+        title: "Using Previous Purchase",
+        description: "Your download has started automatically.",
       });
       return;
     }
@@ -199,6 +217,13 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
               )}
             </ul>
 
+            {hasPreviousPurchase && (
+              <div className="mt-4 p-3 bg-green-50 text-green-700 rounded-md flex items-center">
+                <CheckCircle className="w-4 h-4 mr-2" />
+                <span className="text-sm">You've already purchased this. You can download again at no extra cost.</span>
+              </div>
+            )}
+
             {!isAtsCheck && (
               <div className="mt-4 space-y-2">
                 <Label>Select Format</Label>
@@ -277,6 +302,11 @@ export const PaymentDialog = ({ open, onOpenChange, onSuccess, isAtsCheck = fals
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 Processing...
+              </>
+            ) : hasPreviousPurchase ? (
+              <>
+                <Download className="w-4 h-4 mr-2" />
+                {isAtsCheck ? 'Check Again' : 'Download Again'}
               </>
             ) : (
               <>

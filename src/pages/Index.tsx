@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfoForm } from "@/components/ResumeForm/PersonalInfoForm";
@@ -25,6 +26,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { checkPreviousPayment } from "@/utils/paymentUtils";
 
 const Index = () => {
   const { toast } = useToast();
@@ -37,6 +39,14 @@ const Index = () => {
     experience: [],
     education: [],
     skills: []
+  });
+
+  // Check if user has previously paid
+  useState(() => {
+    const hasPaid = checkPreviousPayment();
+    if (hasPaid) {
+      setIsPaid(true);
+    }
   });
 
   const sections = [
@@ -83,7 +93,12 @@ const Index = () => {
   };
 
   const handleExport = async () => {
-    setShowPaymentInfo(true);
+    // If user has already paid, skip the payment info dialog
+    if (isPaid) {
+      setShowPaymentDialog(true);
+    } else {
+      setShowPaymentInfo(true);
+    }
   };
 
   const handlePaymentInfoConfirm = () => {
@@ -103,7 +118,7 @@ const Index = () => {
           className="flex items-center gap-2"
         >
           <Download className="w-4 h-4" />
-          Download Now
+          {isPaid ? "Download Again" : "Download Now"}
         </Button>
       </div>
       <ResumePreviewer data={resumeData} isPaid={isPaid} />
@@ -237,20 +252,28 @@ const Index = () => {
       <AlertDialog open={showPaymentInfo} onOpenChange={setShowPaymentInfo}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Important Payment Information</AlertDialogTitle>
+            <AlertDialogTitle>Payment Information</AlertDialogTitle>
             <AlertDialogDescription className="space-y-4 text-left">
               <p>
-                Please ensure that you complete your payment promptly. Otherwise, the payment may fail, and you'll need to wait 7 days to have the amount refunded to your account.
+                You're about to download a premium resume with professional formatting and ATS optimization.
               </p>
               <p>
-                Ensure you make the payment using your UPI ID or number. Do not scan the QR code.
+                The payment process is secure and your details are encrypted. After payment, your resume will download automatically.
               </p>
+              <div className="p-3 bg-blue-50 text-blue-700 rounded-md">
+                <p className="font-medium">Payment Tips:</p>
+                <ul className="list-disc pl-5 text-sm mt-1">
+                  <li>Complete your payment promptly to avoid transaction timeouts</li>
+                  <li>Use any payment method supported by Razorpay</li>
+                  <li>Your purchase gives you unlimited access to download your resume</li>
+                </ul>
+              </div>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={handlePaymentInfoConfirm}>
-              I Understand, Proceed to Payment
+              Continue to Payment
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

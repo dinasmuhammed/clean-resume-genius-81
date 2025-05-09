@@ -76,6 +76,11 @@ const loadRazorpayScript = (): Promise<boolean> => {
     
     script.onerror = () => {
       console.error("Failed to load Razorpay SDK");
+      toast({
+        title: "Payment System Error",
+        description: "Unable to load payment system. Please refresh the page or try again later.",
+        variant: "destructive",
+      });
       resolve(false);
     };
     
@@ -138,6 +143,7 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
             console.log('Payment successful:', response.razorpay_payment_id);
             localStorage.setItem('last_payment_id', response.razorpay_payment_id);
             localStorage.setItem('payment_successful', 'true');
+            localStorage.setItem('payment_timestamp', Date.now().toString());
             
             // Store selected format in localStorage to use if download needs to be triggered again
             if (format) {
@@ -211,6 +217,7 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
           description: "There was a network error. Please try again.",
           variant: "destructive",
         });
+        reject(new Error('Payment network error'));
       });
       
       razorpay.open();
@@ -236,5 +243,36 @@ const sendPaymentConfirmation = (email: string, paymentId: string) => {
 
 // Check if a previous payment was successful
 export const checkPreviousPayment = (): boolean => {
-  return localStorage.getItem('payment_successful') === 'true';
+  const paymentSuccessful = localStorage.getItem('payment_successful') === 'true';
+  
+  // Also check if the payment was made recently (within 30 days)
+  if (paymentSuccessful) {
+    const timestamp = localStorage.getItem('payment_timestamp');
+    if (timestamp) {
+      const paymentDate = new Date(parseInt(timestamp));
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+      return paymentDate > thirtyDaysAgo;
+    }
+  }
+  
+  return paymentSuccessful;
 };
+
+// Function to validate payment status
+export const validatePaymentStatus = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    // Check local storage first for fast response
+    const paymentSuccessful = checkPreviousPayment();
+    if (paymentSuccessful) {
+      resolve(true);
+      return;
+    }
+    
+    // In a real application, this would verify with the server
+    // For now we just rely on local storage
+    resolve(false);
+  });
+};
+
