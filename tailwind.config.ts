@@ -98,6 +98,7 @@ export default {
         sans: ["Inter", "system-ui", "sans-serif"],
       },
       fontSize: {
+        '2xs': '0.625rem', // Even smaller text for mobile
         'fluid-sm': 'clamp(0.8rem, 0.17vw + 0.76rem, 0.89rem)',
         'fluid-base': 'clamp(1rem, 0.34vw + 0.91rem, 1.19rem)',
         'fluid-lg': 'clamp(1.25rem, 0.61vw + 1.1rem, 1.58rem)',
@@ -109,6 +110,7 @@ export default {
         'slide-in': 'slideIn 0.3s ease-in-out',
         'scale-in': 'scaleIn 0.3s ease-in-out',
         'pulse-subtle': 'pulseSubtle 2s infinite',
+        'fade-in-up': 'fadeInUp 0.5s ease-out',
       },
       keyframes: {
         fadeIn: {
@@ -126,6 +128,10 @@ export default {
         pulseSubtle: {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.8' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
       screens: {

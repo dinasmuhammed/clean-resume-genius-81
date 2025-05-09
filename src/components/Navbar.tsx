@@ -12,6 +12,7 @@ import {
 import { FileText, CheckCircle2, BookOpen, Info, Menu, Home, DollarSign, MessageSquare } from "lucide-react";
 import FeedbackDialog from "./FeedbackDialog";
 import LinkedInAutomationDialog from "./LinkedInAutomation/LinkedInAutomationDialog";
+import LinkedInOptimizationDialog from "./LinkedInOptimization/LinkedInOptimizationDialog";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -115,6 +116,7 @@ const Navbar = () => {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-2">
+          <LinkedInOptimizationDialog />
           <LinkedInAutomationDialog />
           <FeedbackDialog />
         </div>
@@ -150,6 +152,7 @@ const Navbar = () => {
                 </div>
                 
                 <div className="border-t pt-4 pb-6 px-4 space-y-3">
+                  <LinkedInOptimizationDialog />
                   <LinkedInAutomationDialog />
                   <FeedbackDialog />
                 </div>

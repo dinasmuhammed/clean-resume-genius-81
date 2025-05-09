@@ -26,13 +26,27 @@ const buttonVariants = cva(
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
+        xl: "h-12 rounded-md px-8 text-base",
         icon: "h-10 w-10",
+        mobile: "w-full h-11 rounded-md px-4 py-3", // Added mobile-optimized size
+      },
+      fullWidth: {
+        true: "w-full",
+      },
+      responsive: {
+        true: "w-full sm:w-auto", // Added responsive width variant
       },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
     },
+    compoundVariants: [
+      {
+        responsive: true,
+        className: "flex items-center justify-center",
+      },
+    ],
   }
 )
 
@@ -40,14 +54,16 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  fullWidth?: boolean
+  responsive?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, fullWidth, responsive, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size, fullWidth, responsive, className }))}
         ref={ref}
         {...props}
       />
