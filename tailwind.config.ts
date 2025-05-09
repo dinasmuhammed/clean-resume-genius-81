@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -36,44 +37,44 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#2C3E50",
+          DEFAULT: "#1E3A8A", // Navy Blue
           foreground: "#ffffff",
-          50: "#E9ECEF",
-          100: "#D6DBE0",
-          200: "#ADB7C1",
-          300: "#8594A3",
-          400: "#5C7084",
-          500: "#2C3E50",
-          600: "#233240",
-          700: "#1A2530",
-          800: "#111920",
-          900: "#080C10",
+          50: "#EEF2FF",
+          100: "#D8E0FB",
+          200: "#B1C5F6",
+          300: "#849BF0",
+          400: "#5C7BEA",
+          500: "#3B5BE0",
+          600: "#2E49B3",
+          700: "#1E3A8A", // Main Primary
+          800: "#17307A",
+          900: "#112261",
         },
         secondary: {
-          DEFAULT: "#BDC3C7",
-          foreground: "#2C3E50",
+          DEFAULT: "#E5E7EB", // Light Silver
+          foreground: "#374151",
         },
         accent: {
-          DEFAULT: "#3498DB",
+          DEFAULT: "#10B981", // Emerald Green
           foreground: "#ffffff",
-          50: "#EBF5FC",
-          100: "#D6EAF8",
-          200: "#AED6F1",
-          300: "#85C1E9",
-          400: "#5DADE2",
-          500: "#3498DB",
-          600: "#2980B9",
-          700: "#1F6898",
-          800: "#154F76",
-          900: "#0C3654",
+          50: "#ECFDF5",
+          100: "#D1FAE5",
+          200: "#A7F3D0",
+          300: "#6EE7B7",
+          400: "#34D399",
+          500: "#10B981", // Main Accent
+          600: "#059669",
+          700: "#047857",
+          800: "#065F46",
+          900: "#064E3B",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#BDC3C7",
-          foreground: "#2C3E50",
+          DEFAULT: "#E5E7EB", // Same as Secondary
+          foreground: "#374151", // Text color
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
