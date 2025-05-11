@@ -1,4 +1,3 @@
-
 import { toast } from "@/hooks/use-toast";
 
 // Define Razorpay types for better TypeScript support
@@ -154,7 +153,8 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
             try {
               const userEmail = localStorage.getItem('user_email');
               if (userEmail) {
-                sendPaymentConfirmation(userEmail, response.razorpay_payment_id);
+                // Send a thank you email using our new edge function
+                sendThankYouEmail(userEmail, userName || "", format);
               }
             } catch (emailError) {
               console.error('Error sending confirmation email:', emailError);
@@ -189,7 +189,7 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
           address: "SXO Resume Builder"
         },
         theme: {
-          color: "#2C3E50"
+          color: "#1E3A8A"  // Updated to match the new primary color
         },
         retry: {
           enabled: true,
@@ -234,6 +234,36 @@ export const initializePayment = async (amount: number, onSuccess: PaymentSucces
   });
 };
 
+// Function to send a thank you email using the Supabase edge function
+const sendThankYouEmail = async (email: string, name: string, format?: string) => {
+  try {
+    console.log(`Sending thank you email to ${email}`);
+    
+    const response = await fetch('https://aibpalskveawzdqyjwaq.supabase.co/functions/v1/send-thank-you', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        name,
+        format,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Thank you email error:', errorData);
+      return;
+    }
+
+    const data = await response.json();
+    console.log('Thank you email sent:', data);
+  } catch (error) {
+    console.error('Error sending thank you email:', error);
+  }
+};
+
 // Helper function to send payment confirmation
 const sendPaymentConfirmation = (email: string, paymentId: string) => {
   console.log(`Would send confirmation email to ${email} for payment ${paymentId}`);
@@ -275,4 +305,3 @@ export const validatePaymentStatus = (): Promise<boolean> => {
     resolve(false);
   });
 };
-
