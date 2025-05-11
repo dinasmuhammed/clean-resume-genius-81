@@ -87,10 +87,12 @@ if (!root) {
   throw new Error('Root element not found');
 }
 
-createRoot(root).render(
+const app = (
   <React.StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>
 );
+
+createRoot(root).render(app);
