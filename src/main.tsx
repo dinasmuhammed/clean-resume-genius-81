@@ -87,7 +87,6 @@ if (!root) {
   throw new Error('Root element not found');
 }
 
-// Ensure App is properly wrapped with BrowserRouter
 createRoot(root).render(
   <React.StrictMode>
     <BrowserRouter>
