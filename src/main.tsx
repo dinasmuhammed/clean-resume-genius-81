@@ -87,14 +87,11 @@ if (!root) {
   throw new Error('Root element not found');
 }
 
-// Create the application element with the router
-const app = (
+// Ensure App is properly wrapped with BrowserRouter
+createRoot(root).render(
   <React.StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>
 );
-
-// Render the application
-createRoot(root).render(app);
