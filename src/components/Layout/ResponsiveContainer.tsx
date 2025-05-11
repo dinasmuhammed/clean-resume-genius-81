@@ -8,7 +8,7 @@ interface ResponsiveContainerProps {
   as?: React.ElementType;
   fullHeight?: boolean;
   noPadding?: boolean;
-  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '7xl' | 'full';
 }
 
 const maxWidthMap = {
@@ -18,6 +18,7 @@ const maxWidthMap = {
   lg: 'max-w-lg',
   xl: 'max-w-xl',
   '2xl': 'max-w-2xl',
+  '7xl': 'max-w-7xl',
   full: 'max-w-full'
 };
 
