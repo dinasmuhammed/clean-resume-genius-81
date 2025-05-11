@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { checkPreviousPayment } from "@/utils/paymentUtils";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const { toast } = useToast();
@@ -67,9 +68,34 @@ const Index = () => {
     });
   };
 
+  const sendThankYouEmail = async (email: string, name: string, format: string) => {
+    try {
+      const { error } = await supabase.functions.invoke('send-thank-you', {
+        body: { email, name, format }
+      });
+      
+      if (error) {
+        console.error("Error sending thank you email:", error);
+      } else {
+        console.log("Thank you email sent successfully");
+      }
+    } catch (error) {
+      console.error("Error invoking send-thank-you function:", error);
+    }
+  };
+
   const handlePaymentSuccess = (format: string) => {
     setShowPaymentDialog(false);
     setIsPaid(true);
+    
+    // Get user email and name from localStorage or form
+    const userEmail = localStorage.getItem('user_email');
+    const userName = localStorage.getItem('user_name');
+    
+    // Send thank you email if we have the user's email
+    if (userEmail) {
+      sendThankYouEmail(userEmail, userName || '', format);
+    }
     
     // Explicitly start the export process with the specified format
     setTimeout(() => {
