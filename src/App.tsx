@@ -1,11 +1,14 @@
+
 import React, { useEffect, lazy, Suspense } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Routes, Route, useLocation } from "react-router-dom";
+import { HelmetProvider } from 'react-helmet-async';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { setupLazyLoadImages, preloadCriticalResources } from '@/utils/performanceUtils';
+import { addPreconnectLinks, registerServiceWorker } from '@/utils/responsiveUtils';
 
 // Lazy-loaded components for better initial load performance
 const Home = lazy(() => import("@/pages/Home"));
@@ -20,7 +23,6 @@ const Error = lazy(() => import("@/pages/Error"));
 const Splash = lazy(() => import("@/pages/Splash"));
 const Pricing = lazy(() => import("@/pages/Pricing"));
 const CareerTips = lazy(() => import("@/pages/CareerTips"));
-const LinkedInOptimizationDialog = lazy(() => import("@/components/LinkedInOptimization/LinkedInOptimizationDialog"));
 
 // Loading component for Suspense
 const Loading = () => (
@@ -46,6 +48,15 @@ const queryClient = new QueryClient({
 // Preload critical resources
 const criticalResources = [
   '/favicon.svg',
+  '/manifest.json',
+];
+
+// Important domains to preconnect to
+const preconnectDomains = [
+  'https://fonts.googleapis.com',
+  'https://fonts.gstatic.com',
+  'https://api.producthunt.com',
+  'https://checkout.razorpay.com'
 ];
 
 const App: React.FC = () => {
@@ -58,6 +69,12 @@ const App: React.FC = () => {
     
     // Initialize lazy loading for images
     setupLazyLoadImages();
+    
+    // Add preconnect links for performance
+    addPreconnectLinks(preconnectDomains);
+    
+    // Register service worker for PWA capabilities
+    registerServiceWorker();
     
     // Add event listener for web vitals measurement
     if ('performance' in window && 'measure' in window.performance) {
@@ -73,114 +90,41 @@ const App: React.FC = () => {
         }, 0);
       });
     }
-    
-    // Add viewport meta tag for mobile optimization if it doesn't exist
-    if (!document.querySelector('meta[name="viewport"]')) {
-      const viewportMeta = document.createElement('meta');
-      viewportMeta.name = 'viewport';
-      viewportMeta.content = 'width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover';
-      document.head.appendChild(viewportMeta);
-    }
-    
-    // Add touch icon for iOS devices
-    if (!document.querySelector('link[rel="apple-touch-icon"]')) {
-      const touchIcon = document.createElement('link');
-      touchIcon.rel = 'apple-touch-icon';
-      touchIcon.href = '/favicon.svg';
-      document.head.appendChild(touchIcon);
-    }
   }, []);
-  
-  // Update document title dynamically based on route
-  useEffect(() => {
-    const path = location.pathname;
-    
-    let title = "Resume Builder - Create Professional Resumes Online";
-    let description = "Build an ATS-optimized resume in minutes with our professional resume builder. Stand out to recruiters and land your dream job.";
-    
-    // Set appropriate title and description based on current route
-    if (path === "/") {
-      title = "Resume Builder - Create Professional ATS-Friendly Resumes Online";
-      description = "Build an ATS-optimized resume in minutes with our professional resume builder. Stand out to recruiters with keyword-optimized templates.";
-    } else if (path === "/about") {
-      title = "About SXO Resume | Professional Resume Building Services";
-      description = "Learn about SXO Resume Builder and our mission to help job seekers create ATS-optimized resumes that stand out in today's competitive job market.";
-    } else if (path === "/ats-checker") {
-      title = "ATS Compatibility Checker | Test Your Resume Against ATS Systems";
-      description = "Check if your resume is optimized for Applicant Tracking Systems with our advanced ATS compatibility tool. Improve your chances of getting interviews.";
-    } else if (path === "/interview-guide") {
-      title = "Job Interview Preparation Guide | Professional Interview Tips";
-      description = "Prepare for your job interviews with our comprehensive guide including common questions, STAR method responses, and expert tips for success.";
-    } else if (path === "/career-tips") {
-      title = "Career Tips | Resume Advice & Interview Tips";
-      description = "Expert career advice, resume best practices, and interview preparation tips to help you land your dream job.";
-    } else if (path === "/privacy") {
-      title = "Privacy Policy | SXO Resume Builder";
-      description = "Read our privacy policy to understand how we collect, use, and protect your data when using the SXO Resume Builder platform.";
-    } else if (path === "/terms") {
-      title = "Terms of Service | SXO Resume Builder";
-      description = "View our terms of service for using the SXO Resume Builder platform and creating professional, ATS-optimized resumes.";
-    } else if (path === "/splash") {
-      title = "SXO Resume Builder | Professional ATS-Optimized Resume Creation";
-      description = "Create professional, ATS-friendly resumes that help you stand out to recruiters and land more interviews with our advanced resume builder.";
-    } else if (path === "/builder") {
-      title = "Resume Builder | Create Professional Resumes Online";
-      description = "Build an ATS-optimized resume in minutes with our professional resume builder. Stand out to recruiters and land your dream job.";
-    }
-    
-    // Update document title
-    document.title = title;
-    
-    // Update meta description for SEO
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', description);
-    }
-    
-    // Update OG and Twitter meta tags
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    const twitterTitle = document.querySelector('meta[property="twitter:title"]');
-    const ogDescription = document.querySelector('meta[property="og:description"]');
-    const twitterDescription = document.querySelector('meta[property="twitter:description"]');
-    
-    if (ogTitle) ogTitle.setAttribute('content', title);
-    if (twitterTitle) twitterTitle.setAttribute('content', title);
-    if (ogDescription) ogDescription.setAttribute('content', description);
-    if (twitterDescription) twitterDescription.setAttribute('content', description);
-    
-  }, [location]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <div className="min-h-screen flex flex-col bg-background">
-          <Toaster />
-          <Navbar />
-          <main 
-            id="main-content" 
-            className="flex-1 w-full max-w-full mx-auto px-2 xs:px-4 sm:px-6 lg:px-8 safe-bottom gpu-accelerated"
-          >
-            <Suspense fallback={<Loading />}>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/builder" element={<Index />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/ats-checker" element={<ATSChecker />} />
-                <Route path="/interview-guide" element={<InterviewGuide />} />
-                <Route path="/career-tips" element={<CareerTips />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/cookies" element={<Cookies />} />
-                <Route path="/splash" element={<Splash />} />
-                <Route path="/pricing" element={<Pricing />} />
-                <Route path="*" element={<Error />} />
-              </Routes>
-            </Suspense>
-          </main>
-          <Footer />
-        </div>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <div className="min-h-screen flex flex-col bg-background">
+            <Toaster />
+            <Navbar />
+            <main 
+              id="main-content" 
+              className="flex-1 w-full max-w-full mx-auto px-2 xs:px-4 sm:px-6 lg:px-8 safe-bottom gpu-accelerated"
+            >
+              <Suspense fallback={<Loading />}>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/builder" element={<Index />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/ats-checker" element={<ATSChecker />} />
+                  <Route path="/interview-guide" element={<InterviewGuide />} />
+                  <Route path="/career-tips" element={<CareerTips />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="/cookies" element={<Cookies />} />
+                  <Route path="/splash" element={<Splash />} />
+                  <Route path="/pricing" element={<Pricing />} />
+                  <Route path="*" element={<Error />} />
+                </Routes>
+              </Suspense>
+            </main>
+            <Footer />
+          </div>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 

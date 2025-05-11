@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfoForm } from "@/components/ResumeForm/PersonalInfoForm";
 import { ExperienceForm } from "@/components/ResumeForm/ExperienceForm";
@@ -13,9 +13,10 @@ import { Link } from "react-router-dom";
 import { exportToFormat } from "@/utils/pdfExport";
 import { PaymentDialog } from "@/components/ResumeBuilder/PaymentDialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import SeoKeywords from "@/components/SEO/SeoKeywords";
-import SeoStructuredData from "@/components/SEO/SeoStructuredData";
+import PageSEO from "@/components/SEO/PageSEO";
 import LinkedInOptimizationDialog from "@/components/LinkedInOptimization/LinkedInOptimizationDialog";
+import ResponsiveContainer from "@/components/Layout/ResponsiveContainer";
+import { useDeviceDetect } from "@/utils/responsiveUtils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,6 +32,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const { toast } = useToast();
+  const { isMobile, isTablet } = useDeviceDetect();
   const [activeSection, setActiveSection] = useState("personal");
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [showPaymentInfo, setShowPaymentInfo] = useState(false);
@@ -43,12 +45,12 @@ const Index = () => {
   });
 
   // Check if user has previously paid
-  useState(() => {
+  useEffect(() => {
     const hasPaid = checkPreviousPayment();
     if (hasPaid) {
       setIsPaid(true);
     }
-  });
+  }, []);
 
   const sections = [
     { id: "personal", label: "Personal Info", icon: User },
@@ -133,18 +135,19 @@ const Index = () => {
   };
 
   const ResumePreview = () => (
-    <div className="bg-white rounded-lg shadow-sm p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-primary flex items-center gap-2">
-          <FileText className="w-5 h-5" />
+    <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+      <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+        <h2 className="text-lg sm:text-xl font-semibold text-primary flex items-center gap-2">
+          <FileText className="w-4 sm:w-5 h-4 sm:h-5" />
           Live Preview
         </h2>
         <Button 
           onClick={handleExport} 
           className="flex items-center gap-2"
+          size={isMobile ? "sm" : "default"}
         >
           <Download className="w-4 h-4" />
-          {isPaid ? "Download Again" : "Download Now"}
+          {isPaid ? "Download Again" : "Download"}
         </Button>
       </div>
       <ResumePreviewer data={resumeData} isPaid={isPaid} />
@@ -153,32 +156,43 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
-      <SeoKeywords page="builder" />
-      <SeoStructuredData type="builder" />
+      <PageSEO 
+        title="Resume Builder - Create Your Professional Resume Online"
+        description="Use our interactive resume builder to create a professional, ATS-friendly resume tailored to your specific job applications with built-in optimization tools."
+        type="builder"
+      />
       
-      <div className="container mx-auto px-4 max-w-7xl">
+      <ResponsiveContainer maxWidth="7xl">
         <header className="text-center mb-6 sm:mb-8">
-          <div className="flex items-center justify-center gap-4 mb-4 sm:mb-6">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4 sm:mb-6">
             <Link to="/">
-              <Button variant="ghost" size="sm" className="flex items-center gap-2">
+              <Button variant="ghost" size={isMobile ? "sm" : "default"} className="flex items-center gap-2">
                 <ArrowLeft className="w-4 h-4" />
-                Back to Home
+                {isMobile ? "Back" : "Back to Home"}
               </Button>
             </Link>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-primary mb-2">Create Your Professional Resume</h1>
-          <p className="text-secondary mb-4">Fill in your details below and see your resume update in real-time</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-2">Create Your Professional Resume</h1>
+          <p className="text-sm sm:text-base text-secondary mb-4">Fill in your details below and see your resume update in real-time</p>
           <div className="flex flex-col items-center gap-4">
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
+            <div className="flex flex-wrap justify-center gap-2">
               <Link to="/ats-checker">
-                <Button variant="outline" className="flex items-center gap-2 text-sm sm:text-base">
-                  <CheckCircle className="w-4 h-4" />
+                <Button 
+                  variant="outline" 
+                  size={isMobile ? "sm" : "default"}
+                  className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+                >
+                  <CheckCircle className="w-3 sm:w-4 h-3 sm:h-4" />
                   ATS Score Checker
                 </Button>
               </Link>
               <Link to="/interview-guide">
-                <Button variant="outline" className="flex items-center gap-2 text-sm sm:text-base">
-                  <CheckCircle className="w-4 h-4" />
+                <Button 
+                  variant="outline" 
+                  size={isMobile ? "sm" : "default"} 
+                  className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+                >
+                  <CheckCircle className="w-3 sm:w-4 h-3 sm:h-4" />
                   Interview Tips
                 </Button>
               </Link>
@@ -207,7 +221,7 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           <div className="space-y-6">
             <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
-              <div className="flex flex-wrap gap-2 mb-6">
+              <div className="flex flex-wrap gap-2 mb-6 justify-center sm:justify-start">
                 {sections.map((section) => {
                   const Icon = section.icon;
                   return (
@@ -215,10 +229,11 @@ const Index = () => {
                       key={section.id}
                       variant={activeSection === section.id ? "default" : "outline"}
                       onClick={() => setActiveSection(section.id)}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-1 sm:gap-2"
+                      size={isMobile ? "sm" : "default"}
                     >
                       <Icon className="w-4 h-4" />
-                      {section.label}
+                      <span className={isMobile ? "text-xs" : ""}>{section.label}</span>
                     </Button>
                   );
                 })}
@@ -260,8 +275,8 @@ const Index = () => {
           <div className="fixed bottom-4 right-4 lg:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button size="lg" className="rounded-full shadow-lg">
-                  <Eye className="w-5 h-5 mr-2" />
+                <Button size="lg" className="rounded-full shadow-lg flex items-center gap-2">
+                  <Eye className="w-5 h-5" />
                   Preview
                 </Button>
               </SheetTrigger>
@@ -273,7 +288,7 @@ const Index = () => {
             </Sheet>
           </div>
         </div>
-      </div>
+      </ResponsiveContainer>
       
       <AlertDialog open={showPaymentInfo} onOpenChange={setShowPaymentInfo}>
         <AlertDialogContent>

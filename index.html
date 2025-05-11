@@ -6,6 +6,13 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
     
+    <!-- PWA Support -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1E3A8A">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7044855630438367"
      crossorigin="anonymous"></script>
@@ -31,10 +38,11 @@
     <meta property="twitter:image" content="https://i.ibb.co/Lhv22VnH/image.png">
     
     <!-- Theme Color for browsers -->
-    <meta name="theme-color" content="#2C3E50">
+    <meta name="theme-color" content="#1E3A8A">
     
-    <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" href="https://i.ibb.co/Lhv22VnH/image.png">
+    <!-- Additional Mobile Optimization -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
     
     <!-- Additional SEO Meta Tags -->
     <meta name="author" content="SXO Resume Builder">
@@ -53,21 +61,39 @@
     <!-- Preconnect to important domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.producthunt.com">
+    <link rel="preconnect" href="https://checkout.razorpay.com">
+    
+    <!-- DNS prefetch for additional performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://api.producthunt.com">
+    <link rel="dns-prefetch" href="https://checkout.razorpay.com">
+    
+    <!-- Font preload for critical fonts -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     
     <!-- Accessibility -->
     <meta name="robots" content="index, follow">
     
     <!-- Load Razorpay SDK before other scripts for faster initialization -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    
-    <!-- Lovable Script -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
   </head>
   <body>
     <!-- Skip to content link for accessibility -->
     <a href="#main-content" class="skip-link">Skip to content</a>
     
     <div id="root"></div>
+    
+    <!-- No script fallback -->
+    <noscript>
+      <div style="padding: 20px; text-align: center;">
+        <h1>JavaScript Required</h1>
+        <p>This resume builder application requires JavaScript to function. Please enable JavaScript in your browser settings and reload the page.</p>
+      </div>
+    </noscript>
+    
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
