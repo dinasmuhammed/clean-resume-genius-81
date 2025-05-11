@@ -87,6 +87,7 @@ if (!root) {
   throw new Error('Root element not found');
 }
 
+// Create the application element with the router
 const app = (
   <React.StrictMode>
     <BrowserRouter>
@@ -95,4 +96,5 @@ const app = (
   </React.StrictMode>
 );
 
+// Render the application
 createRoot(root).render(app);
