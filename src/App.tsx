@@ -7,7 +7,6 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import TranslateWidget from "@/components/Translation/TranslateWidget";
 import { setupLazyLoadImages, preloadCriticalResources } from '@/utils/performanceUtils';
 import { addPreconnectLinks, registerServiceWorker } from '@/utils/responsiveUtils';
 
@@ -122,7 +121,6 @@ const App: React.FC = () => {
               </Suspense>
             </main>
             <Footer />
-            <TranslateWidget />
           </div>
         </TooltipProvider>
       </QueryClientProvider>
