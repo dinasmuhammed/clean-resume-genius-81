@@ -70,15 +70,15 @@ const SeoStructuredData: React.FC<SeoStructuredDataProps> = ({ type }) => {
       case 'career-tips':
         return 'Expert career advice, resume writing tips, and interview preparation strategies to help you advance in your professional journey and land your dream job.';
       case 'about':
-        return 'Learn about our mission to help job seekers create professional resumes that stand out to employers and get past ATS systems.';
+        return 'Learn about our mission to help job seekers create professional resumes and advance their careers with our innovative tools.';
       case 'privacy':
-        return 'Our privacy policy explains how we collect, use, and protect your personal information when you use our resume building tools.';
+        return 'Our privacy policy outlines how we collect, use, and protect your personal information when you use our resume building services.';
       case 'terms':
-        return 'Our terms of service outline the rules and guidelines for using our resume building platform and services.';
+        return 'Our terms of service outline the rules and guidelines for using our resume building platform and related services.';
       case 'cookies':
-        return 'Learn how we use cookies and similar technologies to enhance your experience on our resume building platform.';
+        return 'Our cookie policy explains how we use cookies and similar technologies to enhance your experience on our resume building platform.';
       case 'splash':
-        return 'SXO Resume Builder - The professional tool for creating ATS-optimized resumes and advancing your career.';
+        return 'Welcome to SXO Resume Builder - Create professional, ATS-optimized resumes in minutes and land your dream job.';
       default:
         return 'SXO Resume Builder - The professional tool for creating ATS-optimized resumes and advancing your career.';
     }

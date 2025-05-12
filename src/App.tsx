@@ -3,13 +3,12 @@ import React, { useEffect, lazy, Suspense } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { setupLazyLoadImages, preloadCriticalResources } from '@/utils/performanceUtils';
 import { addPreconnectLinks, registerServiceWorker } from '@/utils/responsiveUtils';
-import TranslateWidget from '@/components/TranslateWidget/TranslateWidget';
 
 // Lazy-loaded components for better initial load performance
 const Home = lazy(() => import("@/pages/Home"));
@@ -57,13 +56,10 @@ const preconnectDomains = [
   'https://fonts.googleapis.com',
   'https://fonts.gstatic.com',
   'https://api.producthunt.com',
-  'https://checkout.razorpay.com',
-  'https://translate.google.com'
+  'https://checkout.razorpay.com'
 ];
 
 const App: React.FC = () => {
-  const location = useLocation();
-  
   // Set up performance optimizations when the app loads
   useEffect(() => {
     // Preload critical resources
@@ -123,7 +119,6 @@ const App: React.FC = () => {
               </Suspense>
             </main>
             <Footer />
-            <TranslateWidget />
           </div>
         </TooltipProvider>
       </QueryClientProvider>

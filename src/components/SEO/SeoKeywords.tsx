@@ -50,66 +50,80 @@ const SeoKeywords: React.FC<SeoKeywordsProps> = ({ page = 'home' }) => {
       "job application strategies", "networking for job seekers", "LinkedIn profile optimization",
       "job market trends", "career change advice", "salary negotiation tips"
     ],
-    about: [
-      "resume builder company", "resume tool creators", "professional resume service team",
-      "ATS optimization experts", "resume building mission", "career advancement tools",
-      "job search assistance team", "resume technology company", "employment solutions provider",
-      "resume industry leaders", "resume service background", "career development company",
-      "resume creation specialists", "job application experts", "resume technology innovation"
+    'about': [
+      "resume builder company", "professional resume service", "ATS optimization experts",
+      "career advancement platform", "resume building specialists", "job search assistance",
+      "resume technology innovation", "resume AI tools", "career success platform",
+      "resume format experts", "job application helpers", "resume service background"
     ],
-    privacy: [
-      "resume builder privacy policy", "data protection resume service", "personal information security",
-      "resume data storage", "job seeker privacy rights", "resume confidentiality",
-      "user data protection", "resume information usage", "privacy compliance",
-      "GDPR resume builder", "data security measures", "confidential resume storage"
+    'privacy': [
+      "resume data privacy", "personal information protection", "resume builder security",
+      "GDPR compliant resume tools", "secure resume storage", "data handling policy",
+      "resume information privacy", "confidential resume handling", "user data protection"
     ],
-    terms: [
-      "resume builder terms", "resume service conditions", "user agreement",
-      "resume builder rules", "service usage terms", "legal resume terms",
-      "account terms conditions", "resume copyright policy", "usage limitations",
-      "resume builder liability", "service termination policy", "intellectual property rights"
+    'terms': [
+      "resume builder terms", "service agreement", "resume platform conditions",
+      "user agreement", "resume tool usage terms", "subscription conditions",
+      "platform usage guidelines", "service terms and conditions", "legal terms"
     ],
-    cookies: [
-      "resume builder cookies", "website cookie policy", "cookie consent resume",
-      "data tracking information", "browser cookie settings", "cookie preferences",
-      "website tracking technologies", "cookie usage policy", "session cookies resume",
-      "persistent cookies information", "cookie management", "tracking opt out"
+    'cookies': [
+      "cookie policy", "website tracking", "data tracking consent",
+      "resume site cookies", "browser storage policy", "tracking technology",
+      "user preference storage", "session cookies", "analytics cookies"
     ],
-    splash: [
-      "professional resume creator", "ATS resume builder", "job application success",
-      "resume optimization tools", "career advancement solutions", "online resume maker",
-      "resume formatting service", "job hunting assistant", "resume building platform",
-      "employment document creator", "resume wizard", "career document preparation"
+    'splash': [
+      "best resume builder", "professional resume creator", "ATS resume maker",
+      "job application tools", "career advancement platform", "resume optimization service",
+      "resume builder introduction", "professional CV tools", "resume creation platform"
     ]
   };
 
-  // Select the appropriate keyword set based on page
-  const pageKeywords = keywords[page] || keywords.home;
-  
   // Long-tail keywords that are relevant to all pages
-  const selectedLongTail = [
-    "how to make resume pass ATS system", 
-    "best resume format for job application 2023",
-    "professional resume templates for career change", 
-    "optimize resume for applicant tracking system",
-    "how to highlight skills on resume"
+  const longTailKeywords = [
+    "how to make resume pass ATS system", "best resume format for job application 2023",
+    "professional resume templates for career change", "optimize resume for applicant tracking system",
+    "how to highlight skills on resume", "resume examples for entry level positions",
+    "executive resume writing tips", "technical skills to include in resume",
+    "remote job application resume format", "creative professional resume templates",
+    "resume building tips from recruiters", "what to include in resume summary",
+    "how to list achievements on resume", "industry-specific resume keywords",
+    "one page resume vs two page resume", "how to explain employment gaps in resume",
+    "resume action verbs for different industries", "how to quantify achievements on resume",
+    "best fonts for ATS friendly resume", "resume formats that get interviews",
+    "cover letter to complement resume", "resume customization for job applications",
+    "how to make resume stand out to recruiters", "resume mistakes to avoid",
+    "how to address career change in resume"
   ];
   
   // Industry-specific keywords
-  const selectedIndustry = [
-    "IT resume template", 
-    "healthcare professional resume", 
-    "finance resume keywords",
-    "marketing resume examples", 
-    "engineering resume format"
+  const industryKeywords = [
+    "IT resume template", "healthcare professional resume", "finance resume keywords",
+    "marketing resume examples", "engineering resume format", "sales resume achievements",
+    "customer service resume skills", "project management resume", "data science resume",
+    "administrative assistant resume", "graphic design portfolio resume", "teaching resume format",
+    "legal profession resume", "nonprofit resume examples", "government job application format",
+    "construction resume skills", "hospitality industry resume", "retail management resume",
+    "banking sector resume", "accounting resume certifications", "human resources resume keywords",
+    "logistics resume examples", "manufacturing resume skills", "telecommunications resume format",
+    "pharmaceutical industry resume", "real estate resume template"
   ];
   
   // Job level keywords
-  const selectedJobLevel = [
-    "entry level resume format", 
-    "mid-career professional resume", 
-    "senior management resume"
+  const jobLevelKeywords = [
+    "entry level resume format", "mid-career professional resume", "senior management resume",
+    "C-level executive resume", "internship application resume", "graduate resume template",
+    "career transition resume", "first job resume format", "experienced professional resume",
+    "director level resume", "vice president resume example", "consultant resume format",
+    "specialist resume template", "manager resume keywords", "supervisor resume skills"
   ];
+
+  // Select the appropriate keyword set based on page
+  const pageKeywords = keywords[page] || [];
+  
+  // Only include a subset of the long-tail and other keywords to avoid overwhelming
+  const selectedLongTail = longTailKeywords.slice(0, 10);
+  const selectedIndustry = industryKeywords.slice(0, 10);
+  const selectedJobLevel = jobLevelKeywords.slice(0, 5);
   
   // Combine all keywords
   const allKeywords = [...pageKeywords, ...selectedLongTail, ...selectedIndustry, ...selectedJobLevel];
