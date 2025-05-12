@@ -9,6 +9,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { setupLazyLoadImages, preloadCriticalResources } from '@/utils/performanceUtils';
 import { addPreconnectLinks, registerServiceWorker } from '@/utils/responsiveUtils';
+import TranslateWidget from '@/components/TranslateWidget/TranslateWidget';
 
 // Lazy-loaded components for better initial load performance
 const Home = lazy(() => import("@/pages/Home"));
@@ -56,7 +57,8 @@ const preconnectDomains = [
   'https://fonts.googleapis.com',
   'https://fonts.gstatic.com',
   'https://api.producthunt.com',
-  'https://checkout.razorpay.com'
+  'https://checkout.razorpay.com',
+  'https://translate.google.com'
 ];
 
 const App: React.FC = () => {
@@ -121,6 +123,7 @@ const App: React.FC = () => {
               </Suspense>
             </main>
             <Footer />
+            <TranslateWidget />
           </div>
         </TooltipProvider>
       </QueryClientProvider>
