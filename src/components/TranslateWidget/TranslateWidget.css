@@ -1,0 +1,97 @@
+
+.widgetify-translate-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.widgetify-translate-button {
+  width: 60px;
+  height: 60px;
+  background-color: #4285F4;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.widgetify-translate-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.widgetify-translate-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.widgetify-translate-popup {
+  position: absolute;
+  bottom: 75px;
+  right: 0;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  display: none;
+  min-width: 250px;
+}
+
+.widgetify-translate-popup.active {
+  display: block;
+}
+
+.widgetify-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.widgetify-popup-title {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.widgetify-popup-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+}
+
+.widgetify-credit {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  color: #888;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.widgetify-credit a {
+  color: #888;
+  text-decoration: none;
+}
+
+/* Fix Google Translate widget display issues */
+.goog-te-gadget {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #666;
+}
+
+.goog-te-gadget-simple {
+  width: 100%;
+  border-radius: 4px;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
