@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfoForm } from "@/components/ResumeForm/PersonalInfoForm";
@@ -161,7 +162,7 @@ const Index = () => {
         type="builder"
       />
       
-      <ResponsiveContainer maxWidth="2xl">
+      <ResponsiveContainer maxWidth="7xl">
         <header className="text-center mb-6 sm:mb-8">
           <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4 sm:mb-6">
             <Link to="/">

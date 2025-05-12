@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -88,7 +89,7 @@ const Navbar = () => {
           : "bg-white border-b"
       )}
     >
-      <ResponsiveContainer maxWidth="2xl">
+      <ResponsiveContainer maxWidth="5xl">
         <div className="flex justify-between items-center">
           <Link to="/" className="text-lg md:text-xl font-medium text-primary flex items-center gap-2 transition-transform hover:scale-[1.02]">
             <span className="bg-primary/10 text-primary w-8 h-8 flex items-center justify-center rounded-lg font-bold">

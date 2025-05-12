@@ -8,7 +8,7 @@ interface ResponsiveContainerProps {
   as?: React.ElementType;
   fullHeight?: boolean;
   noPadding?: boolean;
-  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '5xl' | '7xl' | 'full';
+  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
   withGradient?: boolean;
   centered?: boolean;
 }
@@ -20,8 +20,6 @@ const maxWidthMap = {
   lg: 'max-w-lg',
   xl: 'max-w-xl',
   '2xl': 'max-w-2xl',
-  '5xl': 'max-w-5xl',
-  '7xl': 'max-w-7xl',
   full: 'max-w-full'
 };
 
