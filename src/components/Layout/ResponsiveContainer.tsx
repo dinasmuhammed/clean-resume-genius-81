@@ -9,6 +9,8 @@ interface ResponsiveContainerProps {
   fullHeight?: boolean;
   noPadding?: boolean;
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+  withGradient?: boolean;
+  centered?: boolean;
 }
 
 const maxWidthMap = {
@@ -27,15 +29,19 @@ export const ResponsiveContainer: React.FC<ResponsiveContainerProps> = ({
   as: Component = 'div',
   fullHeight = false,
   noPadding = false,
-  maxWidth = '2xl'
+  maxWidth = '2xl',
+  withGradient = false,
+  centered = false
 }) => {
   return (
     <Component
       className={cn(
-        'w-full mx-auto',
+        'w-full mx-auto transition-all duration-300',
         maxWidthMap[maxWidth],
         !noPadding && 'px-4 sm:px-6 md:px-8',
         fullHeight && 'h-full',
+        withGradient && 'bg-gradient-to-b from-primary/5 to-transparent rounded-xl',
+        centered && 'flex flex-col items-center justify-center',
         className
       )}
     >
