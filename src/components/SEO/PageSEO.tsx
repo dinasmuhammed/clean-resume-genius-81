@@ -85,6 +85,26 @@ const PageSEO: React.FC<PageSEOProps> = ({
             "offerCount": "3"
           }
         };
+      case 'about':
+        return {
+          ...baseData,
+          "@type": "Organization",
+          "description": "Learn about our mission to help job seekers create professional resumes.",
+          "foundingDate": "2022",
+          "founders": {
+            "@type": "Person",
+            "name": "SXO Resume Team"
+          }
+        };
+      case 'privacy':
+      case 'terms':
+      case 'cookies':
+        return {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": title,
+          "description": description
+        };
       default:
         return baseData;
     }
