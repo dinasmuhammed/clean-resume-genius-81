@@ -85,6 +85,43 @@ const PageSEO: React.FC<PageSEOProps> = ({
             "offerCount": "3"
           }
         };
+      case 'about':
+        return {
+          ...baseData,
+          "@type": "Organization",
+          "description": "Learn about our mission to help job seekers create professional resumes.",
+          "foundingDate": "2023",
+          "founder": {
+            "@type": "Person",
+            "name": "SXO Resume Team"
+          }
+        };
+      case 'privacy':
+      case 'terms':
+      case 'cookies':
+        return {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": title,
+          "description": description
+        };
+      case 'career-tips':
+        return {
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          "name": "Career Tips and Resume Advice",
+          "description": "Professional advice to help you advance in your career journey."
+        };
+      case 'interview':
+        return {
+          ...baseData,
+          "@type": "WebApplication",
+          "description": "Prepare for job interviews with expert tips and guidance.",
+          "potentialAction": {
+            "@type": "UseAction",
+            "target": "https://resume-builder.com/interview-guide"
+          }
+        };
       default:
         return baseData;
     }

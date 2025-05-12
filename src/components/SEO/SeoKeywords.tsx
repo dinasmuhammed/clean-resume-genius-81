@@ -2,7 +2,7 @@
 import React from 'react';
 
 interface SeoKeywordsProps {
-  page?: 'home' | 'builder' | 'ats' | 'interview' | 'pricing' | 'career-tips';
+  page?: 'home' | 'builder' | 'ats' | 'interview' | 'pricing' | 'career-tips' | 'about' | 'privacy' | 'terms' | 'cookies' | 'splash';
 }
 
 const SeoKeywords: React.FC<SeoKeywordsProps> = ({ page = 'home' }) => {
@@ -49,6 +49,32 @@ const SeoKeywords: React.FC<SeoKeywordsProps> = ({ page = 'home' }) => {
       "professional resume guide", "cover letter tips", "career advancement advice",
       "job application strategies", "networking for job seekers", "LinkedIn profile optimization",
       "job market trends", "career change advice", "salary negotiation tips"
+    ],
+    'about': [
+      "resume builder company", "professional resume service", "ATS optimization experts",
+      "career advancement platform", "resume building specialists", "job search assistance",
+      "resume technology innovation", "resume AI tools", "career success platform",
+      "resume format experts", "job application helpers", "resume service background"
+    ],
+    'privacy': [
+      "resume data privacy", "personal information protection", "resume builder security",
+      "GDPR compliant resume tools", "secure resume storage", "data handling policy",
+      "resume information privacy", "confidential resume handling", "user data protection"
+    ],
+    'terms': [
+      "resume builder terms", "service agreement", "resume platform conditions",
+      "user agreement", "resume tool usage terms", "subscription conditions",
+      "platform usage guidelines", "service terms and conditions", "legal terms"
+    ],
+    'cookies': [
+      "cookie policy", "website tracking", "data tracking consent",
+      "resume site cookies", "browser storage policy", "tracking technology",
+      "user preference storage", "session cookies", "analytics cookies"
+    ],
+    'splash': [
+      "best resume builder", "professional resume creator", "ATS resume maker",
+      "job application tools", "career advancement platform", "resume optimization service",
+      "resume builder introduction", "professional CV tools", "resume creation platform"
     ]
   };
 
