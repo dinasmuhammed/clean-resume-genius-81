@@ -1,3 +1,4 @@
+
 import React, { useEffect, lazy, Suspense } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,7 +9,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { setupLazyLoadImages, preloadCriticalResources } from '@/utils/performanceUtils';
 import { addPreconnectLinks, registerServiceWorker } from '@/utils/responsiveUtils';
-import TranslateWidget from './components/TranslateWidget/TranslateWidget';
 
 // Lazy-loaded components for better initial load performance
 const Home = lazy(() => import("@/pages/Home"));
@@ -119,7 +119,6 @@ const App: React.FC = () => {
               </Suspense>
             </main>
             <Footer />
-            <TranslateWidget />
           </div>
         </TooltipProvider>
       </QueryClientProvider>
