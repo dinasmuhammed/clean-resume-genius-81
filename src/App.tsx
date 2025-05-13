@@ -3,7 +3,7 @@ import React, { useEffect, lazy, Suspense } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -60,6 +60,8 @@ const preconnectDomains = [
 ];
 
 const App: React.FC = () => {
+  const location = useLocation();
+  
   // Set up performance optimizations when the app loads
   useEffect(() => {
     // Preload critical resources

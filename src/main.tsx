@@ -66,6 +66,10 @@ if (isIOS) {
   document.addEventListener('touchmove', function(e) {
     if ((e as any).scale !== 1) { e.preventDefault(); }
   }, { passive: false });
+  
+  // Add iOS safe area padding helper
+  document.documentElement.style.setProperty('--safe-area-top', 'env(safe-area-inset-top)');
+  document.documentElement.style.setProperty('--safe-area-bottom', 'env(safe-area-inset-bottom)');
 }
 
 // Prevent saving page via keyboard shortcuts
@@ -81,13 +85,23 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+// Add dynamic viewport height fix for mobile browsers
+const setDocumentHeight = () => {
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+};
+
+// Set initial height
+setDocumentHeight();
+
+// Update on resize
+window.addEventListener('resize', setDocumentHeight);
+
 const root = document.getElementById('root');
 
 if (!root) {
   throw new Error('Root element not found');
 }
 
-// Ensure App is properly wrapped with BrowserRouter
 createRoot(root).render(
   <React.StrictMode>
     <BrowserRouter>
